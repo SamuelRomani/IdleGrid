@@ -45,8 +45,8 @@ if (!app.requestSingleInstanceLock()) app.quit();
 
 // Paineis presos ao dominio do jogo: nada de popup, e navegar o painel
 // (que carrega a sessao logada) para outro site abre no navegador de fora.
-const GAME = 'https://poke.idleworld.online';
-const GAME_PLAY = 'https://poke.idleworld.online/play';
+const GAME = 'https://huntera.com.br';
+const GAME_PLAY = 'https://huntera.com.br/play';
 const WINDOW_OPTIONS = {
     backgroundColor: '#0d1117',
     autoHideMenuBar: true,
@@ -59,7 +59,7 @@ const WINDOW_OPTIONS = {
         preload: path.join(__dirname, 'preload.js')
     }
 };
-const GAME_LOGIN = 'https://poke.idleworld.online/login';
+const GAME_LOGIN = 'https://huntera.com.br/login';
 const LOGIN_URL = GAME_LOGIN;
 const PLAY_URL = GAME_PLAY;
 
