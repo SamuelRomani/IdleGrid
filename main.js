@@ -45,8 +45,8 @@ if (!app.requestSingleInstanceLock()) app.quit();
 
 // Paineis presos ao dominio do jogo: nada de popup, e navegar o painel
 // (que carrega a sessao logada) para outro site abre no navegador de fora.
-const GAME = 'https://pokewg.com';
-const GAME_PLAY = 'https://pokewg.com/play';
+const GAME = 'https://poke.idleworld.online';
+const GAME_PLAY = 'https://poke.idleworld.online/play';
 const WINDOW_OPTIONS = {
     backgroundColor: '#0d1117',
     autoHideMenuBar: true,
@@ -59,7 +59,7 @@ const WINDOW_OPTIONS = {
         preload: path.join(__dirname, 'preload.js')
     }
 };
-const GAME_LOGIN = 'https://pokewg.com/login';
+const GAME_LOGIN = 'https://poke.idleworld.online/login';
 const LOGIN_URL = GAME_LOGIN;
 const PLAY_URL = GAME_PLAY;
 
@@ -142,7 +142,7 @@ ipcMain.handle('creds:save', (_e, accounts) => {
 // UA consistente pra passar na Cloudflare: remove o token "Electron/..." e
 // congela a versão do Chrome em .0.0.0, casando com os client hints (navigator.userAgentData).
 // Deriva da versão real do Chromium, então acompanha upgrades do Electron sozinho.
-app.setAppUserModelId('com.pokewg.pokegrid');
+app.userAgentFallback = app.userAgentFallback
   .replace(/ Electron\/[\d.]+/, '')
   .replace(/(Chrome\/\d+)[\d.]+/, '$1.0.0.0');
 
@@ -227,19 +227,19 @@ app.whenReady().then(() => {
     height: 950,
     minWidth: 1280,
     minHeight: 720,
-    icon: path.join(__dirname, "icon.png"),
+    icon: path.join(__dirname, "tray.png"),
     ...WINDOW_OPTIONS
 });
   win.loadFile(path.join(__dirname, 'index.html')); // caminho absoluto: robusto no build empacotado (asar)
   // a janela principal so mostra index.html: bloqueia qualquer navegacao dela (canal de exfiltracao se houver XSS)
   win.webContents.on('will-navigate', (e, url) => { if (!url.startsWith('file://')) { e.preventDefault(); abreFora(url); } });
-  win.webContents.setWindowOpenHandler(({ url }) => { abreFora(url); return { action: 'deny' };
-  win.webContents.on("did-finish-load", () => {win.webContents.executeJavaScript(`
+  win.webContents.setWindowOpenHandler(({ url }) => { abreFora(url); return { action: 'deny' }; });
+  win.webContents.on("did-finish-load", () => {
+    win.webContents.executeJavaScript(`
         window.__POKEGRID__ = true;
         window.__PWG__ = true;
     `);
-
-});
+  });
 
   // registra travamento/queda da propria interface no relatorio de erros
   win.webContents.on('unresponsive', () => logErro('janela', 'interface travou (sem responder)'));
