@@ -878,20 +878,32 @@ S.supBase=cur;if(S.picBase==null){S.picBase=now;}else{if(now>S.picBase){const do
         el.dispatchEvent(new Event('input', { bubbles: true }));
         el.dispatchEvent(new Event('change', { bubbles: true }));
       };
-      // o botao de enviar nao tem atributo type=submit; acha por propriedade/classe
-      const findBtn = () => [...document.querySelectorAll('button')].find(x => x.type === 'submit' || /auth-imgbtn/.test(x.className));
+      // Acha a senha primeiro (type=password e quase universal), e o usuario dentro do mesmo
+      // <form> dela; so cai pro autocomplete exato (o unico jeito no Poke Idle World) se nao
+      // achar nada assim. Deixa de depender do site marcar autocomplete=username/current-password.
+      const findPass = () => {
+        const all = [...document.querySelectorAll('input')];
+        return all.find(i => i.autocomplete === 'current-password') || all.find(i => i.type === 'password');
+      };
+      const findUser = (p) => {
+        const scope = (p && p.form) ? [...p.form.querySelectorAll('input')] : [...document.querySelectorAll('input')];
+        return scope.find(i => i.autocomplete === 'username')
+            || scope.find(i => i.type === 'email')
+            || scope.find(i => i !== p && (i.type === 'text' || !i.type));
+      };
+      // o botao de enviar pode nao ter type=submit nem classe conhecida; se ele estiver dentro
+      // de um <form>, form.requestSubmit() dispensa achar o botao certo
+      const findBtn = (p) => [...document.querySelectorAll('button')].find(x => x.type === 'submit' || /auth-imgbtn/.test(x.className))
+          || (p && p.form && [...p.form.querySelectorAll('button, input[type=submit]')][0]) || null;
       for (let t = 0; t < 40; t++) {
-        const inputs = [...document.querySelectorAll('input')];
-        const u = inputs.find(i => i.autocomplete === 'username');
-        const p = inputs.find(i => i.autocomplete === 'current-password');
-        const b = findBtn();
-        if (u && p && b) {
+        const p = findPass();
+        const u = findUser(p);
+        if (u && p) {
           const EMAIL = ${JSON.stringify(cred.email)}, SENHA = ${JSON.stringify(cred.senha)};
           // reenche so o que estiver diferente e devolve true quando os DOIS estao certos.
           const preenche = () => {
-            const ii = [...document.querySelectorAll('input')];
-            const uu = ii.find(i => i.autocomplete === 'username');
-            const pp = ii.find(i => i.autocomplete === 'current-password');
+            const pp = findPass();
+            const uu = findUser(pp);
             if (uu && uu.value !== EMAIL) setVal(uu, EMAIL);
             if (pp && pp.value !== SENHA) setVal(pp, SENHA);
             return !!(uu && pp && uu.value === EMAIL && pp.value === SENHA);
@@ -903,11 +915,15 @@ S.supBase=cur;if(S.picBase==null){S.picBase=now;}else{if(now>S.picBase){const do
             window.__loginWatch = true;
             let ciclos = 0;
             const w = setInterval(() => {
-              const bb = findBtn();
-              if (!bb || ++ciclos > 1200) { clearInterval(w); window.__loginWatch = false; return; } // desiste em ~10min
+              const pp = findPass();
+              const bb = findBtn(pp);
+              if (++ciclos > 1200) { clearInterval(w); window.__loginWatch = false; return; } // desiste em ~10min
               const ok = preenche();
               const tk = document.querySelector('input[name=cf-turnstile-response]');
-              if (ok && (!tk || tk.value) && !bb.disabled) { clearInterval(w); window.__loginWatch = false; bb.click(); }
+              if (ok && (!tk || tk.value)) {
+                if (bb && !bb.disabled) { clearInterval(w); window.__loginWatch = false; bb.click(); }
+                else if (!bb && pp && pp.form) { clearInterval(w); window.__loginWatch = false; pp.form.requestSubmit(); }
+              }
             }, 500);
           }
           return 'preenchido';
