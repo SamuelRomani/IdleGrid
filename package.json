@@ -1,7 +1,7 @@
 {
-  "name": "pokegrid",
+  "name": "idlegrid",
   "version": "1.5.10",
-  "description": "Rode 4 contas de Poke Idle World ao mesmo tempo, em uma janela so / Run 4 Poke Idle World accounts at once, in a single window",
+  "description": "Rode varias contas de um jogo idle ao mesmo tempo, em uma janela so / Run multiple idle-game accounts at once, in a single window",
   "main": "main.js",
   "author": "soufoka",
   "scripts": {
@@ -12,8 +12,8 @@
   "keywords": [
     "electron",
     "multi-account",
-    "poke-idle-world",
-    "idle-game"
+    "idle-game",
+    "browser-game"
   ],
   "license": "MIT",
   "devDependencies": {
@@ -21,8 +21,8 @@
     "electron-builder": "^26.15.3"
   },
   "build": {
-    "appId": "com.pokewg.pokegrid",
-    "productName": "PokeGrid",
+    "appId": "com.idlegrid.app",
+    "productName": "IdleGrid",
     "directories": {
       "output": "dist"
     },

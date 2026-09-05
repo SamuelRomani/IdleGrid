@@ -17,7 +17,7 @@ function logErro(origem, detalhe) {
     let txt = '';
     if (!errCabecalho) {
       errCabecalho = true;
-      txt += `\n=== sessao de ${new Date().toLocaleString('pt-BR')} · PokeGrid PWG v${app.getVersion()} · Electron ${process.versions.electron} · ${process.platform} ${require('os').release()} ===\n`;
+      txt += `\n=== sessao de ${new Date().toLocaleString('pt-BR')} · IdleGrid v${app.getVersion()} · Electron ${process.versions.electron} · ${process.platform} ${require('os').release()} ===\n`;
     }
     txt += `[${new Date().toLocaleString('pt-BR')}] [${origem}] ${String(detalhe).slice(0, 4000)}\n`;
     fs.appendFileSync(f, txt);
@@ -175,13 +175,13 @@ ipcMain.handle('mintray:set', (_e, on) => { minToTray = !!on; return minToTray; 
 // comportamentos que antivirus tratam como persistencia suspeita. O atalho fica num lugar que o
 // usuario ve e pode apagar sozinho (Win+R > shell:startup), e o app abre com a janela visivel.
 const startupDir = () => path.join(app.getPath('appData'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup');
-const startupLnk = () => path.join(startupDir(), 'PokeGrid PWG.lnk');
+const startupLnk = () => path.join(startupDir(), 'IdleGrid.lnk');
 const autoStartOn = () => { try { return process.platform === 'win32' && fs.existsSync(startupLnk()); } catch { return false; } };
 function setAutoStart(on) {
   if (process.platform !== 'win32') return false;
   try {
     if (on) {
-      const opts = { target: process.execPath, description: 'PokeGrid PWG', appUserModelId: 'com.pokewg.pokegrid' };
+      const opts = { target: process.execPath, description: 'IdleGrid', appUserModelId: 'com.idlegrid.app' };
       if (!app.isPackaged) opts.args = `"${app.getAppPath()}"`; // rodando pelo codigo: electron + a pasta do app
       shell.writeShortcutLink(startupLnk(), 'create', opts);
     } else {
@@ -216,7 +216,7 @@ app.whenReady().then(() => {
   // Nada aqui pode derrubar a criacao da janela: se qualquer peca do sistema falhar (registro,
   // particao de sessao corrompida, bandeja), o app tem que abrir assim mesmo. Antes destas
   // guardas, uma excecao aqui deixava o processo vivo e SEM JANELA, que e o pior sintoma possivel.
-  try { app.setAppUserModelId('com.pokewg.pokegrid'); } catch (e) { logErro('boot', 'appUserModelId: ' + e.message); } // notificacoes do Windows com o nome certo
+  try { app.setAppUserModelId('com.idlegrid.app'); } catch (e) { logErro('boot', 'appUserModelId: ' + e.message); } // notificacoes do Windows com o nome certo
 
   // Nega pedidos de permissao dos jogos (mic, camera, localizacao, notificacao...).
   for (let i = 1; i <= 4; i++)
@@ -236,8 +236,7 @@ app.whenReady().then(() => {
   win.webContents.setWindowOpenHandler(({ url }) => { abreFora(url); return { action: 'deny' }; });
   win.webContents.on("did-finish-load", () => {
     win.webContents.executeJavaScript(`
-        window.__POKEGRID__ = true;
-        window.__PWG__ = true;
+        window.__IDLEGRID__ = true;
     `);
   });
 
@@ -290,7 +289,7 @@ app.whenReady().then(() => {
   // segue funcionando sem bandeja em vez de morrer no boot.
   try {
     tray = new Tray(path.join(__dirname, 'tray.png'));
-    tray.setToolTip('PokeGrid PWG');
+    tray.setToolTip('IdleGrid');
     tray.setContextMenu(Menu.buildFromTemplate([
       { label: 'Mostrar', click: mostrar },
       { label: 'Abrir com o Windows', type: 'checkbox',

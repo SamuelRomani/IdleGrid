@@ -5,7 +5,7 @@
 <!-- Defesa em profundidade: a interface nao faz rede (fetch/XHR/WS bloqueados), so carrega img do jogo/data.
      Se algum dado escapar do escape, nao ha canal pra vazar as contas salvas. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data: https://huntera.com.br https://raw.githubusercontent.com https://pokexguides.com; font-src 'self' data:; connect-src 'none'; frame-src https://huntera.com.br; child-src https://huntera.com.br; base-uri 'none'; form-action 'none'">
-<title>PokeGrid</title>
+<title>IdleGrid</title>
 <script src="src/domain/iv-math.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -441,7 +441,7 @@
         <circle cx="16" cy="16" r="4.6" fill="#f6f8fa" stroke="#0b0f14" stroke-width="2"/>
         <circle cx="16" cy="16" r="2" fill="#cfe8ff"/>
       </svg>
-      POKEGRID
+      IDLEGRID
     </span>
     <button id="loginAll" class="primary">▶ Logar equipe</button>
     <button id="accounts">👤 Treinadores</button>
@@ -464,7 +464,7 @@
         <button id="eco">⚡ Eco</button>
         <button id="awake" title="Impede o PC de dormir enquanto farma (a tela ainda pode desligar)">💤 Dormir</button>
         <button id="minTray" title="O que o botão minimizar faz: esconder na bandeja ou minimizar normal na barra de tarefas">📥 Minimiza p/ bandeja</button>
-        <button id="autoStart" style="display:none" title="Cria um atalho na pasta Inicializar do Windows pra abrir o PokeGrid junto com o sistema">🚀 Abrir com o Windows</button>
+        <button id="autoStart" style="display:none" title="Cria um atalho na pasta Inicializar do Windows pra abrir o IdleGrid junto com o sistema">🚀 Abrir com o Windows</button>
         <button id="sndShiny" title="Toca um som quando um shiny aparece (além da notificação)">✨🔊 Som do shiny</button>
         <button id="bkExp" title="Salva um arquivo com todas as configurações e o histórico (senhas ficam fora)">💾 Exportar config</button>
         <button id="bkImp" title="Restaura configurações e histórico de um arquivo exportado">📂 Importar config</button>
@@ -563,6 +563,16 @@ const HOME_URL  = 'https://huntera.com.br/';
   // escrito pro protocolo do Poke Idle World; noutro jogo so gastaria rede/CPU a toa
   // (ou pior, interferiria no fetch/WebSocket do jogo). Fica desligado fora desse dominio.
   const IS_POKE_GAME = /(^|\.)poke\.idleworld\.online$/.test(new URL(LOGIN_URL).hostname);
+  // Cliente generico: esconde os controles que so fazem sentido com o protocolo do Poke Idle
+  // World (dependem do coletor de estado acima, ja desligado fora desse dominio). Escondido via
+  // CSS, nao removido do DOM: o resto do codigo continua fazendo document.getElementById(id)
+  // sem checar null, entao tirar o elemento quebraria essas linhas.
+  if (!IS_POKE_GAME) {
+    ['ivsBtn', 'statsBtn', 'cardsBtn', 'hunt', 'sellguard', 'chat', 'dock', 'cleanHud', 'sndShiny', 'refBtn'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+  }
   const grid = document.getElementById('grid');
 
   let accounts = [];
@@ -576,7 +586,7 @@ const HOME_URL  = 'https://huntera.com.br/';
   // ----- Idioma (interface + jogo) -----
   const I18N = {
     pt: {
-      loginAll:'▶ Logar equipe', accounts:'👤 Treinadores', reloadAll:'⟳ Atualizar tudo', layout:'▦ Grade', layoutCol:'▤ Uma coluna', propOn:'🖼 Proporção original', asOn:'🚀 Abre com o Windows', asOff:'🚀 Abrir com o Windows', asTitle:'Cria um atalho do PokeGrid na pasta Inicializar do Windows, o mesmo lugar onde você colocaria um atalho à mão. Não mexe no registro e você pode remover pelo Win+R > shell:startup.', propOff:'🖼 Esticar na tela', propTitle:'Mantém a proporção original do jogo, sem esticar a imagem. Sobra fundo escuro quando o painel não bate com a proporção; desligado, a imagem preenche tudo mas distorce.', layoutRow:'▥ Uma linha', layoutTitle:'Como os painéis se organizam. Clique pra alternar: grade, uma coluna (empilhado) ou uma linha (lado a lado).',
+      loginAll:'▶ Logar equipe', accounts:'👤 Treinadores', reloadAll:'⟳ Atualizar tudo', layout:'▦ Grade', layoutCol:'▤ Uma coluna', propOn:'🖼 Proporção original', asOn:'🚀 Abre com o Windows', asOff:'🚀 Abrir com o Windows', asTitle:'Cria um atalho do IdleGrid na pasta Inicializar do Windows, o mesmo lugar onde você colocaria um atalho à mão. Não mexe no registro e você pode remover pelo Win+R > shell:startup.', propOff:'🖼 Esticar na tela', propTitle:'Mantém a proporção original do jogo, sem esticar a imagem. Sobra fundo escuro quando o painel não bate com a proporção; desligado, a imagem preenche tudo mas distorce.', layoutRow:'▥ Uma linha', layoutTitle:'Como os painéis se organizam. Clique pra alternar: grade, uma coluna (empilhado) ou uma linha (lado a lado).',
       sound:'🔊 Som', muted:'🔇 Mudo', eco:'⚡ Eco', ecoOff:'⚡ Eco off', sleep:'💤 Dormir', awake:'☕ Acordado',
       chatHidden:'💬 Chat oculto', chatShown:'💬 Chat visível',
       optionsBtn:'☰ Opções', errlog:'🐞 Erros', errlogTitle:'Abre o relatório de erros. Se o app travar ou fechar sozinho, envie esse arquivo pro suporte.',
@@ -611,11 +621,11 @@ const HOME_URL  = 'https://huntera.com.br/';
       msgStalled:'parece ter parado de farmar (10 min sem kills)',
       cdToday:'Hoje', cdWeek:'7 dias', cdAllTime:'Total', goalG:'Meta gold/dia', goalC:'Meta capturas/dia', csvTitle:'Baixa o resumo por dia em CSV (planilha)', csvDia:'Dia', csvHunts:'Hunts', csvHuntsTitle:'Baixa duas planilhas: uma linha por hunt (tempo, kills/h, XP/h, capturas, gold) e uma linha por item dropado, com drop por kill pra calcular a porcentagem. O registro é automático: cada vez que você troca de hunt, a anterior entra no log.', cdLifeHint:'contadores: sessão · lista: histórico',
       cdTargets:'Alvos', cdCritIvQ:'IV × qual.', cdCritIv:'IV', cdCritQ:'Qualidade', cdBestCritTitle:'Critério do melhor catch. A qualidade multiplica os stats e o poder, então IV × qualidade reflete melhor a força real.', cdTargetsHint:'Sem alvos ainda: no modo Total, passe o mouse num card e clique na ★ para marcar', cdTargetsMark:'Marcar/desmarcar como alvo',
-      whTitle:'Webhook do Discord: cole a URL do seu servidor pra receber avisos', whTest:'Testar', whShiny:'Avisar shiny', whSum:'Resumo diário', whDay:'📊 Resumo de', whCaught:'CAPTURADO ✅', whLost:'perdido ✕', whTestMsg:'✅ PokeGrid conectado! Os avisos vão chegar aqui.',
+      whTitle:'Webhook do Discord: cole a URL do seu servidor pra receber avisos', whTest:'Testar', whShiny:'Avisar shiny', whSum:'Resumo diário', whDay:'📊 Resumo de', whCaught:'CAPTURADO ✅', whLost:'perdido ✕', whTestMsg:'✅ IdleGrid conectado! Os avisos vão chegar aqui.',
       bkExp:'💾 Exportar config', bkImp:'📂 Importar config', bkExpTitle:'Salva um arquivo com todas as configurações e o histórico (senhas ficam fora)', bkImpTitle:'Restaura configurações e histórico de um arquivo exportado', bkConfirm:'Substituir as configurações atuais pelas do arquivo? O app vai recarregar. (Senhas não são afetadas.)', bkBad:'Arquivo inválido.'
     },
     en: {
-      loginAll:'▶ Log in all', accounts:'👤 Accounts', reloadAll:'⟳ Reload all', layout:'▦ Grid', layoutCol:'▤ Single column', propOn:'🖼 Original aspect', asOn:'🚀 Opens with Windows', asOff:'🚀 Open with Windows', asTitle:'Creates a PokeGrid shortcut in the Windows Startup folder, the same place you would put one by hand. It does not touch the registry and you can remove it via Win+R > shell:startup.', propOff:'🖼 Stretch to fill', propTitle:'Keeps the game original aspect ratio instead of stretching the image. Dark bars appear when the panel does not match the ratio; turned off, the image fills everything but gets distorted.', layoutRow:'▥ Single row', layoutTitle:'How the panels are arranged. Click to cycle: grid, single column (stacked) or single row (side by side).',
+      loginAll:'▶ Log in all', accounts:'👤 Accounts', reloadAll:'⟳ Reload all', layout:'▦ Grid', layoutCol:'▤ Single column', propOn:'🖼 Original aspect', asOn:'🚀 Opens with Windows', asOff:'🚀 Open with Windows', asTitle:'Creates an IdleGrid shortcut in the Windows Startup folder, the same place you would put one by hand. It does not touch the registry and you can remove it via Win+R > shell:startup.', propOff:'🖼 Stretch to fill', propTitle:'Keeps the game original aspect ratio instead of stretching the image. Dark bars appear when the panel does not match the ratio; turned off, the image fills everything but gets distorted.', layoutRow:'▥ Single row', layoutTitle:'How the panels are arranged. Click to cycle: grid, single column (stacked) or single row (side by side).',
       sound:'🔊 Sound', muted:'🔇 Muted', eco:'⚡ Eco', ecoOff:'⚡ Eco off', sleep:'💤 Sleep', awake:'☕ Awake',
       chatHidden:'💬 Chat hidden', chatShown:'💬 Chat shown',
       optionsBtn:'☰ Options', errlog:'🐞 Errors', errlogTitle:'Opens the error report. If the app freezes or closes on its own, send this file to support.',
@@ -650,11 +660,11 @@ const HOME_URL  = 'https://huntera.com.br/';
       msgStalled:'seems to have stopped farming (10 min without kills)',
       cdToday:'Today', cdWeek:'7 days', cdAllTime:'All time', goalG:'Gold goal/day', goalC:'Catch goal/day', csvTitle:'Downloads the daily summary as a CSV (spreadsheet)', csvDia:'Day', csvHunts:'Hunts', csvHuntsTitle:'Downloads two spreadsheets: one row per hunt (time, kills/h, XP/h, captures, gold) and one row per dropped item, with drop per kill so you can work out the percentage. Logging is automatic: every time you switch hunts, the previous one is recorded.', cdLifeHint:'counters: session · list: all-time',
       cdTargets:'Targets', cdCritIvQ:'IV × qual.', cdCritIv:'IV', cdCritQ:'Quality', cdBestCritTitle:'Best-catch criterion. Quality multiplies stats and power, so IV × quality reflects real strength better.', cdTargetsHint:'No targets yet: in Total mode, hover a card and click the ★ to mark it', cdTargetsMark:'Mark/unmark as target',
-      whTitle:'Discord webhook: paste your server URL to receive alerts', whTest:'Test', whShiny:'Shiny alerts', whSum:'Daily summary', whDay:'📊 Summary of', whCaught:'CAUGHT ✅', whLost:'lost ✕', whTestMsg:'✅ PokeGrid connected! Alerts will arrive here.',
+      whTitle:'Discord webhook: paste your server URL to receive alerts', whTest:'Test', whShiny:'Shiny alerts', whSum:'Daily summary', whDay:'📊 Summary of', whCaught:'CAUGHT ✅', whLost:'lost ✕', whTestMsg:'✅ IdleGrid connected! Alerts will arrive here.',
       bkExp:'💾 Export config', bkImp:'📂 Import config', bkExpTitle:'Saves a file with all settings and history (passwords stay out)', bkImpTitle:'Restores settings and history from an exported file', bkConfirm:'Replace the current settings with the file? The app will reload. (Passwords are not affected.)', bkBad:'Invalid file.'
     },
     es: {
-      loginAll:'▶ Iniciar equipo', accounts:'👤 Entrenadores', reloadAll:'⟳ Recargar todo', layout:'▦ Cuadrícula', layoutCol:'▤ Una columna', propOn:'🖼 Proporción original', asOn:'🚀 Abre con Windows', asOff:'🚀 Abrir con Windows', asTitle:'Crea un acceso directo de PokeGrid en la carpeta Inicio de Windows, el mismo lugar donde lo pondrías a mano. No toca el registro y puedes quitarlo con Win+R > shell:startup.', propOff:'🖼 Estirar en pantalla', propTitle:'Mantiene la proporción original del juego, sin estirar la imagen. Queda fondo oscuro cuando el panel no coincide con la proporción; apagado, la imagen llena todo pero se distorsiona.', layoutRow:'▥ Una fila', layoutTitle:'Cómo se organizan los paneles. Clic para alternar: cuadrícula, una columna (apilado) o una fila (lado a lado).',
+      loginAll:'▶ Iniciar equipo', accounts:'👤 Entrenadores', reloadAll:'⟳ Recargar todo', layout:'▦ Cuadrícula', layoutCol:'▤ Una columna', propOn:'🖼 Proporción original', asOn:'🚀 Abre con Windows', asOff:'🚀 Abrir con Windows', asTitle:'Crea un acceso directo de IdleGrid en la carpeta Inicio de Windows, el mismo lugar donde lo pondrías a mano. No toca el registro y puedes quitarlo con Win+R > shell:startup.', propOff:'🖼 Estirar en pantalla', propTitle:'Mantiene la proporción original del juego, sin estirar la imagen. Queda fondo oscuro cuando el panel no coincide con la proporción; apagado, la imagen llena todo pero se distorsiona.', layoutRow:'▥ Una fila', layoutTitle:'Cómo se organizan los paneles. Clic para alternar: cuadrícula, una columna (apilado) o una fila (lado a lado).',
       sound:'🔊 Sonido', muted:'🔇 Silencio', eco:'⚡ Eco', ecoOff:'⚡ Eco off', sleep:'💤 Dormir', awake:'☕ Despierto',
       chatHidden:'💬 Chat oculto', chatShown:'💬 Chat visible',
       optionsBtn:'☰ Opciones', errlog:'🐞 Errores', errlogTitle:'Abre el informe de errores. Si la app se congela o se cierra sola, envía este archivo al soporte.',
@@ -689,7 +699,7 @@ const HOME_URL  = 'https://huntera.com.br/';
       msgStalled:'parece haber dejado de farmear (10 min sin kills)',
       cdToday:'Hoy', cdWeek:'7 días', cdAllTime:'Total', goalG:'Meta oro/día', goalC:'Meta capturas/día', csvTitle:'Descarga el resumen por día en CSV (planilla)', csvDia:'Día', csvHunts:'Hunts', csvHuntsTitle:'Descarga dos planillas: una fila por hunt (tiempo, kills/h, XP/h, capturas, oro) y una fila por ítem dropeado, con drop por kill para calcular el porcentaje. El registro es automático: cada vez que cambias de hunt, la anterior queda guardada.', cdLifeHint:'contadores: sesión · lista: histórico',
       cdTargets:'Objetivos', cdCritIvQ:'IV × cal.', cdCritIv:'IV', cdCritQ:'Calidad', cdBestCritTitle:'Criterio del mejor catch. La calidad multiplica los stats y el poder, así que IV × calidad refleja mejor la fuerza real.', cdTargetsHint:'Sin objetivos aún: en modo Total, pasa el mouse por un card y haz clic en la ★ para marcarlo', cdTargetsMark:'Marcar/desmarcar como objetivo',
-      whTitle:'Webhook de Discord: pega la URL de tu servidor para recibir avisos', whTest:'Probar', whShiny:'Avisar shiny', whSum:'Resumen diario', whDay:'📊 Resumen de', whCaught:'CAPTURADO ✅', whLost:'perdido ✕', whTestMsg:'✅ ¡PokeGrid conectado! Los avisos llegarán aquí.',
+      whTitle:'Webhook de Discord: pega la URL de tu servidor para recibir avisos', whTest:'Probar', whShiny:'Avisar shiny', whSum:'Resumen diario', whDay:'📊 Resumen de', whCaught:'CAPTURADO ✅', whLost:'perdido ✕', whTestMsg:'✅ ¡IdleGrid conectado! Los avisos llegarán aquí.',
       bkExp:'💾 Exportar config', bkImp:'📂 Importar config', bkExpTitle:'Guarda un archivo con todas las configuraciones y el historial (las contraseñas quedan fuera)', bkImpTitle:'Restaura configuraciones e historial desde un archivo exportado', bkConfirm:'¿Reemplazar las configuraciones actuales por las del archivo? La app se recargará. (Las contraseñas no se ven afectadas.)', bkBad:'Archivo inválido.'
     }
   };
@@ -783,14 +793,14 @@ S.supBase=cur;if(S.picBase==null){S.picBase=now;}else{if(now>S.picBase){const do
           wv.executeJavaScript("(()=>{if(window.__pgGlWd)return;window.__pgGlWd=1;let tm;document.addEventListener('webglcontextlost',()=>{clearTimeout(tm);tm=setTimeout(()=>location.reload(),4000);},true);document.addEventListener('webglcontextrestored',()=>clearTimeout(tm),true);})()").catch(() => {});
           if (cardsOn) wv.executeJavaScript(ultraScript(true)).catch(() => {}); // reaplica o ultra apos reload/relogin
           wv.executeJavaScript(POPUP_SCRIPT).catch(() => {});
-          wv.executeJavaScript(cleanScript(cleanOn)).catch(() => {});
           if (IS_POKE_GAME) {
+          wv.executeJavaScript(cleanScript(cleanOn)).catch(() => {});
           wv.executeJavaScript(SELLGUARD).catch(() => {});
           wv.executeJavaScript('window.__pgSellGuardOn=' + (sellGuardOn ? 'true' : 'false')).catch(() => {});
           wv.executeJavaScript(QOL_UI).catch(() => {});
-          }
           wv.executeJavaScript(chatScript(chatHidden || cardsOn)).catch(() => {});
           wv.executeJavaScript(dockScript(dockHidden)).catch(() => {});
+          }
           // so na tela de login, pra nao rodar a toa dentro do jogo
           if ((wv.getURL() || '').startsWith(LOGIN_URL)) wv.executeJavaScript(scrollLoginScript).catch(() => {});
           wv.executeJavaScript(`localStorage.setItem('poke_lang', ${JSON.stringify(lang === 'pt' ? 'pt' : 'en')})`).catch(() => {}); // mantem o jogo no idioma escolhido (es usa en, o jogo so tem pt/en)
@@ -1065,8 +1075,8 @@ S.supBase=cur;if(S.picBase==null){S.picBase=now;}else{if(now>S.picBase){const do
             its.forEach(x => { const nm = nomeItem(x.itemId); if (nm && PROT.includes(nm.toLowerCase())) avisos.push(nm + ' x' + (x.qty || 1)); });
           }
           if (avisos.length && window.__pgSellGuardOn !== false) {
-            const ok = window.confirm('PokeGrid: voce esta vendendo coisas valiosas:\\n\\n' + avisos.join('\\n') + '\\n\\nConfirmar a venda?');
-            if (!ok) return Promise.reject(new Error('Venda cancelada pelo PokeGrid'));
+            const ok = window.confirm('IdleGrid: voce esta vendendo coisas valiosas:\\n\\n' + avisos.join('\\n') + '\\n\\nConfirmar a venda?');
+            if (!ok) return Promise.reject(new Error('Venda cancelada pelo IdleGrid'));
           }
         }
       } catch (x) {}
@@ -1391,7 +1401,7 @@ S.supBase=cur;if(S.picBase==null){S.picBase=now;}else{if(now>S.picBase){const do
   function alerta(i, chave) {
     if (!alertsOn) return;
     const nome = (accounts[i] && accounts[i].name) || defName(i);
-    try { window.pokeAPI.notify('PokeGrid', nome + ' ' + t(chave)); } catch {}
+    try { window.pokeAPI.notify('IdleGrid', nome + ' ' + t(chave)); } catch {}
   }
   // Alertas via coletor: shiny, pokemon derrubado e inventario baixo (contagem exata do jogo).
   const READ_ALERTS = `(()=>{const P=window.__poke;if(!P||!P.ws)return null;const ws=P.ws,api=P.api||{};const cat={};const doc=api['/game/items.json'];if(doc&&doc.items)doc.items.forEach(it=>cat[it.id]=it);let balls=0;const bm=ws.balls;if(bm&&bm.counts)for(const k in bm.counts)balls+=bm.counts[k];let potions=0,revives=0;const inv=(ws.inventory&&ws.inventory.items)||[];inv.forEach(it=>{const c=(cat[it.itemId]||{}).category;if(c==='heal'||c==='potion')potions+=it.quantity;else if(c==='revive')revives+=it.quantity;});const S=P.sess||{};const ch=(api['/api/characters/me']&&api['/api/characters/me'].character)||{};let ballPrice=0;if(bm&&bm.catalog){const abid=ch.autoCatchBallId||(ws['catch-result']&&ws['catch-result'].ballId);const bb=bm.catalog.find(x=>x.id===abid);ballPrice=bb?bb.priceGold:0;}let lootGold=0;for(const id in (S.drops||{})){const dd=S.drops[id];lootGold+=(dd.qty||0)*((cat[id]||{}).npcPrice||0);}const hasBalls=!!(bm&&bm.counts),hasInv=!!(ws.inventory&&ws.inventory.items),live=!!(ch.id||hasBalls||hasInv);
@@ -1537,15 +1547,15 @@ return {live,hasBalls,hasInv,balls,potions,revives,prevHunt:resumo(P.prev),shiny
           porKill.toFixed(6), (porKill * 100).toFixed(3)].join(',') + '\n';
       });
     });
-    baixa('pokegrid-hunts.csv', a);
-    baixa('pokegrid-drops.csv', b);
+    baixa('idlegrid-hunts.csv', a);
+    baixa('idlegrid-drops.csv', b);
   }
   function exportCSV() {
     let csv = 'date,account,gold,xp,kills,captures,shiny_found,shiny_caught\n';
     // nome vem do jogo: aspas escapadas e apostrofo na frente de =+-@ (senao o Excel executa como formula)
     const cel = (v) => { v = String(v); if (/^[=+\-@]/.test(v)) v = "'" + v; return '"' + v.replace(/"/g, '""') + '"'; };
     Object.keys(histDay).sort().forEach(k => Object.keys(histDay[k]).forEach(i2 => { const b = histDay[k][i2]; csv += k + ',' + cel(tabNames[i2] || stName(+i2)) + ',' + Math.round(b.g) + ',' + Math.round(b.x) + ',' + (+b.kl || 0) + ',' + (+b.c || 0) + ',' + (+b.sf || 0) + ',' + (+b.sc || 0) + '\n'; }));
-    const a = document.createElement('a'); a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv); a.download = 'pokegrid-historico.csv'; a.click();
+    const a = document.createElement('a'); a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv); a.download = 'idlegrid-historico.csv'; a.click();
   }
 
   // ----- Logs vitalicios: shinies e capturas sobrevivem ao fechar o app -----
@@ -1737,7 +1747,7 @@ return {live,hasBalls,hasInv,balls,potions,revives,prevHunt:resumo(P.prev),shiny
     const o = {}; Object.entries(localStorage).forEach(([k2, v]) => { if (!BK_SKIP.includes(k2)) o[k2] = v; });
     const a = document.createElement('a');
     a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(o));
-    a.download = 'pokegrid-config.json'; a.click(); menu.classList.remove('show');
+    a.download = 'idlegrid-config.json'; a.click(); menu.classList.remove('show');
   };
   document.getElementById('bkImp').onclick = () => {
     menu.classList.remove('show');
@@ -1890,7 +1900,7 @@ return {live,hasBalls,hasInv,balls,potions,revives,prevHunt:resumo(P.prev),shiny
   let cfg = loadStatsCfg();
   let lastData = null; // ultimo d valido (pra listar itens da bag na config)
   const saveStatsCfg = () => { try { lsSet('statsCfg', JSON.stringify(cfg)); } catch {} };
-  // Shinies encontrados na vida da conta (acumulado pelo PokeGrid, por id de personagem)
+  // Shinies encontrados na vida da conta (acumulado pelo IdleGrid, por id de personagem)
   const loadShinyLife = () => { try { return lsObj('shinyLife'); } catch { return {}; } };
   const addShinyLife = (cid, n) => { if (!cid || !n) return; const m = loadShinyLife(); m[cid] = (m[cid] || 0) + n; try { lsSet('shinyLife', JSON.stringify(m)); } catch {} };
   // Emblema/nome do clã no header (defensivo: o formato do clã varia; tenta os campos comuns)
@@ -2274,7 +2284,7 @@ return {live,hasBalls,hasInv,balls,potions,revives,prevHunt:resumo(P.prev),shiny
   // ordena bem sem fingir que sabe o dano exato do jogo; o "medido" continua sendo a regua.
   let huntPkSel = String(lsGet('cdHuntPk') || '');
   const sugCalc = (A, x) => {
-    const M2 = window.PokeGridIvMath;
+    const M2 = window.IdleGridIvMath;
     const aB = A && basesByName[A.sp], am = A && movesByName[A.sp];
     const dB = basesByName[x.sp], dm = movesByName[x.sp] || {};
     if (!M2 || !aB || !am || !dB) return null;
@@ -2618,7 +2628,7 @@ return {live,hasBalls,hasInv,balls,potions,revives,prevHunt:resumo(P.prev),shiny
         + '</div>'
         + (catches.length ? catches.map(x => '<div class="cd-row"><span class="cd-dot" style="background:' + x.dot + '"></span><span class="rn">' + (x.fx ? '<span title="' + t('cdFirst') + '">🆕</span> ' : '') + (x.sh ? '✨ ' : '') + esc(x.n) + raroHtml(x.q) + ' <span style="color:#7d8590">· ' + esc(x.acc) + '</span></span><span style="color:#55e6d3">' + (+x.iv || 0) + '/192</span>' + (+x.q ? '<span style="color:#f2c665">×' + (+x.q).toFixed(2) + '</span>' : '') + '<span class="rt">' + fmtDT(x.t) + '</span></div>').join('') : '<div class="cd-empty">' + t('cdNone') + '</div>') + '</div>'; };
     SB.teams = () => {
-      const M = window.PokeGridIvMath;
+      const M = window.IdleGridIvMath;
       const alvo = Math.max(1, Math.min(500, +(lsGet('cdPjLv') || 500)));
       const cols = ordered.filter(r => r.st === 'on' && (r.team || []).length);
       const poder = (p) => { // mesmo modulo do card de IV; sem base/qualidade/IV nao inventa numero
@@ -2973,7 +2983,7 @@ return {live,hasBalls,hasInv,balls,potions,revives,prevHunt:resumo(P.prev),shiny
   // carregado ou faltar dado, cai no valor que o painel mandou.
   function poderFiel(d) {
     try {
-      const M = window.PokeGridIvMath;
+      const M = window.IdleGridIvMath;
       if (!M || !d || !d.bases) return null;
       const b = d.bases, nv = +d.nivel || 0, q = +d.qualidade || 0, tot = +d.ivTotal || 0;
       if (!(nv > 0) || !(q > 0) || !(tot > 0)) return null;
