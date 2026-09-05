@@ -88,16 +88,6 @@ try { require(path.join(RAIZ, 'main.js')); } catch (e) { carregou = false; erroC
 ok(carregou, 'main.js carrega sem estourar' + (carregou ? '' : ' -> ' + erroCarga));
 ok(registrados.size === canais.length, 'todos os canais foram registrados uma vez (' + registrados.size + ')');
 
-console.log('--- scripts injetados nos paineis parseiam ---');
-const pega = (marca) => { const i = index.indexOf(marca); if (i < 0) return null; const ini = index.indexOf('`', i) + 1; return index.slice(ini, index.indexOf('`;', ini)); };
-[['READ_STATE', 'READ_STATE = `'], ['READ_ALERTS', 'READ_ALERTS = `('], ['HUNTS_JS', 'const HUNTS_JS = `'], ['SELLGUARD', 'const SELLGUARD = `']].forEach(([nome, marca]) => {
-  const cru = pega(marca);
-  if (cru == null) { ok(false, nome + ' sumiu do index.html'); return; }
-  // o template literal e desescapado antes de rodar no painel; aqui fazemos o mesmo
-  try { new Function(eval('`' + cru.replace(/\$\{[^}]*\}/g, '0') + '`')); ok(true, nome + ' parseia'); }
-  catch (e) { ok(false, nome + ' com erro: ' + e.message.slice(0, 70)); }
-});
-
 console.log('--- o <script> da interface parseia ---');
 const re = /<script>([\s\S]*?)<\/script>/g; let m, maior = '';
 while ((m = re.exec(index))) { if (m[1].length > maior.length) maior = m[1]; }

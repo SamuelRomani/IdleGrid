@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.0.0
+
+### PokeGrid virou IdleGrid
+
+- **O projeto deixou de ser específico do Poke Idle World.** Passou a apontar pro `huntera.com.br`, e todo o código que só fazia sentido com o protocolo do Poke Idle World foi removido (não só desligado): calculadora de IV, Hunt Analyzer, dashboard "Cartas", resumo "Painel", venda protegida, filtros de Pokédex/Mercado, esconder chat/menu do jogo, som e aviso de shiny, webhook do Discord, log de hunts e histórico diário. O app ficou bem mais enxuto (o arquivo principal da interface caiu de ~3300 para ~1200 linhas).
+  *The project stopped being Poke Idle World-specific. It now points at `huntera.com.br`, and all the code that only made sense with the Poke Idle World protocol was removed (not just disabled): the IV calculator, Hunt Analyzer, the "Cartas" dashboard, the "Painel" summary, sell-guard, Pokédex/Market filters, hiding the game's chat/menu, shiny sound and alert, the Discord webhook, hunt logging and daily history. The app got a lot leaner (the interface's main file dropped from ~3300 to ~1200 lines).*
+- **Login automático ficou genérico**: antes só preenchia com os atributos exatos que o Poke Idle World usava; agora reconhece qualquer formulário padrão (campo de senha, e-mail ou texto simples), e envia pelo próprio formulário quando não acha um botão óbvio.
+  *Auto-login became generic: it used to fill only the exact attributes Poke Idle World used; now it recognizes any standard form (password, email or plain text field), and submits through the form itself when it can't find an obvious button.*
+- **Renomeado**: PokeGrid → IdleGrid, em tudo (nome do app, atalhos, notificações, arquivos exportados).
+  *Renamed: PokeGrid → IdleGrid, everywhere (app name, shortcuts, notifications, exported files).*
+- **CI**: o repositório agora roda os testes automaticamente em todo push e pull request, e builda o executável do Windows pra pegar regressão de empacotamento.
+  *CI: the repository now runs the tests automatically on every push and pull request, and builds the Windows executable to catch packaging regressions.*
+
 ## 1.5.10
 
 ### A versão sem executável voltou a abrir

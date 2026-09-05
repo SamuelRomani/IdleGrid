@@ -1,20 +1,16 @@
 <div align="center">
 
-<img src="tray.png" width="72" alt="PokeGrid">
+<img src="tray.png" width="72" alt="IdleGrid">
 
-# PokeGrid
+# IdleGrid
 
-**Four Poke Idle World accounts in a single window.**
+**Four idle-game accounts in a single window.**
 
 ![Platform](https://img.shields.io/badge/Windows%20%C2%B7%20macOS%20%C2%B7%20Linux-0078D6)
 ![Electron](https://img.shields.io/badge/Electron-43-47848F)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 [Português](README.md)
-
-<img src="docs/modo-simples.png" width="880" alt="Simple mode: dashboard with the numbers of all four accounts">
-
-<sub>Simple mode: hides the game and shows only the numbers. Every section can be moved and resized.</sub>
 
 </div>
 
@@ -27,6 +23,8 @@
 
 Four accounts running at once, each in its own quadrant with a separate session. You save the login once and the app signs in on its own from then on. If a session drops mid farm, it logs back in without you being around. It does not automate the game or touch the captcha, it only organizes the accounts you already have.
 
+The app currently points at **huntera.com.br**, but it is a generic client: the auto-login works on any standard login form (it does not depend on anything specific to that game).
+
 ## How to run
 
 You need Node.js installed once. After that it is quick.
@@ -38,11 +36,13 @@ Download the LTS version at [nodejs.org](https://nodejs.org) and install it (jus
 Click the green **Code** button above, then **Download ZIP**. Extract the folder wherever you want. If you use Git, clone it:
 
 ```bash
-git clone https://github.com/soufoka/PokeGrid-source.git
+git clone https://github.com/SamuelRomani/IdleGrid.git
 ```
 
 **3. Open the app**
-On Windows, double click the **iniciar.bat** file in the folder. The first time it installs what it needs and opens on its own; after that it opens right away.
+On Windows, double click the **Abrir IdleGrid** (`.vbs`) file in the folder. The first time it installs what it needs and opens on its own; after that it opens right away, no black window. Want a shortcut? Right-click it, **Send to: Desktop (create shortcut)**.
+
+You can also use **iniciar.bat**, but it keeps a black window open, and closing it closes the app too.
 
 On macOS or Linux, open a terminal in the folder and run:
 
@@ -54,25 +54,25 @@ That is it. Log in or create an account in each panel and, under "Treinadores" (
 
 ## What it does
 
-- Run 2, 3 or 4 accounts, you choose how many panels to open.
+- Run 1 to 4 accounts, you choose how many panels to open.
 - Auto login, even when the session expires in the middle of a farm.
 - Eco mode that keeps CPU use down without hurting progress.
-- Hides the chat and the game icon menu to free up screen.
-- Notifies you when an account drops or runs out of Pokéballs.
+- Notifies you when an account drops.
 - Turn each panel on or off, zoom, full screen and keyboard shortcuts.
-- Tray, start with Windows, and Portuguese or English.
+- Run your own userscripts in each panel (Scripts / Extras menu).
+- Tray, start with Windows, and Portuguese, English or Spanish.
 
 ## Security
 
 - Passwords are encrypted by Electron's `safeStorage`, which uses the OS API (DPAPI on Windows). They never leave the PC.
 - Panels are locked to the game's domain. An external link opens in your real browser, and the password is only typed into the official login page.
 - The game's camera, microphone, location and notifications are blocked.
-- You always solve the captcha. The app fills the fields and presses Enter when you tick the box, but it never touches the "Confirm you are human" widget. Beating bot detection is not the point.
+- You always solve the captcha. The app fills the fields and presses Enter once they're correct, but it never touches the "Confirm you are human" widget. Beating bot detection is not the point.
 
 ## Under the hood
 
-Each panel is an Electron `<webview>` with its own partition (`persist:conta1` to `conta4`), and that is what keeps the accounts isolated and logged in between launches. Whatever the game does not offer, the app injects into each panel: Eco swaps `requestAnimationFrame` for a slower version, the login fills through the input's native setter, and the menu and chat disappear via CSS with a `MutationObserver`. It is all in `main.js`, `preload.js` and `index.html`, nothing hidden.
+Each panel is an Electron `<webview>` with its own partition (`persist:conta1` to `conta4`), and that is what keeps the accounts isolated and logged in between launches. Eco swaps `requestAnimationFrame` for a slower version, and the login fills through the input's native setter (targeting `autocomplete=username`/`current-password` fields, falling back to the first text/password field in the form). It is all in `main.js`, `preload.js` and `index.html`, nothing hidden.
 
 ## License
 
-MIT. Independent project, not affiliated with Poke Idle World.
+MIT. Independent project.
