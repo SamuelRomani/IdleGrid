@@ -1,12 +1,12 @@
 {
   "name": "idlegrid",
-  "version": "1.5.10",
+  "version": "2.0.0",
   "description": "Rode varias contas de um jogo idle ao mesmo tempo, em uma janela so / Run multiple idle-game accounts at once, in a single window",
   "main": "main.js",
   "author": "soufoka",
   "scripts": {
     "start": "electron .",
-    "test": "node test/iv-math.test.js && node test/boot.test.js",
+    "test": "node test/boot.test.js",
     "dist:win": "electron-builder --win portable"
   },
   "keywords": [
@@ -30,13 +30,13 @@
       "main.js",
       "preload.js",
       "index.html",
-      "presets/**/*",
-      "src/**/*",
       "tray.png",
       "package.json"
     ],
     "win": {
-      "target": ["portable"]
+      "target": [
+        "portable"
+      ]
     }
   }
 }
