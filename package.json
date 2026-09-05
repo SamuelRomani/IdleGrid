@@ -6,7 +6,8 @@
   "author": "soufoka",
   "scripts": {
     "start": "electron .",
-    "test": "node test/iv-math.test.js && node test/boot.test.js"
+    "test": "node test/iv-math.test.js && node test/boot.test.js",
+    "dist:win": "electron-builder --win portable"
   },
   "keywords": [
     "electron",
@@ -16,6 +17,26 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "electron": "^43.1.1"
+    "electron": "^43.1.1",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.pokewg.pokegrid",
+    "productName": "PokeGrid",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "presets/**/*",
+      "src/**/*",
+      "tray.png",
+      "package.json"
+    ],
+    "win": {
+      "target": ["portable"]
+    }
   }
 }
