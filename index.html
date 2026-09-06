@@ -715,10 +715,13 @@ const HOME_URL  = 'https://huntera.com.br/';
     kill();
   })()`;
 
-  // ----- Auto-aceitar convite de party (caçada em grupo) -----
-  // Seletor conferido nos logs de descoberta do Huntera Auto Hunt: o convite é um
-  // <div role="alertdialog" class="party-invite invite-card">, sem id nem classe própria
-  // nos botões — só o texto ("Aceitar"/"Recusar") distingue um do outro.
+  // ----- Auto-aceitar convite de party -----
+  // Seletor conferido nos logs de descoberta do Huntera Auto Hunt: os dois convites usam o
+  // MESMO card (<div class="party-invite invite-card">, role=alertdialog), sem id nem classe
+  // própria nos botões, só muda o aria-label e o texto do botão positivo:
+  //   aria-label="Convite de party"            -> botão "Entrar"   (entrar no grupo)
+  //   aria-label="Convite de caçada em grupo"  -> botão "Aceitar"  (topar a caçada escolhida)
+  // Os dois contam como "aceitar convite de party" pro usuário, então tratamos igual.
   const partyAcceptScript = (on) => `(() => {
     window.__partyAcceptOn = ${on ? 'true' : 'false'};
     if (!window.__partyAcceptObs) {
@@ -726,7 +729,7 @@ const HOME_URL  = 'https://huntera.com.br/';
         if (!window.__partyAcceptOn) return;
         const dialogo = document.querySelector('div[role="alertdialog"].party-invite, .party-invite.invite-card');
         if (!dialogo) return;
-        const aceitar = [...dialogo.querySelectorAll('button')].find(b => /aceitar|accept/i.test((b.textContent || '').trim()));
+        const aceitar = [...dialogo.querySelectorAll('button')].find(b => /^(aceitar|entrar|accept|join)$/i.test((b.textContent || '').trim()));
         if (aceitar) aceitar.click();
       };
       window.__partyAcceptObs = new MutationObserver(tentar);
