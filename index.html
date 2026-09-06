@@ -177,6 +177,8 @@
         <button id="count" title="Quantas contas rodar ao mesmo tempo (1 a 4)">🔢 Painéis: 4</button>
         <button id="resumoBtn" title="Gold, level e gold/h de cada conta, lido da própria tela do jogo">📊 Resumo</button>
         <button id="partyAccept" title="Aceita sozinho o convite de party (caçada em grupo) assim que ele aparece na tela">🎉 Auto-aceitar party</button>
+        <button id="partyCosts" title="Aceita sozinho o rateio de custos da hunt proposto pelo líder (mexe com o seu gold)">💰 Auto-aceitar rateio</button>
+        <button id="strayDialog" title="Fecha sozinho o diálogo 'iniciar sem o time?' quando ele fica preso na tela, sempre escolhendo Cancelar">🧹 Fechar diálogo perdido</button>
         <button id="alerts" title="Avisa quando uma conta cai">🔔 Alertas</button>
         <button id="muteAll">🔊 Som</button>
         <button id="eco">⚡ Eco</button>
@@ -302,7 +304,9 @@ const HOME_URL  = 'https://huntera.com.br/';
       hunt:'🎯 Hunt', huntTitle:'Abre o Hunt Analyzer em todos os painéis', accClear:'Limpar esta conta', ivsTitle:'Abre a calculadora de IV do app: uma só, no centro da tela, alimentada por qualquer painel', ivcTitle:"Calculadora de IV", ivcHint:'Passe o mouse sobre um pokémon em qualquer painel.<br>Os dados aparecem aqui, e você pode ajustar nível e atributos pra recalcular.', ivcLevel:'Nível', ivcQuality:'Qualidade', ivcIvTotal:'IV total', ivcPower:'Poder estimado', ivcStats:'Atributos e IV por stat', ivcCurrent:'atual', ivcBase:'base', ivcPowerGame:'Poder no jogo', ivcFooter:'edite qualquer campo pra recalcular', ivcOpenPanel:'Abrir a calculadora dentro do painel (comparar)', ivcMoves:'Golpes', ivcMovePower:'poder do golpe', ivcMoveLast:'último dano observado em batalha',
       alerts:'🔔 Alertas', alertsTitle:'Avisa por notificação quando uma conta cai', msgDown:'caiu', msgBalls:'está sem pokébolas', count:'🔢 Painéis',
       resumo:'📊 Resumo', resumoTitle:'Gold, level e gold/h de cada conta, lido da própria tela do jogo', rsWaiting:'Aguardando dados do jogo…', rsGoldTotal:'gold total', rsOnline:'online',
-      partyAccept:'🎉 Auto-aceitar party', partyAcceptTitle:'Aceita sozinho o convite de party (caçada em grupo) assim que ele aparece na tela', stats:'📊 Painel', statsTitle:'Resumo da conta em foco (gold/h, XP/h, bag, drops)', statsResumo:'Resumo', statsWaiting:'Aguardando dados do jogo…', statsWaiting2:'Deixe o painel logado e farmando alguns segundos.', statsOff:'Painel desligado.',
+      partyAccept:'🎉 Auto-aceitar party', partyAcceptTitle:'Aceita sozinho o convite de party (caçada em grupo) assim que ele aparece na tela',
+      partyCosts:'💰 Auto-aceitar rateio', partyCostsTitle:'Aceita sozinho o rateio de custos da hunt proposto pelo líder (mexe com o seu gold)',
+      strayDialog:'🧹 Fechar diálogo perdido', strayDialogTitle:'Fecha sozinho o diálogo "iniciar sem o time?" quando ele fica preso na tela, sempre escolhendo Cancelar', stats:'📊 Painel', statsTitle:'Resumo da conta em foco (gold/h, XP/h, bag, drops)', statsResumo:'Resumo', statsWaiting:'Aguardando dados do jogo…', statsWaiting2:'Deixe o painel logado e farmando alguns segundos.', statsOff:'Painel desligado.',
       stLevel:'Nível', stSession:'Sessão', stDefeated:'Derrotados', stXpGain:'XP ganha', stCaptures:'Capturas', stGold:'Ouro da sessão', stLoot:'Loot (venda)', stCapSell:'Capturas (venda)', stSupply:'Suprimentos gastos', stBalls:'bolas', stPots:'cura', stBalance:'Saldo da sessão', stDrops:'Drops da sessão', stAccount:'Conta', stProfession:'Profissão', stMail:'Presentes no correio', stCatchTotal:'Capturas totais', stTeam:'Time',
       cards:'🍃 Simples', cardsShort:'Simples', cardsTitle:'Modo simples e ultra leve: esconde o jogo e mostra só os números, gastando o mínimo do PC (o farm continua)', cdGold:'gold/h líquido', cdXp:'XP/h total', cdKills:'kills/h', cdCaps:'capturas (sessão)', cdShiny:'shiny enc/cap', cdActive:'contas ativas', cdByAcc:'Por conta · clique no cabeçalho pra ordenar, na linha pra abrir o jogo', cdTrend:'Tendência · última hora', cdCatches:'Últimas capturas · todas as contas', cdShinies:'Aparições de shiny ✨', cdConta:'Conta', cdHunt:'Hunt', cdStatus:'Status', cdBest:'Melhor catch', cdLast:'Último catch', cdWaiting:'aguardando…', cdOff:'desligado', cdHunting:'caçando', cdTotal:'Total', cdSeen:'apareceram', cdCaught:'capturados', cdLost:'perdidos', cdNone:'nada ainda',
       cdHunts:'Ranking de hunts', cdShared:'Compartilhados no chat', cdFirst:'1ª captura da espécie', cdSortPrice:'Valor ↓', cdSortXp:'XP ↓', cdSortEff:'Efetividade ↓', cdSortMeasured:'Medido: gold/h ↓', cdMeasured:'sua média', cdEffOf:'efetividade vs líder de', cdLoading:'carregando dados do jogo…', stLastCatch:'Último catch', stSince:'bolas desde então',
@@ -343,7 +347,9 @@ const HOME_URL  = 'https://huntera.com.br/';
       hunt:'🎯 Hunt', huntTitle:'Opens the Hunt Analyzer in all panels', accClear:'Clear this account', ivsTitle:'Opens the app IV calculator: a single one, centered, fed by any panel', ivcTitle:"IV calculator", ivcHint:'Hover a Pokémon in any panel.<br>The data shows up here, and you can adjust level and stats to recalculate.', ivcLevel:'Level', ivcQuality:'Quality', ivcIvTotal:'Total IV', ivcPower:'Estimated power', ivcStats:'Stats and IV per stat', ivcCurrent:'current', ivcBase:'base', ivcPowerGame:'Power in game', ivcFooter:'edit any field to recalculate', ivcOpenPanel:'Open the calculator inside the panel (compare)', ivcMoves:'Moves', ivcMovePower:'move power', ivcMoveLast:'last damage seen in battle',
       alerts:'🔔 Alerts', alertsTitle:'Notifies you when an account drops', msgDown:'disconnected', msgBalls:'is out of Pokéballs', count:'🔢 Panels',
       resumo:'📊 Summary', resumoTitle:'Gold, level and gold/h per account, read straight from the game screen', rsWaiting:'Waiting for game data…', rsGoldTotal:'total gold', rsOnline:'online',
-      partyAccept:'🎉 Auto-accept party', partyAcceptTitle:'Accepts the party invite (group hunt) on its own as soon as it shows up on screen', stats:'📊 Panel', statsTitle:'Summary of the focused account (gold/h, XP/h, bag, drops)', statsResumo:'Summary', statsWaiting:'Waiting for game data…', statsWaiting2:'Keep the panel logged in and farming for a few seconds.', statsOff:'Panel is off.',
+      partyAccept:'🎉 Auto-accept party', partyAcceptTitle:'Accepts the party invite (group hunt) on its own as soon as it shows up on screen',
+      partyCosts:'💰 Auto-accept cost split', partyCostsTitle:"Accepts the leader's hunt cost-split proposal on its own (touches your gold)",
+      strayDialog:'🧹 Close stray dialog', strayDialogTitle:'Closes the "start without the team?" dialog on its own when it gets stuck on screen, always choosing Cancel', stats:'📊 Panel', statsTitle:'Summary of the focused account (gold/h, XP/h, bag, drops)', statsResumo:'Summary', statsWaiting:'Waiting for game data…', statsWaiting2:'Keep the panel logged in and farming for a few seconds.', statsOff:'Panel is off.',
       stLevel:'Level', stSession:'Session', stDefeated:'Defeated', stXpGain:'XP gained', stCaptures:'Captures', stGold:'Session gold', stLoot:'Loot (sell)', stCapSell:'Captures (sell)', stSupply:'Supplies used', stBalls:'balls', stPots:'heals', stBalance:'Session balance', stDrops:'Session drops', stAccount:'Account', stProfession:'Profession', stMail:'Gifts in mail', stCatchTotal:'Total catches', stTeam:'Team',
       cards:'🍃 Simple', cardsShort:'Simple', cardsTitle:'Simple, ultra-light mode: hides the game and shows only the numbers, using the least PC possible (farming continues)', cdGold:'net gold/h', cdXp:'total XP/h', cdKills:'kills/h', cdCaps:'captures (session)', cdShiny:'shiny enc/cap', cdActive:'active accounts', cdByAcc:'Per account · click a header to sort, a row to open the game', cdTrend:'Trend · last hour', cdCatches:'Latest captures · all accounts', cdShinies:'Shiny appearances ✨', cdConta:'Account', cdHunt:'Hunt', cdStatus:'Status', cdBest:'Best catch', cdLast:'Last catch', cdWaiting:'waiting…', cdOff:'off', cdHunting:'hunting', cdTotal:'Total', cdSeen:'appeared', cdCaught:'caught', cdLost:'lost', cdNone:'nothing yet',
       cdHunts:'Hunt ranking', cdShared:'Shared in chat', cdFirst:'first capture of the species', cdSortPrice:'Value ↓', cdSortXp:'XP ↓', cdSortEff:'Effectiveness ↓', cdSortMeasured:'Measured: gold/h ↓', cdMeasured:'your average', cdEffOf:'effectiveness vs leader of', cdLoading:'loading game data…', stLastCatch:'Last catch', stSince:'balls since then',
@@ -384,7 +390,9 @@ const HOME_URL  = 'https://huntera.com.br/';
       hunt:'🎯 Hunt', huntTitle:'Abre el Hunt Analyzer en todos los paneles', accClear:'Limpiar esta cuenta', ivsTitle:'Abre la calculadora de IV del app: una sola, en el centro, alimentada por cualquier panel', ivcTitle:"Calculadora de IV", ivcHint:'Pasa el mouse sobre un pokémon en cualquier panel.<br>Los datos aparecen aquí, y puedes ajustar nivel y atributos para recalcular.', ivcLevel:'Nivel', ivcQuality:'Calidad', ivcIvTotal:'IV total', ivcPower:'Poder estimado', ivcStats:'Atributos e IV por stat', ivcCurrent:'actual', ivcBase:'base', ivcPowerGame:'Poder en el juego', ivcFooter:'edita cualquier campo para recalcular', ivcOpenPanel:'Abrir la calculadora dentro del panel (comparar)', ivcMoves:'Golpes', ivcMovePower:'poder del golpe', ivcMoveLast:'último daño observado en batalla',
       alerts:'🔔 Alertas', alertsTitle:'Avisa con notificación cuando una cuenta se cae', msgDown:'se desconectó', msgBalls:'se quedó sin Pokéballs', count:'🔢 Paneles',
       resumo:'📊 Resumen', resumoTitle:'Oro, nivel y oro/h de cada cuenta, leído de la propia pantalla del juego', rsWaiting:'Esperando datos del juego…', rsGoldTotal:'oro total', rsOnline:'online',
-      partyAccept:'🎉 Auto-aceptar party', partyAcceptTitle:'Acepta solo la invitación de party (cacería en grupo) en cuanto aparece en pantalla', stats:'📊 Panel', statsTitle:'Resumen de la cuenta enfocada (oro/h, XP/h, bolsa, drops)', statsResumo:'Resumen', statsWaiting:'Esperando datos del juego…', statsWaiting2:'Deja el panel conectado y farmeando unos segundos.', statsOff:'Panel apagado.',
+      partyAccept:'🎉 Auto-aceptar party', partyAcceptTitle:'Acepta solo la invitación de party (cacería en grupo) en cuanto aparece en pantalla',
+      partyCosts:'💰 Auto-aceptar reparto', partyCostsTitle:'Acepta solo el reparto de costos de la hunt propuesto por el líder (afecta tu oro)',
+      strayDialog:'🧹 Cerrar diálogo perdido', strayDialogTitle:'Cierra solo el diálogo "¿iniciar sin el equipo?" cuando queda atascado en pantalla, eligiendo siempre Cancelar', stats:'📊 Panel', statsTitle:'Resumen de la cuenta enfocada (oro/h, XP/h, bolsa, drops)', statsResumo:'Resumen', statsWaiting:'Esperando datos del juego…', statsWaiting2:'Deja el panel conectado y farmeando unos segundos.', statsOff:'Panel apagado.',
       stLevel:'Nivel', stSession:'Sesión', stDefeated:'Derrotados', stXpGain:'XP ganada', stCaptures:'Capturas', stGold:'Oro de la sesión', stLoot:'Loot (venta)', stCapSell:'Capturas (venta)', stSupply:'Suministros gastados', stBalls:'balls', stPots:'curas', stBalance:'Balance de la sesión', stDrops:'Drops de la sesión', stAccount:'Cuenta', stProfession:'Profesión', stMail:'Regalos en el correo', stCatchTotal:'Capturas totales', stTeam:'Equipo',
       cards:'🍃 Simple', cardsShort:'Simple', cardsTitle:'Modo simple y ultraligero: oculta el juego y muestra solo los números, gastando lo mínimo del PC (el farmeo sigue)', cdGold:'oro/h neto', cdXp:'XP/h total', cdKills:'kills/h', cdCaps:'capturas (sesión)', cdShiny:'shiny enc/cap', cdActive:'cuentas activas', cdByAcc:'Por cuenta · clic en el encabezado para ordenar, en la fila para abrir el juego', cdTrend:'Tendencia · última hora', cdCatches:'Últimas capturas · todas las cuentas', cdShinies:'Apariciones de shiny ✨', cdConta:'Cuenta', cdHunt:'Hunt', cdStatus:'Estado', cdBest:'Mejor catch', cdLast:'Último catch', cdWaiting:'esperando…', cdOff:'apagado', cdHunting:'cazando', cdTotal:'Total', cdSeen:'aparecieron', cdCaught:'capturados', cdLost:'perdidos', cdNone:'nada todavía',
       cdHunts:'Ranking de hunts', cdShared:'Compartidos en el chat', cdFirst:'1ª captura de la especie', cdSortPrice:'Valor ↓', cdSortXp:'XP ↓', cdSortEff:'Efectividad ↓', cdSortMeasured:'Medido: oro/h ↓', cdMeasured:'tu promedio', cdEffOf:'efectividad vs líder de', cdLoading:'cargando datos del juego…', stLastCatch:'Último catch', stSince:'balls desde entonces',
@@ -479,7 +487,8 @@ const HOME_URL  = 'https://huntera.com.br/';
           // jogo congelado com pagina viva: WebGL perdeu o contexto e nao restaurou em 4s -> recarrega
           wv.executeJavaScript("(()=>{if(window.__pgGlWd)return;window.__pgGlWd=1;let tm;document.addEventListener('webglcontextlost',()=>{clearTimeout(tm);tm=setTimeout(()=>location.reload(),4000);},true);document.addEventListener('webglcontextrestored',()=>clearTimeout(tm),true);})()").catch(() => {});
           wv.executeJavaScript(POPUP_SCRIPT).catch(() => {});
-          wv.executeJavaScript(partyAcceptScript(partyAcceptOn)).catch(() => {});
+          wv.executeJavaScript(partyAutomationScript(partyAcceptOn, partyCostsOn)).catch(() => {});
+          wv.executeJavaScript(strayDialogScript(strayDialogOn)).catch(() => {});
           // so na tela de login, pra nao rodar a toa dentro do jogo
           if ((wv.getURL() || '').startsWith(LOGIN_URL)) wv.executeJavaScript(scrollLoginScript).catch(() => {});
           injectScripts(wv); // userscripts habilitados (os do usuário)
@@ -715,25 +724,59 @@ const HOME_URL  = 'https://huntera.com.br/';
     kill();
   })()`;
 
-  // ----- Auto-aceitar convite de party -----
-  // Seletor conferido nos logs de descoberta do Huntera Auto Hunt: os dois convites usam o
-  // MESMO card (<div class="party-invite invite-card">, role=alertdialog), sem id nem classe
-  // própria nos botões, só muda o aria-label e o texto do botão positivo:
+  // ----- Automações de party: aceitar convite, aceitar rateio, fechar diálogo perdido -----
+  // Os TRÊS primeiros usam o mesmo card (<div class="party-invite invite-card">, role=alertdialog),
+  // sem id nem classe própria nos botões — só o aria-label do card e o texto do botão distinguem:
   //   aria-label="Convite de party"            -> botão "Entrar"   (entrar no grupo)
   //   aria-label="Convite de caçada em grupo"  -> botão "Aceitar"  (topar a caçada escolhida)
-  // Os dois contam como "aceitar convite de party" pro usuário, então tratamos igual.
-  const partyAcceptScript = (on) => `(() => {
-    window.__partyAcceptOn = ${on ? 'true' : 'false'};
+  //   aria-label="Rateio da hunt"              -> botão "Aceitar"  (mexe com gold: fica com o
+  //                                                próprio toggle, não entra no "Auto-aceitar party")
+  // Seletores conferidos nos logs de descoberta do Huntera Auto Hunt (huntera.com.br).
+  const partyAutomationScript = (partyOn, costsOn) => `(() => {
+    window.__partyAcceptOn = ${partyOn ? 'true' : 'false'};
+    window.__partyCostsOn = ${costsOn ? 'true' : 'false'};
     if (!window.__partyAcceptObs) {
+      const clicar = (raiz, regex) => {
+        const b = [...raiz.querySelectorAll('button')].find(x => regex.test((x.textContent || '').trim()));
+        if (b) b.click();
+      };
       const tentar = () => {
-        if (!window.__partyAcceptOn) return;
-        const dialogo = document.querySelector('div[role="alertdialog"].party-invite, .party-invite.invite-card');
-        if (!dialogo) return;
-        const aceitar = [...dialogo.querySelectorAll('button')].find(b => /^(aceitar|entrar|accept|join)$/i.test((b.textContent || '').trim()));
-        if (aceitar) aceitar.click();
+        if (!window.__partyAcceptOn && !window.__partyCostsOn) return;
+        document.querySelectorAll('div[role="alertdialog"].party-invite, .party-invite.invite-card').forEach(card => {
+          const aria = (card.getAttribute('aria-label') || '').toLowerCase();
+          if (window.__partyAcceptOn && (aria === 'convite de party' || aria === 'convite de caçada em grupo')) {
+            clicar(card, /^(aceitar|entrar|accept|join)$/i);
+          } else if (window.__partyCostsOn && aria === 'rateio da hunt') {
+            clicar(card, /^(aceitar|accept)$/i);
+          }
+        });
       };
       window.__partyAcceptObs = new MutationObserver(tentar);
       window.__partyAcceptObs.observe(document.documentElement, { childList: true, subtree: true });
+      tentar();
+    }
+  })()`;
+
+  // ----- Fechar diálogo perdido (party) -----
+  // Caso real descrito nas notas do Huntera Auto Hunt: um popup que ninguém abriu (ex.: "quer
+  // começar a caçada sem o time?", que aparece pro líder quando falta gente na party) fica preso
+  // na tela cobrindo o jogo e engolindo cliques de outros convites. A saída SEMPRE é a opção que
+  // não muda nada — "Cancelar" — nunca a que confirma iniciar sem o time. Escopo enxuto de
+  // propósito: só esse diálogo específico (.solo-hunt-confirm-overlay), não "qualquer confirmação
+  // da tela", porque outras janelas (ex.: salvar/limpar a barra de skill) têm texto digitado que
+  // um clique automático destruiria sem o usuário perceber.
+  const strayDialogScript = (on) => `(() => {
+    window.__strayDialogOn = ${on ? 'true' : 'false'};
+    if (!window.__strayDialogObs) {
+      const tentar = () => {
+        if (!window.__strayDialogOn) return;
+        const overlay = document.querySelector('.solo-hunt-confirm-overlay');
+        if (!overlay) return;
+        const cancelar = [...overlay.querySelectorAll('button')].find(b => /^cancelar$/i.test((b.textContent || '').trim()));
+        if (cancelar) cancelar.click();
+      };
+      window.__strayDialogObs = new MutationObserver(tentar);
+      window.__strayDialogObs.observe(document.documentElement, { childList: true, subtree: true });
       tentar();
     }
   })()`;
@@ -838,6 +881,8 @@ const HOME_URL  = 'https://huntera.com.br/';
   })()`;
 
   let partyAcceptOn = lsGet('partyAcceptOn') === '1'; // desligado por padrão: automação de verdade, opt-in
+  let partyCostsOn = lsGet('partyCostsOn') === '1'; // separado do partyAccept de propósito: mexe com gold
+  let strayDialogOn = lsGet('strayDialogOn') === '1'; // fecha só o diálogo "iniciar sem o time?" perdido
   let resumoOn = lsGet('resumoOn') === '1'; // desligado por padrão: só le/atualiza quando aberto
   const resumoData = [null, null, null, null]; // por painel: { gold, hp, hpMax, level, xp, sessGold, sessTs }
   let resumoTimer = null;
@@ -932,15 +977,36 @@ const HOME_URL  = 'https://huntera.com.br/';
   // sem custo, o polling de verdade (que abre o webview) continua no ritmo mais lento acima.
   setInterval(() => { if (resumoOn) resumoRender(); }, 3000);
 
-  // ----- Auto-aceitar party: liga/desliga e empurra o estado pra quem já está aberto -----
+  // ----- Auto-aceitar party / rateio / diálogo perdido: cada um liga/desliga e empurra o
+  // estado pra quem já está aberto. partyAccept e partyCosts moram no mesmo script injetado
+  // (partyAutomationScript), então uma mudança em qualquer um dos dois reinjeta os dois juntos.
   const partyAcceptBtn = document.getElementById('partyAccept');
+  const partyCostsBtn = document.getElementById('partyCosts');
+  const strayDialogBtn = document.getElementById('strayDialog');
+  function pushPartyAutomation() {
+    webviews.forEach((w, i) => { if (!off[i]) { try { w.executeJavaScript(partyAutomationScript(partyAcceptOn, partyCostsOn)).catch(() => {}); } catch {} } });
+  }
   function applyPartyAccept() {
     partyAcceptBtn.textContent = t('partyAccept'); partyAcceptBtn.title = t('partyAcceptTitle');
     partyAcceptBtn.classList.toggle('on', partyAcceptOn);
-    webviews.forEach((w, i) => { if (!off[i]) { try { w.executeJavaScript(partyAcceptScript(partyAcceptOn)).catch(() => {}); } catch {} } });
+    pushPartyAutomation();
     lsSet('partyAcceptOn', partyAcceptOn ? '1' : '0');
   }
+  function applyPartyCosts() {
+    partyCostsBtn.textContent = t('partyCosts'); partyCostsBtn.title = t('partyCostsTitle');
+    partyCostsBtn.classList.toggle('on', partyCostsOn);
+    pushPartyAutomation();
+    lsSet('partyCostsOn', partyCostsOn ? '1' : '0');
+  }
+  function applyStrayDialog() {
+    strayDialogBtn.textContent = t('strayDialog'); strayDialogBtn.title = t('strayDialogTitle');
+    strayDialogBtn.classList.toggle('on', strayDialogOn);
+    webviews.forEach((w, i) => { if (!off[i]) { try { w.executeJavaScript(strayDialogScript(strayDialogOn)).catch(() => {}); } catch {} } });
+    lsSet('strayDialogOn', strayDialogOn ? '1' : '0');
+  }
   partyAcceptBtn.onclick = () => { partyAcceptOn = !partyAcceptOn; applyPartyAccept(); menu.classList.remove('show'); };
+  partyCostsBtn.onclick = () => { partyCostsOn = !partyCostsOn; applyPartyCosts(); menu.classList.remove('show'); };
+  strayDialogBtn.onclick = () => { strayDialogOn = !strayDialogOn; applyStrayDialog(); menu.classList.remove('show'); };
 
   // ----- Idioma: aplica na interface e (ao trocar) no jogo -----
   const langBtns = Array.from(document.querySelectorAll('#langRow button'));
@@ -970,7 +1036,7 @@ const HOME_URL  = 'https://huntera.com.br/';
       p.querySelector('.expand').title = t('tExpand');
       p.querySelector('.power').title = t('tPower');
     });
-    applyMute(); applyEco(); applyAwake(); applyMinTray(); applyAlerts(); applyResumo(); applyPartyAccept(); aplicaCountLayout();
+    applyMute(); applyEco(); applyAwake(); applyMinTray(); applyAlerts(); applyResumo(); applyPartyAccept(); applyPartyCosts(); applyStrayDialog(); aplicaCountLayout();
     lsSet('lang', lang);
   }
   langBtns.forEach(b => b.onclick = () => { if (lang === b.dataset.lang) return; lang = b.dataset.lang; applyLang(); });
