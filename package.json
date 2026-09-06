@@ -1,6 +1,6 @@
 {
   "name": "idlegrid",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Rode varias contas de um jogo idle ao mesmo tempo, em uma janela so / Run multiple idle-game accounts at once, in a single window",
   "main": "main.js",
   "author": "soufoka",

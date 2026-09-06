@@ -176,6 +176,7 @@
         <button id="scriptsBtn" title="Rode userscripts nos painéis">🧩 Scripts</button>
         <button id="count" title="Quantas contas rodar ao mesmo tempo (1 a 4)">🔢 Painéis: 4</button>
         <button id="resumoBtn" title="Gold, level e gold/h de cada conta, lido da própria tela do jogo">📊 Resumo</button>
+        <button id="partyAccept" title="Aceita sozinho o convite de party (caçada em grupo) assim que ele aparece na tela">🎉 Auto-aceitar party</button>
         <button id="alerts" title="Avisa quando uma conta cai">🔔 Alertas</button>
         <button id="muteAll">🔊 Som</button>
         <button id="eco">⚡ Eco</button>
@@ -300,7 +301,8 @@ const HOME_URL  = 'https://huntera.com.br/';
       dockLabel:'🎛 Menu do jogo', dockTitle:'Mostra ou esconde o menu de ícones do jogo (verde = visível). F2 alterna no painel em foco.',
       hunt:'🎯 Hunt', huntTitle:'Abre o Hunt Analyzer em todos os painéis', accClear:'Limpar esta conta', ivsTitle:'Abre a calculadora de IV do app: uma só, no centro da tela, alimentada por qualquer painel', ivcTitle:"Calculadora de IV", ivcHint:'Passe o mouse sobre um pokémon em qualquer painel.<br>Os dados aparecem aqui, e você pode ajustar nível e atributos pra recalcular.', ivcLevel:'Nível', ivcQuality:'Qualidade', ivcIvTotal:'IV total', ivcPower:'Poder estimado', ivcStats:'Atributos e IV por stat', ivcCurrent:'atual', ivcBase:'base', ivcPowerGame:'Poder no jogo', ivcFooter:'edite qualquer campo pra recalcular', ivcOpenPanel:'Abrir a calculadora dentro do painel (comparar)', ivcMoves:'Golpes', ivcMovePower:'poder do golpe', ivcMoveLast:'último dano observado em batalha',
       alerts:'🔔 Alertas', alertsTitle:'Avisa por notificação quando uma conta cai', msgDown:'caiu', msgBalls:'está sem pokébolas', count:'🔢 Painéis',
-      resumo:'📊 Resumo', resumoTitle:'Gold, level e gold/h de cada conta, lido da própria tela do jogo', rsWaiting:'Aguardando dados do jogo…', rsGoldTotal:'gold total', rsOnline:'online', stats:'📊 Painel', statsTitle:'Resumo da conta em foco (gold/h, XP/h, bag, drops)', statsResumo:'Resumo', statsWaiting:'Aguardando dados do jogo…', statsWaiting2:'Deixe o painel logado e farmando alguns segundos.', statsOff:'Painel desligado.',
+      resumo:'📊 Resumo', resumoTitle:'Gold, level e gold/h de cada conta, lido da própria tela do jogo', rsWaiting:'Aguardando dados do jogo…', rsGoldTotal:'gold total', rsOnline:'online',
+      partyAccept:'🎉 Auto-aceitar party', partyAcceptTitle:'Aceita sozinho o convite de party (caçada em grupo) assim que ele aparece na tela', stats:'📊 Painel', statsTitle:'Resumo da conta em foco (gold/h, XP/h, bag, drops)', statsResumo:'Resumo', statsWaiting:'Aguardando dados do jogo…', statsWaiting2:'Deixe o painel logado e farmando alguns segundos.', statsOff:'Painel desligado.',
       stLevel:'Nível', stSession:'Sessão', stDefeated:'Derrotados', stXpGain:'XP ganha', stCaptures:'Capturas', stGold:'Ouro da sessão', stLoot:'Loot (venda)', stCapSell:'Capturas (venda)', stSupply:'Suprimentos gastos', stBalls:'bolas', stPots:'cura', stBalance:'Saldo da sessão', stDrops:'Drops da sessão', stAccount:'Conta', stProfession:'Profissão', stMail:'Presentes no correio', stCatchTotal:'Capturas totais', stTeam:'Time',
       cards:'🍃 Simples', cardsShort:'Simples', cardsTitle:'Modo simples e ultra leve: esconde o jogo e mostra só os números, gastando o mínimo do PC (o farm continua)', cdGold:'gold/h líquido', cdXp:'XP/h total', cdKills:'kills/h', cdCaps:'capturas (sessão)', cdShiny:'shiny enc/cap', cdActive:'contas ativas', cdByAcc:'Por conta · clique no cabeçalho pra ordenar, na linha pra abrir o jogo', cdTrend:'Tendência · última hora', cdCatches:'Últimas capturas · todas as contas', cdShinies:'Aparições de shiny ✨', cdConta:'Conta', cdHunt:'Hunt', cdStatus:'Status', cdBest:'Melhor catch', cdLast:'Último catch', cdWaiting:'aguardando…', cdOff:'desligado', cdHunting:'caçando', cdTotal:'Total', cdSeen:'apareceram', cdCaught:'capturados', cdLost:'perdidos', cdNone:'nada ainda',
       cdHunts:'Ranking de hunts', cdShared:'Compartilhados no chat', cdFirst:'1ª captura da espécie', cdSortPrice:'Valor ↓', cdSortXp:'XP ↓', cdSortEff:'Efetividade ↓', cdSortMeasured:'Medido: gold/h ↓', cdMeasured:'sua média', cdEffOf:'efetividade vs líder de', cdLoading:'carregando dados do jogo…', stLastCatch:'Último catch', stSince:'bolas desde então',
@@ -340,7 +342,8 @@ const HOME_URL  = 'https://huntera.com.br/';
       dockLabel:'🎛 Game menu', dockTitle:'Shows or hides the game icon menu (green = shown). F2 toggles it in the focused panel.',
       hunt:'🎯 Hunt', huntTitle:'Opens the Hunt Analyzer in all panels', accClear:'Clear this account', ivsTitle:'Opens the app IV calculator: a single one, centered, fed by any panel', ivcTitle:"IV calculator", ivcHint:'Hover a Pokémon in any panel.<br>The data shows up here, and you can adjust level and stats to recalculate.', ivcLevel:'Level', ivcQuality:'Quality', ivcIvTotal:'Total IV', ivcPower:'Estimated power', ivcStats:'Stats and IV per stat', ivcCurrent:'current', ivcBase:'base', ivcPowerGame:'Power in game', ivcFooter:'edit any field to recalculate', ivcOpenPanel:'Open the calculator inside the panel (compare)', ivcMoves:'Moves', ivcMovePower:'move power', ivcMoveLast:'last damage seen in battle',
       alerts:'🔔 Alerts', alertsTitle:'Notifies you when an account drops', msgDown:'disconnected', msgBalls:'is out of Pokéballs', count:'🔢 Panels',
-      resumo:'📊 Summary', resumoTitle:'Gold, level and gold/h per account, read straight from the game screen', rsWaiting:'Waiting for game data…', rsGoldTotal:'total gold', rsOnline:'online', stats:'📊 Panel', statsTitle:'Summary of the focused account (gold/h, XP/h, bag, drops)', statsResumo:'Summary', statsWaiting:'Waiting for game data…', statsWaiting2:'Keep the panel logged in and farming for a few seconds.', statsOff:'Panel is off.',
+      resumo:'📊 Summary', resumoTitle:'Gold, level and gold/h per account, read straight from the game screen', rsWaiting:'Waiting for game data…', rsGoldTotal:'total gold', rsOnline:'online',
+      partyAccept:'🎉 Auto-accept party', partyAcceptTitle:'Accepts the party invite (group hunt) on its own as soon as it shows up on screen', stats:'📊 Panel', statsTitle:'Summary of the focused account (gold/h, XP/h, bag, drops)', statsResumo:'Summary', statsWaiting:'Waiting for game data…', statsWaiting2:'Keep the panel logged in and farming for a few seconds.', statsOff:'Panel is off.',
       stLevel:'Level', stSession:'Session', stDefeated:'Defeated', stXpGain:'XP gained', stCaptures:'Captures', stGold:'Session gold', stLoot:'Loot (sell)', stCapSell:'Captures (sell)', stSupply:'Supplies used', stBalls:'balls', stPots:'heals', stBalance:'Session balance', stDrops:'Session drops', stAccount:'Account', stProfession:'Profession', stMail:'Gifts in mail', stCatchTotal:'Total catches', stTeam:'Team',
       cards:'🍃 Simple', cardsShort:'Simple', cardsTitle:'Simple, ultra-light mode: hides the game and shows only the numbers, using the least PC possible (farming continues)', cdGold:'net gold/h', cdXp:'total XP/h', cdKills:'kills/h', cdCaps:'captures (session)', cdShiny:'shiny enc/cap', cdActive:'active accounts', cdByAcc:'Per account · click a header to sort, a row to open the game', cdTrend:'Trend · last hour', cdCatches:'Latest captures · all accounts', cdShinies:'Shiny appearances ✨', cdConta:'Account', cdHunt:'Hunt', cdStatus:'Status', cdBest:'Best catch', cdLast:'Last catch', cdWaiting:'waiting…', cdOff:'off', cdHunting:'hunting', cdTotal:'Total', cdSeen:'appeared', cdCaught:'caught', cdLost:'lost', cdNone:'nothing yet',
       cdHunts:'Hunt ranking', cdShared:'Shared in chat', cdFirst:'first capture of the species', cdSortPrice:'Value ↓', cdSortXp:'XP ↓', cdSortEff:'Effectiveness ↓', cdSortMeasured:'Measured: gold/h ↓', cdMeasured:'your average', cdEffOf:'effectiveness vs leader of', cdLoading:'loading game data…', stLastCatch:'Last catch', stSince:'balls since then',
@@ -380,7 +383,8 @@ const HOME_URL  = 'https://huntera.com.br/';
       dockLabel:'🎛 Menú del juego', dockTitle:'Muestra u oculta el menú de iconos del juego (verde = visible). F2 alterna en el panel enfocado.',
       hunt:'🎯 Hunt', huntTitle:'Abre el Hunt Analyzer en todos los paneles', accClear:'Limpiar esta cuenta', ivsTitle:'Abre la calculadora de IV del app: una sola, en el centro, alimentada por cualquier panel', ivcTitle:"Calculadora de IV", ivcHint:'Pasa el mouse sobre un pokémon en cualquier panel.<br>Los datos aparecen aquí, y puedes ajustar nivel y atributos para recalcular.', ivcLevel:'Nivel', ivcQuality:'Calidad', ivcIvTotal:'IV total', ivcPower:'Poder estimado', ivcStats:'Atributos e IV por stat', ivcCurrent:'actual', ivcBase:'base', ivcPowerGame:'Poder en el juego', ivcFooter:'edita cualquier campo para recalcular', ivcOpenPanel:'Abrir la calculadora dentro del panel (comparar)', ivcMoves:'Golpes', ivcMovePower:'poder del golpe', ivcMoveLast:'último daño observado en batalla',
       alerts:'🔔 Alertas', alertsTitle:'Avisa con notificación cuando una cuenta se cae', msgDown:'se desconectó', msgBalls:'se quedó sin Pokéballs', count:'🔢 Paneles',
-      resumo:'📊 Resumen', resumoTitle:'Oro, nivel y oro/h de cada cuenta, leído de la propia pantalla del juego', rsWaiting:'Esperando datos del juego…', rsGoldTotal:'oro total', rsOnline:'online', stats:'📊 Panel', statsTitle:'Resumen de la cuenta enfocada (oro/h, XP/h, bolsa, drops)', statsResumo:'Resumen', statsWaiting:'Esperando datos del juego…', statsWaiting2:'Deja el panel conectado y farmeando unos segundos.', statsOff:'Panel apagado.',
+      resumo:'📊 Resumen', resumoTitle:'Oro, nivel y oro/h de cada cuenta, leído de la propia pantalla del juego', rsWaiting:'Esperando datos del juego…', rsGoldTotal:'oro total', rsOnline:'online',
+      partyAccept:'🎉 Auto-aceptar party', partyAcceptTitle:'Acepta solo la invitación de party (cacería en grupo) en cuanto aparece en pantalla', stats:'📊 Panel', statsTitle:'Resumen de la cuenta enfocada (oro/h, XP/h, bolsa, drops)', statsResumo:'Resumen', statsWaiting:'Esperando datos del juego…', statsWaiting2:'Deja el panel conectado y farmeando unos segundos.', statsOff:'Panel apagado.',
       stLevel:'Nivel', stSession:'Sesión', stDefeated:'Derrotados', stXpGain:'XP ganada', stCaptures:'Capturas', stGold:'Oro de la sesión', stLoot:'Loot (venta)', stCapSell:'Capturas (venta)', stSupply:'Suministros gastados', stBalls:'balls', stPots:'curas', stBalance:'Balance de la sesión', stDrops:'Drops de la sesión', stAccount:'Cuenta', stProfession:'Profesión', stMail:'Regalos en el correo', stCatchTotal:'Capturas totales', stTeam:'Equipo',
       cards:'🍃 Simple', cardsShort:'Simple', cardsTitle:'Modo simple y ultraligero: oculta el juego y muestra solo los números, gastando lo mínimo del PC (el farmeo sigue)', cdGold:'oro/h neto', cdXp:'XP/h total', cdKills:'kills/h', cdCaps:'capturas (sesión)', cdShiny:'shiny enc/cap', cdActive:'cuentas activas', cdByAcc:'Por cuenta · clic en el encabezado para ordenar, en la fila para abrir el juego', cdTrend:'Tendencia · última hora', cdCatches:'Últimas capturas · todas las cuentas', cdShinies:'Apariciones de shiny ✨', cdConta:'Cuenta', cdHunt:'Hunt', cdStatus:'Estado', cdBest:'Mejor catch', cdLast:'Último catch', cdWaiting:'esperando…', cdOff:'apagado', cdHunting:'cazando', cdTotal:'Total', cdSeen:'aparecieron', cdCaught:'capturados', cdLost:'perdidos', cdNone:'nada todavía',
       cdHunts:'Ranking de hunts', cdShared:'Compartidos en el chat', cdFirst:'1ª captura de la especie', cdSortPrice:'Valor ↓', cdSortXp:'XP ↓', cdSortEff:'Efectividad ↓', cdSortMeasured:'Medido: oro/h ↓', cdMeasured:'tu promedio', cdEffOf:'efectividad vs líder de', cdLoading:'cargando datos del juego…', stLastCatch:'Último catch', stSince:'balls desde entonces',
@@ -475,6 +479,7 @@ const HOME_URL  = 'https://huntera.com.br/';
           // jogo congelado com pagina viva: WebGL perdeu o contexto e nao restaurou em 4s -> recarrega
           wv.executeJavaScript("(()=>{if(window.__pgGlWd)return;window.__pgGlWd=1;let tm;document.addEventListener('webglcontextlost',()=>{clearTimeout(tm);tm=setTimeout(()=>location.reload(),4000);},true);document.addEventListener('webglcontextrestored',()=>clearTimeout(tm),true);})()").catch(() => {});
           wv.executeJavaScript(POPUP_SCRIPT).catch(() => {});
+          wv.executeJavaScript(partyAcceptScript(partyAcceptOn)).catch(() => {});
           // so na tela de login, pra nao rodar a toa dentro do jogo
           if ((wv.getURL() || '').startsWith(LOGIN_URL)) wv.executeJavaScript(scrollLoginScript).catch(() => {});
           injectScripts(wv); // userscripts habilitados (os do usuário)
@@ -710,6 +715,26 @@ const HOME_URL  = 'https://huntera.com.br/';
     kill();
   })()`;
 
+  // ----- Auto-aceitar convite de party (caçada em grupo) -----
+  // Seletor conferido nos logs de descoberta do Huntera Auto Hunt: o convite é um
+  // <div role="alertdialog" class="party-invite invite-card">, sem id nem classe própria
+  // nos botões — só o texto ("Aceitar"/"Recusar") distingue um do outro.
+  const partyAcceptScript = (on) => `(() => {
+    window.__partyAcceptOn = ${on ? 'true' : 'false'};
+    if (!window.__partyAcceptObs) {
+      const tentar = () => {
+        if (!window.__partyAcceptOn) return;
+        const dialogo = document.querySelector('div[role="alertdialog"].party-invite, .party-invite.invite-card');
+        if (!dialogo) return;
+        const aceitar = [...dialogo.querySelectorAll('button')].find(b => /aceitar|accept/i.test((b.textContent || '').trim()));
+        if (aceitar) aceitar.click();
+      };
+      window.__partyAcceptObs = new MutationObserver(tentar);
+      window.__partyAcceptObs.observe(document.documentElement, { childList: true, subtree: true });
+      tentar();
+    }
+  })()`;
+
   // ----- Tela de login: rola pra baixo pra deixar o captcha e o "Entrar" clicaveis -----
   // Roda no maximo 2 vezes: a 2a cobre o deslocamento do layout quando o captcha carrega.
   const scrollLoginScript = `(() => {
@@ -809,6 +834,7 @@ const HOME_URL  = 'https://huntera.com.br/';
     } catch { return null; }
   })()`;
 
+  let partyAcceptOn = lsGet('partyAcceptOn') === '1'; // desligado por padrão: automação de verdade, opt-in
   let resumoOn = lsGet('resumoOn') === '1'; // desligado por padrão: só le/atualiza quando aberto
   const resumoData = [null, null, null, null]; // por painel: { gold, hp, hpMax, level, xp, sessGold, sessTs }
   let resumoTimer = null;
@@ -902,6 +928,17 @@ const HOME_URL  = 'https://huntera.com.br/';
   // Redesenha a cada 3s (dado já em memória, não le a tela de novo): mantém o "Xh de sessão" fluindo
   // sem custo, o polling de verdade (que abre o webview) continua no ritmo mais lento acima.
   setInterval(() => { if (resumoOn) resumoRender(); }, 3000);
+
+  // ----- Auto-aceitar party: liga/desliga e empurra o estado pra quem já está aberto -----
+  const partyAcceptBtn = document.getElementById('partyAccept');
+  function applyPartyAccept() {
+    partyAcceptBtn.textContent = t('partyAccept'); partyAcceptBtn.title = t('partyAcceptTitle');
+    partyAcceptBtn.classList.toggle('on', partyAcceptOn);
+    webviews.forEach((w, i) => { if (!off[i]) { try { w.executeJavaScript(partyAcceptScript(partyAcceptOn)).catch(() => {}); } catch {} } });
+    lsSet('partyAcceptOn', partyAcceptOn ? '1' : '0');
+  }
+  partyAcceptBtn.onclick = () => { partyAcceptOn = !partyAcceptOn; applyPartyAccept(); menu.classList.remove('show'); };
+
   // ----- Idioma: aplica na interface e (ao trocar) no jogo -----
   const langBtns = Array.from(document.querySelectorAll('#langRow button'));
   function applyLang() {
@@ -930,7 +967,7 @@ const HOME_URL  = 'https://huntera.com.br/';
       p.querySelector('.expand').title = t('tExpand');
       p.querySelector('.power').title = t('tPower');
     });
-    applyMute(); applyEco(); applyAwake(); applyMinTray(); applyAlerts(); applyResumo(); aplicaCountLayout();
+    applyMute(); applyEco(); applyAwake(); applyMinTray(); applyAlerts(); applyResumo(); applyPartyAccept(); aplicaCountLayout();
     lsSet('lang', lang);
   }
   langBtns.forEach(b => b.onclick = () => { if (lang === b.dataset.lang) return; lang = b.dataset.lang; applyLang(); });
