@@ -21,7 +21,7 @@
 
 ## What it is
 
-Four accounts running at once, each in its own quadrant with a separate session. You save the login once and the app signs in on its own from then on. If a session drops mid farm, it logs back in without you being around. It does not automate the game or touch the captcha, it only organizes the accounts you already have.
+Four accounts running at once, each in its own quadrant with a separate session. You save the login once and the app signs in on its own from then on. If a session drops mid farm, it logs back in without you being around. It does not play the game for you (no hunting, no skills, no selling) and never touches the captcha — it just organizes the accounts you already have, and can optionally accept the party invite on its own if you turn that on (off by default).
 
 The app currently points at **huntera.com.br**, but it is a generic client: the auto-login works on any standard login form (it does not depend on anything specific to that game).
 
@@ -56,6 +56,8 @@ That is it. Log in or create an account in each panel and, under "Treinadores" (
 
 - Run 1 to 4 accounts, you choose how many panels to open.
 - Auto login, even when the session expires in the middle of a farm.
+- Summary panel: gold, level and gold/h per account, read straight from the game screen.
+- Auto-accept party: accepts the group hunt invite on its own (off by default, toggle it in the ☰ menu).
 - Eco mode that keeps CPU use down without hurting progress.
 - Notifies you when an account drops.
 - Turn each panel on or off, zoom, full screen and keyboard shortcuts.

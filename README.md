@@ -23,7 +23,7 @@
 
 ## O que é
 
-Quatro contas rodando ao mesmo tempo, cada uma no seu quadrante e com sessão separada. Você salva o login uma vez e o app entra sozinho nas próximas. Se a sessão cair no meio do farm, ele loga de novo sem você precisar estar por perto. Ele não automatiza o jogo nem toca no captcha, só organiza as contas que você já tem.
+Quatro contas rodando ao mesmo tempo, cada uma no seu quadrante e com sessão separada. Você salva o login uma vez e o app entra sozinho nas próximas. Se a sessão cair no meio do farm, ele loga de novo sem você precisar estar por perto. Ele não joga por você (não caça, não usa skill, não vende item) nem toca no captcha — só organiza as contas que você já tem, e opcionalmente aceita sozinho o convite de party, se você ligar essa opção (desligada por padrão).
 
 Hoje o app aponta pro **huntera.com.br**, mas é um cliente genérico: o login automático funciona em qualquer formulário padrão (não depende de nada específico daquele jogo).
 
@@ -58,6 +58,8 @@ Pronto. Entre ou crie uma conta em cada painel e, em "Treinadores", salve o logi
 
 - Rode 1 a 4 contas, você escolhe quantos painéis abrir.
 - Login automático, mesmo quando a sessão expira no meio do farm.
+- Painel de Resumo: gold, level e gold/h de cada conta, lido da própria tela do jogo.
+- Auto-aceitar party: aceita sozinho o convite de caçada em grupo (desligado por padrão, liga no menu ☰).
 - Modo Eco que segura o uso de CPU sem atrapalhar o progresso.
 - Avisa por notificação quando uma conta cai.
 - Liga e desliga cada painel, zoom, tela cheia e atalhos de teclado.

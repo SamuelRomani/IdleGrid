@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.1.0
+
+- **Painel de Resumo**: gold, level, HP e gold/h de cada conta, lido direto do HUD do jogo (`#header-gold`, `.hud-bar-panel`), sem clicar em nada. Botão 📊 Resumo no menu ☰.
+  *Summary panel: gold, level, HP and gold/h per account, read straight from the game HUD (`#header-gold`, `.hud-bar-panel`), no clicking involved. 📊 Summary button in the ☰ menu.*
+- **Auto-aceitar party**: aceita sozinho o convite de caçada em grupo assim que ele aparece na tela. Desligado por padrão — primeira automação de jogo do IdleGrid (antes o app só organizava sessões e fazia login automático); o README foi ajustado pra deixar isso claro.
+  *Auto-accept party: accepts the group hunt invite on its own as soon as it appears. Off by default — IdleGrid's first actual in-game automation (before this, the app only organized sessions and auto-logged in); the README was updated to reflect this honestly.*
+- Removidas ~300 linhas de CSS órfão (`#stats`, `#ivCard`, `#shinyParty`, `#cards`) que sobraram da virada PokeGrid → IdleGrid da v2.0.0.
+  *Removed ~300 lines of orphaned CSS (`#stats`, `#ivCard`, `#shinyParty`, `#cards`) left over from the PokeGrid → IdleGrid switch in v2.0.0.*
+
 ## 2.0.0
 
 ### PokeGrid virou IdleGrid
