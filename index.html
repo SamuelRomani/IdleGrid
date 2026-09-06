@@ -49,7 +49,7 @@
     transition: margin-left .18s ease;
   }
   /* painel aberto empurra o grid em vez de cobrir a coluna da esquerda */
-  body.stats-open #grid { margin-left: var(--statsw, 350px); }
+  body.stats-open #grid { margin-left: 300px; transition: margin-left .18s ease; }
   #grid.count-1 { grid-template-columns: 1fr; grid-template-rows: 1fr; }
   #grid.count-2 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
   #grid.count-3 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
@@ -114,314 +114,44 @@
   .sc-add input:focus, .sc-add textarea:focus { outline: none; border-color: #e3350d; }
   .sc-add .primary { align-self: flex-start; }
 
-  /* Painel de resumo (barra lateral HUD) */
-  #stats { position: fixed; left: 0; z-index: 150; width: 350px; max-width: 92vw;
+  /* Painel de Resumo: gold e progresso de cada conta, lido do próprio HUD do jogo (#header-gold,
+     .hud-bar-panel), sem clicar em nada. Reaproveita o gancho body.stats-open que já empurra o #grid. */
+  #resumo { position: fixed; left: 0; top: 45px; bottom: 0; z-index: 150; width: 300px; max-width: 92vw;
     background: #0d1117; border-right: 1px solid #232a33; display: flex; flex-direction: column;
     transform: translateX(-100%); transition: transform .18s ease; box-shadow: 8px 0 40px rgba(0,0,0,.55); }
-  #stats.show { transform: none; }
-  #stats .sb-top { height: 3px; background: linear-gradient(90deg, #e3350d, #ff7a4d); flex-shrink: 0; }
-  #stats .st-head { display: flex; align-items: center; gap: 8px; padding: 8px 13px; background: #0b0f15;
-    font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #7d8590; flex-shrink: 0; }
-  #stats .st-head .st-reset { margin-left: auto; padding: 2px 8px; font-size: 13px; }
-  #stats .st-head .st-gear { margin-left: 5px; padding: 2px 8px; font-size: 14px; }
-  #stats .st-head .st-gear.on { color: #e3350d; }
-  #stats .st-head .st-x { margin-left: 5px; padding: 2px 9px; font-size: 13px; }
-  #stats .st-tabs { display: flex; gap: 4px; padding: 8px 9px; background: #0b0f15; border-bottom: 1px solid #1c2229; flex-shrink: 0; }
-  #stats .st-tab { flex: 1; min-width: 0; padding: 7px 4px; font-size: 11px; text-align: center; border-radius: 8px;
-    background: #12171e; color: #7d8590; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; }
-  #stats .st-tab.on { color: #fff; background: #171f29; }
-  #stats .st-tab.on { color: #fff; }
-  #stats .st-tab.on::after { content: ''; position: absolute; left: 22%; right: 22%; bottom: -1px; height: 2px; border-radius: 2px; background: var(--tabc, #e3350d); }
-  #stats .st-body { flex: 1; overflow-y: auto; overflow-x: hidden; margin-right: 9px; }
-  #stats .st-body::-webkit-scrollbar { width: 9px; }
-  #stats .st-body::-webkit-scrollbar-thumb { background: #30363d; border-radius: 5px; }
-  #stats .st-empty { padding: 30px 18px; color: #6e7681; font-size: 12.5px; text-align: center; line-height: 1.7; }
-  #stats .div { height: 1px; background: #1c2229; }
-  #stats .pb { padding-bottom: 9px; }
-  #stats .dsect { position: relative; }
-  #stats .dsect .dgrip { position: absolute; left: 3px; top: 12px; color: #586069; font-size: 11px; letter-spacing: -2px; cursor: grab; opacity: 0; z-index: 4; }
-  #stats .dsect:hover .dgrip { opacity: .8; }
-  #stats .dsect .dhide { position: absolute; top: 7px; right: 8px; color: #6e7681; font-size: 11px; line-height: 1; cursor: pointer; opacity: 0; z-index: 4; padding: 2px 4px; border-radius: 5px; background: #0d1117; }
-  #stats .dsect:hover .dhide { opacity: .65; }
-  #stats .dsect .dhide:hover { opacity: 1; color: #f85149; background: #1c2229; }
-  #stats .dsect.dragover { outline: 2px dashed rgba(227,53,13,.55); outline-offset: -2px; border-radius: 6px; }
-  /* header do treinador */
-  #stats .head { padding: 11px 15px 10px; position: relative; }
-  #stats .idrow { display: flex; align-items: center; gap: 11px; }
-  #stats .ava { position: relative; flex: none; line-height: 0; filter: drop-shadow(0 2px 4px rgba(0,0,0,.5)); }
-  #stats .ava svg { width: 38px; height: 38px; }
-  #stats .ava .lvl { position: absolute; bottom: -4px; right: -5px; background: #12171e; border: 1.5px solid #e3350d; color: #fff; font-size: 9px; font-weight: 700; line-height: 1; padding: 2px 4px; border-radius: 7px; }
-  #stats .nm { font-size: 15px; font-weight: 600; color: #f0f6fc; display: flex; align-items: center; gap: 7px; letter-spacing: .2px; min-width: 0; }
-  #stats .nm .nmt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  #stats .vip { font-size: 9px; font-weight: 800; letter-spacing: .06em; color: #1a1400; background: #e3b341; padding: 2px 6px; border-radius: 5px; flex: none; }
-  #stats .clan-emb { width: 20px; height: 20px; object-fit: contain; flex: none; vertical-align: middle; }
-  #stats .loc { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #8b949e; margin-top: 3px; }
-  #stats .idcol { min-width: 0; flex: 1; }
-  #stats .goldline { display: flex; align-items: center; gap: 7px; margin-top: 5px; }
-  #stats .goldline svg { width: 15px; height: 15px; }
-  #stats .gv { font-size: 15px; font-weight: 700; color: #f2c665; font-variant-numeric: tabular-nums; letter-spacing: .3px; }
-  #stats .gl { font-size: 9.5px; color: #6e7681; text-transform: uppercase; letter-spacing: .06em; }
-  #stats .dia { margin-left: auto; display: flex; align-items: center; gap: 4px; color: #8ab4ff; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
-  #stats .dia svg { flex: none; }
-  /* KPIs */
-  #stats .kpis { display: grid; grid-template-columns: 1fr 1fr 1fr; }
-  #stats .kpi { padding: 10px 12px 9px; position: relative; }
-  #stats .kpi + .kpi { border-left: 1px solid #171d25; }
-  #stats .kpi .ac { position: absolute; top: 0; left: 0; right: 0; height: 2px; }
-  #stats .kpi.g { background: #0e1912; } #stats .kpi.g .ac { background: #3fb950; }
-  #stats .kpi.b { background: #0c1620; } #stats .kpi.b .ac { background: #58a6ff; }
-  #stats .kpi.n { background: #0f141b; } #stats .kpi.n .ac { background: #7d8590; }
-  #stats .kv { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; letter-spacing: .2px; }
-  #stats .kpi { padding: 11px 12px 10px; }
-  #stats .kl { font-size: 9px; color: #6e7681; margin-top: 6px; text-transform: uppercase; letter-spacing: .07em; }
-  /* seções */
-  #stats .sec { display: flex; align-items: center; gap: 8px; padding: 10px 15px 6px; }
-  #stats .sec .mk { width: 7px; height: 7px; border-radius: 2px; flex: none; transform: rotate(45deg); }
-  #stats .sec .lb { font-size: 10.5px; color: #adbac7; text-transform: uppercase; letter-spacing: .09em; font-weight: 600; }
-  #stats .sec .rt { margin-left: auto; font-size: 10.5px; color: #8b949e; font-variant-numeric: tabular-nums; background: #12171e; border: 1px solid #1c2229; padding: 1px 7px; border-radius: 6px; }
-  #stats .r { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 4px 15px; font-size: 12.5px; }
-  #stats .r .l { color: #8b949e; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  #stats .r .v { font-variant-numeric: tabular-nums; flex: none; font-weight: 500; color: #e6edf3; }
-  #stats .grid4 { display: grid; grid-template-columns: 1fr 1fr; }
-  #stats .g4 { padding: 7px 15px; }
-  #stats .g4:nth-child(odd) { border-right: 1px solid #171d25; }
-  #stats .g4:nth-child(-n+2) { border-bottom: 1px solid #171d25; }
-  #stats .g4 .v { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
-  #stats .g4 .l { font-size: 9.5px; color: #6e7681; margin-top: 1px; text-transform: uppercase; letter-spacing: .05em; }
-  #stats .saldo { margin: 6px 15px 4px; padding: 8px 13px; border-radius: 9px; display: flex; justify-content: space-between; align-items: center; }
-  #stats .saldo .sl { font-size: 11.5px; }
-  #stats .saldo .sv { font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: .3px; }
-  #stats .drop { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 2.5px 15px; font-size: 12px; }
-  #stats .drop .dn { color: #8b949e; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  #stats .drop .dn b { color: #c9d1d9; font-weight: 500; }
-  #stats .drop .dq { color: #586069; font-size: 10.5px; }
-  #stats .drop .dg { color: #e0b458; font-variant-numeric: tabular-nums; flex: none; font-weight: 600; }
-  #stats .cat { display: flex; align-items: center; gap: 9px; padding: 6px 15px 2px; }
-  #stats .cat .cd { width: 7px; height: 7px; border-radius: 50%; flex: none; box-shadow: 0 0 6px currentColor; }
-  #stats .cat .cn { font-size: 10px; color: #8b949e; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
-  #stats .cat .ct { margin-left: auto; font-size: 11.5px; color: #c9d1d9; font-variant-numeric: tabular-nums; font-weight: 600; }
-  #stats .it { display: flex; justify-content: space-between; gap: 10px; padding: 1px 15px 1px 31px; font-size: 11.5px; color: #8b949e; }
-  #stats .it span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  #stats .it .q { color: #adbac7; font-variant-numeric: tabular-nums; flex: none; }
-  #stats .baggrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #171d25; margin-top: 2px; }
-  #stats .bg { display: flex; align-items: center; gap: 7px; padding: 7px 13px; background: #0d1117; font-size: 12px; }
-  #stats .bg .bcd { width: 7px; height: 7px; border-radius: 50%; flex: none; box-shadow: 0 0 5px currentColor; }
-  #stats .bg .bn { color: #8b949e; text-transform: uppercase; font-size: 9.5px; letter-spacing: .05em; font-weight: 600; }
-  #stats .bg .bt { margin-left: auto; color: #c9d1d9; font-variant-numeric: tabular-nums; font-weight: 600; }
-  #stats .baggrid .bg:last-child:nth-child(odd) { grid-column: 1 / -1; } /* total ímpar: último item ocupa a linha inteira */
-  #stats .st-resize { position: absolute; top: 0; right: 0; bottom: 0; width: 10px; cursor: ew-resize; z-index: 20; }
-  #stats .st-resize::before { content: ''; position: absolute; top: 50%; right: 3px; transform: translateY(-50%); width: 3px; height: 34px; border-radius: 2px; background: #30363d; }
-  #stats .st-resize:hover { background: rgba(227,53,13,.18); }
-  #stats .st-resize:hover::before { background: #e3350d; }
-
-  /* Calculadora de IV única: vive na janela do app (não dentro de um painel), então pode ficar
-     no centro da tela, por cima de todos, e do tamanho que precisar. Alimentada por qualquer painel. */
-  #ivCard { display: none; position: fixed; z-index: 850; width: 560px; max-width: 96vw; max-height: 92vh; overflow-y: auto;
-    background: linear-gradient(165deg, #161b22, #0d1117 60%); border: 1px solid #30363d; border-top: 2px solid #e3350d;
-    border-radius: 12px; box-shadow: 0 18px 50px rgba(0,0,0,.6); }
-  #ivCard.show { display: block; }
-  #ivCard::-webkit-scrollbar { width: 9px; }
-  #ivCard::-webkit-scrollbar-thumb { background: #30363d; border-radius: 5px; }
-  #ivCard .iv-hd { display: flex; align-items: center; gap: 9px; padding: 10px 13px; border-bottom: 1px solid #21262d; cursor: grab; user-select: none; }
-  #ivCard .iv-hd.drag { cursor: grabbing; }
-  #ivCard .iv-dot { width: 9px; height: 9px; border-radius: 50%; box-shadow: 0 0 6px currentColor; flex: none; }
-  #ivCard .iv-nm { font-size: 17px; font-weight: 700; color: #f0f6fc; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  #ivCard .iv-acc { font-size: 11px; color: #7d8590; flex: none; }
-  #ivCard .iv-hd button { margin-left: 0; background: transparent; border: 1px solid #30363d; border-radius: 7px; color: #8b949e; font-size: 12px; padding: 2px 8px; cursor: pointer; flex: none; }
-  #ivCard .iv-hd button:hover { border-color: #e3350d; color: #fff; }
-  #ivCard .iv-hd .iv-sp { margin-left: auto; }
-  #ivCard .iv-body { padding: 12px 13px 14px; }
-  #ivCard .iv-tipos { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px; }
-  #ivCard .iv-tp { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: 3px 9px; border-radius: 999px; color: #0d1117; }
-  #ivCard .iv-top { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
-  #ivCard .iv-kpi { background: #12171e; border: 1px solid #21262d; border-radius: 9px; padding: 8px 10px; }
-  #ivCard .iv-kpi .k { font-size: 9.5px; color: #7d8590; text-transform: uppercase; letter-spacing: .05em; }
-  #ivCard .iv-kpi .v { font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; margin-top: 2px; }
-  #ivCard .iv-inp { width: 100%; margin-top: 3px; background: #0b0f15; border: 1px solid #30363d; border-radius: 6px; color: #e6edf3; font-size: 15px; font-weight: 700; padding: 2px 6px; outline: none; font-variant-numeric: tabular-nums; }
-  #ivCard .iv-inp:focus { border-color: #e3350d; }
-  #ivCard .iv-sec { font-size: 10px; font-weight: 600; color: #7d8590; text-transform: uppercase; letter-spacing: .07em; margin: 4px 0 7px; }
-  #ivCard .iv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  #ivCard .iv-st { background: #12171e; border: 1px solid #21262d; border-radius: 9px; padding: 8px 9px; }
-  #ivCard .iv-st-h { display: flex; align-items: baseline; gap: 6px; }
-  #ivCard .iv-st-n { font-size: 10px; font-weight: 700; letter-spacing: .06em; }
-  #ivCard .iv-st-iv { margin-left: auto; font-size: 12px; font-weight: 700; color: #55e6d3; font-variant-numeric: tabular-nums; }
-  #ivCard .iv-bar { height: 5px; background: #21262d; border-radius: 3px; overflow: hidden; margin: 5px 0 6px; }
-  #ivCard .iv-bar > i { display: block; height: 100%; border-radius: 3px; }
-  #ivCard .iv-st-l { display: flex; gap: 6px; align-items: center; font-size: 10px; color: #6e7681; }
-  #ivCard .iv-st-l input { flex: 1; min-width: 0; background: #0b0f15; border: 1px solid #262d36; border-radius: 5px; color: #adbac7; font-size: 11px; padding: 1px 5px; outline: none; font-variant-numeric: tabular-nums; }
-  #ivCard .iv-st-l input:focus { border-color: #e3350d; color: #fff; }
-  #ivCard .iv-spr { width: 52px; height: 52px; object-fit: contain; image-rendering: pixelated; flex: none; filter: drop-shadow(0 0 6px rgba(0,0,0,.5)); }
-  #ivCard .iv-pot { display: flex; align-items: center; gap: 12px; background: #12171e; border: 1px solid #21262d; border-radius: 9px; padding: 9px 12px; margin-bottom: 12px; }
-  #ivCard .iv-ring { width: 54px; height: 54px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; position: relative; }
-  #ivCard .iv-ring::after { content: ''; position: absolute; inset: 5px; border-radius: 50%; background: #12171e; }
-  #ivCard .iv-ring span { position: relative; z-index: 1; font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; }
-  #ivCard .iv-pot-t { font-size: 15px; font-weight: 800; }
-  #ivCard .iv-pot-d { font-size: 11px; color: #8b949e; margin-top: 2px; line-height: 1.4; }
-  #ivCard .iv-mv { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border: 1px solid #21262d; border-radius: 8px; background: #12171e; font-size: 12px; margin-bottom: 5px; }
-  #ivCard .iv-mv.on { border-color: #f2c665; box-shadow: 0 0 0 1px rgba(242,198,101,.35); }
-  #ivCard .iv-mv .mv-n { color: #e6edf3; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  #ivCard .iv-mv.off { opacity: .45; } /* golpe que o pokémon ainda não aprendeu */
-  #ivCard .iv-mv .mv-lv { color: #7d8590; font-size: 10.5px; font-variant-numeric: tabular-nums; flex: none; }
-  #ivCard .iv-mv .mv-p { margin-left: auto; color: #f0883e; font-variant-numeric: tabular-nums; flex: none; }
-  #ivCard .iv-mv .mv-d { color: #55e6d3; font-variant-numeric: tabular-nums; flex: none; }
-  #ivCard .iv-foot { display: flex; align-items: center; gap: 8px; margin-top: 11px; font-size: 11px; color: #6e7681; flex-wrap: wrap; }
-  #ivCard .iv-vazio { padding: 26px 16px; text-align: center; color: #7d8590; font-size: 13px; line-height: 1.7; }
-  /* Shiny CAPTURADO: o evento mais raro do jogo, então o aviso fica na tela até ser fechado */
-  #shinyParty { position: fixed; top: 58px; left: 50%; /* abaixo da barra: nao cobre os botoes do app */ transform: translateX(-50%); z-index: 900; display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none; }
-  #shinyParty .sp { pointer-events: auto; display: flex; align-items: center; gap: 14px; min-width: 380px; max-width: 92vw;
-    padding: 14px 18px; border-radius: 14px; border: 2px solid #f2c665; background: linear-gradient(135deg, #2a1033, #17202b 55%, #101820);
-    box-shadow: 0 12px 40px rgba(0,0,0,.6), 0 0 0 1px rgba(247,120,186,.35), 0 0 26px rgba(247,120,186,.28); animation: spIn .32s ease-out, spGlow 1.9s ease-in-out infinite alternate; }
-  @keyframes spIn { from { opacity: 0; transform: translateY(-14px) scale(.94); } to { opacity: 1; transform: none; } }
-  @keyframes spGlow { from { box-shadow: 0 12px 40px rgba(0,0,0,.6), 0 0 0 1px rgba(247,120,186,.35), 0 0 18px rgba(247,120,186,.22); }
-    to { box-shadow: 0 12px 40px rgba(0,0,0,.6), 0 0 0 1px rgba(242,198,101,.55), 0 0 34px rgba(242,198,101,.42); } }
-  #shinyParty .sp-img { width: 76px; height: 76px; image-rendering: pixelated; object-fit: contain; flex: none; filter: drop-shadow(0 0 10px rgba(247,120,186,.55)); }
-  #shinyParty .sp-txt { min-width: 0; }
-  #shinyParty .sp-h { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #f2c665; }
-  #shinyParty .sp-n { font-size: 22px; font-weight: 800; color: #f778ba; line-height: 1.15; margin: 2px 0 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  #shinyParty .sp-sub { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #adbac7; flex-wrap: wrap; }
-  #shinyParty .sp-acd { width: 9px; height: 9px; border-radius: 50%; box-shadow: 0 0 6px currentColor; flex: none; }
-  #shinyParty .sp-iv { color: #55e6d3; font-variant-numeric: tabular-nums; }
-  #shinyParty .sp-q { color: #f2c665; font-variant-numeric: tabular-nums; }
-  #shinyParty .sp-t { color: #6e7681; }
-  #shinyParty .sp-x { margin-left: auto; align-self: flex-start; background: transparent; border: 1px solid #30363d; border-radius: 7px; color: #8b949e; font-size: 13px; padding: 2px 8px; cursor: pointer; flex: none; }
-  #shinyParty .sp-x:hover { border-color: #f778ba; color: #fff; }
-  /* Modo Cartas: dashboard ultra leve; o grid dos webviews fica vivo mas invisível */
-  #cards { display: none; flex: 1; min-height: 0; overflow-y: auto; flex-direction: column; gap: 10px; padding: 10px 14px; scrollbar-width: thin; scrollbar-color: #30363d #0d1117; }
-  body.cards-on #cards { display: flex; }
-  body.cards-on #grid { position: absolute; left: 0; top: 0; width: 4px; height: 4px; opacity: 0; overflow: hidden; pointer-events: none; padding: 0; gap: 0; margin: 0 !important; }
-  body.stats-open #cards { margin-left: var(--statsw, 350px); transition: margin-left .18s ease; }
-  /* grid de 12 colunas: cada seção tem posição (arraste o ⋮⋮) e largura (arraste a lateral direita) próprias */
-  .cd-cols { display: grid; grid-template-columns: repeat(12, 1fr); gap: 10px; align-items: start; }
-  .cd-it { position: relative; min-width: 0; }
-  .cd-mv { position: absolute; top: 5px; right: 14px; z-index: 6; color: #586069; font-size: 12px; letter-spacing: -2px; cursor: grab; padding: 2px 6px; opacity: 0; transition: opacity .12s; user-select: none; }
-  .cd-it:hover .cd-mv { opacity: 1; }
-  .cd-mv:hover { color: #e3350d; }
-  .cd-rz { position: absolute; top: 8px; bottom: 8px; right: -7px; width: 13px; cursor: ew-resize; z-index: 6; }
-  .cd-rz::before { content: ''; position: absolute; top: 50%; transform: translateY(-50%); right: 5px; width: 3px; height: 30px; border-radius: 2px; background: transparent; }
-  .cd-it:hover .cd-rz::before { background: #30363d; }
-  .cd-rz:hover::before, .cd-it.rz-on .cd-rz::before { background: #e3350d; }
-  .cd-rz2 { position: absolute; left: 10px; right: 10px; bottom: -7px; height: 13px; cursor: ns-resize; z-index: 6; }
-  .cd-rz2::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); bottom: 5px; height: 3px; width: 34px; border-radius: 2px; background: transparent; }
-  .cd-it:hover .cd-rz2::before { background: #30363d; }
-  .cd-rz2:hover::before, .cd-it.rz-on .cd-rz2::before { background: #e3350d; }
-  .cd-sec::-webkit-scrollbar, .cd-kpis::-webkit-scrollbar { width: 8px; }
-  .cd-sec::-webkit-scrollbar-thumb, .cd-kpis::-webkit-scrollbar-thumb { background: #30363d; border-radius: 5px; }
-  .cd-it.cd-over { outline: 2px dashed #e3350d; outline-offset: 2px; border-radius: 10px; }
-  .cd-it.cd-ghost { opacity: .4; }
-  @media (max-width: 900px) { .cd-cols > .cd-it { grid-column: 1 / -1 !important; } }
-  .cd-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; flex-shrink: 0; }
-  .cd-kpi { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 10px 12px; }
-  .cd-kpi .v { font-size: 19px; font-weight: 700; color: #e6edf3; }
-  .cd-kpi .l { font-size: 10px; color: #7d8590; text-transform: uppercase; letter-spacing: .05em; margin-top: 2px; }
-  .cd-sec { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 10px 12px; flex-shrink: 0; }
-  .cd-h { font-size: 10px; font-weight: 600; color: #7d8590; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 7px; }
-  .cd-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .cd-table th { text-align: left; color: #7d8590; font-size: 10px; text-transform: uppercase; letter-spacing: .04em; cursor: pointer; padding: 5px 8px; border-bottom: 1px solid #21262d; user-select: none; white-space: nowrap; }
-  .cd-table th:hover { color: #e6edf3; }
-  .cd-table td { padding: 7px 8px; border-bottom: 1px solid #12171e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
-  .cd-table tbody tr { cursor: pointer; }
-  .cd-table tbody tr:hover { background: #12171e; }
-  .cd-table tfoot td { font-weight: 700; border-bottom: 0; }
-  .cd-2col { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; align-items: start; }
-  .cd-row { display: flex; align-items: center; gap: 8px; font-size: 12px; padding: 5px 0; border-bottom: 1px solid #12171e; }
-  .cd-row:last-child { border-bottom: 0; }
-  .cd-row .rn { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .cd-row .rt { color: #6e7681; font-size: 11px; flex: none; }
-  .cd-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 2px; flex: none; }
-  .cd-spark { width: 100%; height: 44px; display: block; }
-  .cd-empty { color: #6e7681; font-size: 12px; padding: 8px 0; }
-  .cd-h select { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #e6edf3; font-size: 10px; padding: 2px 6px; outline: none; }
-  .cd-h button { background: #161b22; border: 1px solid #30363d; border-radius: 6px; color: #adbac7; font-size: 10px; padding: 3px 9px; cursor: pointer; }
-  .cd-h button:hover { border-color: #e3350d; color: #fff; }
-  .cd-goal { height: 6px; background: #21262d; border-radius: 4px; overflow: hidden; margin-top: 3px; }
-  .cd-goal > i { display: block; height: 100%; background: #3fb950; border-radius: 4px; }
-  .cd-inp { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #e6edf3; font-size: 11px; padding: 3px 7px; outline: none; }
-  .cd-inp:focus { border-color: #e3350d; }
-  .cd-shgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 8px; }
-  .cd-sh { background: #12171e; border: 1px solid #21262d; border-radius: 8px; padding: 8px 5px 7px; text-align: center; position: relative; }
-  .cd-sh-st { position: absolute; top: 2px; right: 5px; font-size: 12px; color: #586069; cursor: pointer; opacity: 0; transition: opacity .12s; }
-  .cd-sh:hover .cd-sh-st, .cd-sh-st.on { opacity: 1; }
-  .cd-sh-st.on, .cd-sh-st:hover { color: #f2c665; }
-  .cd-sh-img { width: 46px; height: 46px; image-rendering: pixelated; object-fit: contain; }
-  .cd-sh-n { font-size: 10px; color: #adbac7; margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .cd-sh-t { font-size: 12px; font-weight: 700; color: #f778ba; font-variant-numeric: tabular-nums; margin-top: 2px; }
-  .cd-sh-acc { font-size: 9px; color: #7d8590; margin-top: 4px; display: flex; flex-wrap: wrap; justify-content: center; gap: 3px 7px; font-variant-numeric: tabular-nums; }
-  .cd-sh-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 2px; vertical-align: middle; }
-  .cd-top { display: flex; align-items: center; gap: 8px; }
-  .cd-top .cd-tt { font-size: 11px; font-weight: 600; color: #7d8590; text-transform: uppercase; letter-spacing: .06em; }
-  .cd-top button { margin-left: auto; background: #161b22; border: 1px solid #30363d; border-radius: 6px; color: #adbac7; font-size: 13px; padding: 2px 9px; cursor: pointer; }
-  .cd-top button.on, .cd-top button:hover { border-color: #e3350d; color: #fff; }
-  .cd-cfg { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 8px 10px; }
-  .cd-cfg-h { font-size: 10px; font-weight: 600; color: #7d8590; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
-  .cd-cfg-row { display: flex; align-items: center; gap: 8px; padding: 5px 4px; border-radius: 6px; font-size: 12px; color: #e6edf3; cursor: default; }
-  .cd-cfg-row:hover { background: #12171e; }
-  .cd-cfg-row label { display: flex; align-items: center; gap: 7px; cursor: pointer; }
-  .cd-cfg-row .cd-grip { color: #586069; cursor: grab; letter-spacing: -2px; font-size: 11px; }
-  .cd-row.cd-dim { opacity: .45; }
-  .cd-hide { flex: none; font-size: 11px; padding: 0 2px; }
-  .cd-fav { flex: none; font-size: 13px; }
-  #stats .team { display: flex; flex-wrap: wrap; gap: 5px; padding: 4px 15px 6px; }
-  #stats .tm { font-size: 11px; color: #8b949e; background: #12171e; border: 1px solid #1c2229; border-radius: 6px; padding: 3px 7px; white-space: nowrap; }
-  #stats .tm b { color: #c9d1d9; font-weight: 600; font-variant-numeric: tabular-nums; }
-  /* visão de totais */
-  #stats .st-all { flex: 0 0 30px; font-weight: 700; }
-  #stats .agg { display: grid; grid-template-columns: 1.5fr 1fr 1fr .85fr; gap: 6px; padding: 6px 15px; font-size: 12.5px; align-items: center; }
-  #stats .agg span { text-align: right; font-variant-numeric: tabular-nums; color: #e6edf3; }
-  #stats .agg .an { text-align: left; color: #c9d1d9; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  #stats .agg-h { padding-bottom: 5px; border-bottom: 1px solid #1c2229; }
-  #stats .agg-h span { color: #6e7681; font-size: 10px; text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
-  #stats .agg-t { border-top: 1px solid #1c2229; margin-top: 3px; font-weight: 700; }
-  #stats .agg-t .an { color: #f0f6fc; }
-  /* compilado: 4 stats + cartões por conta */
-  #stats .agg4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; }
-  #stats .a4 { padding: 9px 4px; text-align: center; }
-  #stats .a4 + .a4 { border-left: 1px solid #171d25; }
-  #stats .a4v { font-size: 13.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
-  #stats .a4l { font-size: 9px; color: #6e7681; margin-top: 3px; text-transform: uppercase; letter-spacing: .03em; }
-  #stats .acard { padding: 9px 15px; border-top: 1px solid #171d25; }
-  #stats .acard:first-of-type { border-top: 0; }
-  #stats .ac1 { display: flex; align-items: center; gap: 8px; }
-  #stats .acd { width: 8px; height: 8px; border-radius: 50%; flex: none; box-shadow: 0 0 5px currentColor; }
-  #stats .acn { color: #f0f6fc; font-weight: 600; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  #stats .acm { margin-left: auto; color: #8b949e; font-size: 11px; font-variant-numeric: tabular-nums; flex: none; }
-  #stats .ac2 { display: flex; flex-wrap: wrap; gap: 3px 12px; margin-top: 5px; padding-left: 16px; font-size: 12px; color: #adbac7; font-variant-numeric: tabular-nums; }
-  /* painel de configuração */
-  #stats .st-cfg { display: none; flex: 1; overflow-y: auto; overflow-x: hidden; padding-bottom: 12px; margin-right: 9px; }
-  #stats .st-cfg::-webkit-scrollbar { width: 9px; }
-  #stats .st-cfg::-webkit-scrollbar-thumb { background: #30363d; border-radius: 5px; }
-  #stats .cfg-h { padding: 13px 15px 6px; font-size: 10.5px; color: #8b949e; text-transform: uppercase; letter-spacing: .07em; font-weight: 600; }
-  #stats .cfg-secs { padding: 0 10px; }
-  #stats .cfg-row { display: flex; align-items: center; gap: 8px; padding: 7px 9px; background: #12171e; border: 1px solid #1c2229; border-radius: 7px; margin-bottom: 5px; }
-  #stats .cfg-grip { color: #586069; font-size: 13px; cursor: grab; letter-spacing: -2px; }
-  #stats .cfg-chk { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: #c9d1d9; cursor: pointer; flex: 1; }
-  #stats .cfg-chk input, #stats .cfg-toggle input { accent-color: #e3350d; width: 15px; height: 15px; }
-  #stats .cfg-toggle { display: flex; align-items: center; gap: 8px; padding: 6px 16px 2px; font-size: 12.5px; color: #c9d1d9; cursor: pointer; }
-  #stats .cfg-search { width: calc(100% - 30px); margin: 2px 15px; padding: 7px 10px; background: #0b0f15; border: 1px solid #232a33; border-radius: 7px; color: #e6edf3; font-size: 12.5px; }
-  #stats .cfg-search:focus { outline: none; border-color: #e3350d; }
-  #stats .cfg-results { padding: 2px 12px; }
-  #stats .cfg-res { padding: 6px 9px; font-size: 12.5px; color: #adbac7; border-radius: 6px; cursor: pointer; }
-  #stats .cfg-res:hover { background: #171f29; color: #fff; }
-  #stats .cfg-noc { padding: 6px 9px; font-size: 12px; color: #6e7681; }
-  #stats .cfg-pinned { padding: 2px 15px; }
-  #stats .cfg-pin { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; font-size: 12.5px; color: #c9d1d9; background: #12171e; border-radius: 6px; margin-bottom: 4px; }
-  #stats .cfg-pin button { padding: 0 4px; font-size: 12px; background: transparent; border: 0; color: #f0883e; cursor: pointer; }
-  #stats .cfg-items { padding: 2px 12px; max-height: 220px; overflow-y: auto; }
-  #stats .cfg-items::-webkit-scrollbar { width: 8px; }
-  #stats .cfg-items::-webkit-scrollbar-thumb { background: #30363d; border-radius: 5px; }
-  #stats .cfg-item { display: flex; align-items: center; gap: 8px; padding: 4px 6px; font-size: 12px; color: #c9d1d9; cursor: pointer; }
-  #stats .cfg-item input { accent-color: #e3350d; width: 14px; height: 14px; flex: none; }
-  #stats .cfg-item span:first-of-type { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  #stats .cfg-iq { color: #6e7681; font-variant-numeric: tabular-nums; }
-  #stats .cfg-isub { padding: 7px 6px 2px; font-size: 9.5px; color: #7d8590; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
-  #stats .cfg-credit { padding: 2px 15px 4px; font-size: 11px; color: #6e7681; line-height: 1.6; }
-  #stats .cfg-credit b { color: #adbac7; font-weight: 600; }
-  /* comparação com a hunt anterior */
-  #stats .cmp { display: grid; grid-template-columns: 1fr .9fr .9fr; gap: 6px; padding: 4px 15px; font-size: 12.5px; align-items: center; }
-  #stats .cmp .cl { color: #8b949e; }
-  #stats .cmp .cp, #stats .cmp .cc { text-align: right; font-variant-numeric: tabular-nums; }
-  #stats .cmp .cp { color: #6e7681; }
-  #stats .cmp-h { padding-bottom: 1px; }
-  #stats .cmp-h span { color: #6e7681; font-size: 10px; text-transform: uppercase; letter-spacing: .04em; }
+  #resumo.show { transform: none; }
+  #resumo .rs-top { height: 3px; background: linear-gradient(90deg, #e3350d, #ff7a4d); flex-shrink: 0; }
+  #resumo .rs-head { display: flex; align-items: center; gap: 8px; padding: 8px 13px; background: #0b0f15;
+    font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #7d8590; flex-shrink: 0;
+    border-bottom: 1px solid #1c2229; }
+  #resumo .rs-head .rs-x { margin-left: auto; padding: 2px 9px; font-size: 13px; }
+  #resumo .rs-body { flex: 1; overflow-y: auto; overflow-x: hidden; }
+  #resumo .rs-body::-webkit-scrollbar { width: 9px; }
+  #resumo .rs-body::-webkit-scrollbar-thumb { background: #30363d; border-radius: 5px; }
+  #resumo .rs-empty { padding: 30px 18px; color: #6e7681; font-size: 12.5px; text-align: center; line-height: 1.7; }
+  #resumo .rs-card { padding: 10px 13px; border-bottom: 1px solid #171d25; }
+  #resumo .rs-l1 { display: flex; align-items: center; gap: 7px; }
+  #resumo .rs-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; opacity: .35; }
+  #resumo .rs-dot.on { opacity: 1; box-shadow: 0 0 6px currentColor; }
+  #resumo .rs-nm { font-weight: 600; color: #f0f6fc; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #resumo .rs-lv { margin-left: auto; flex: none; font-size: 10px; color: #7d8590; font-variant-numeric: tabular-nums; }
+  #resumo .rs-l2 { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+  #resumo .rs-hpbar { flex: 1; height: 5px; border-radius: 99px; background: #171d25; overflow: hidden; }
+  #resumo .rs-hpbar > i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #2bb87a, #3fb950); }
+  #resumo .rs-hpbar > i.md { background: linear-gradient(90deg, #b8862f, #e3b341); }
+  #resumo .rs-hpbar > i.lo { background: linear-gradient(90deg, #a83550, #f85149); }
+  #resumo .rs-xp { flex: none; font-size: 9.5px; color: #8b949e; font-variant-numeric: tabular-nums; }
+  #resumo .rs-l3 { display: flex; align-items: baseline; gap: 8px; margin-top: 7px; }
+  #resumo .rs-gold { font-size: 13px; font-weight: 700; color: #f2c665; font-variant-numeric: tabular-nums; }
+  #resumo .rs-gph { margin-left: auto; font-size: 11px; font-weight: 500; color: #3fb950; font-variant-numeric: tabular-nums; }
+  #resumo .rs-gph.zero { color: #6e7681; }
+  #resumo .rs-foot { flex: 0 0 auto; padding: 10px 13px 12px; border-top: 1px solid #232a33;
+    background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.28)); }
+  #resumo .rs-ftot { display: flex; align-items: center; gap: 9px; height: 32px; padding: 0 12px; border-radius: 9px;
+    background: rgba(227,53,13,.12); border: 1px solid rgba(227,53,13,.4); }
+  #resumo .rs-ftot .v { font-family: ui-monospace, Consolas, monospace; font-size: 14px; font-weight: 600; color: #ffe0c4; font-variant-numeric: tabular-nums; }
+  #resumo .rs-ftot .k { margin-left: auto; font-size: 8.5px; letter-spacing: .12em; text-transform: uppercase; color: #e3350d; }
+  #resumo .rs-fsub { margin-top: 6px; font-size: 10px; color: #7d8590; font-variant-numeric: tabular-nums; }
 </style>
 </head>
 <body>
@@ -445,6 +175,7 @@
       <div id="menu">
         <button id="scriptsBtn" title="Rode userscripts nos painéis">🧩 Scripts</button>
         <button id="count" title="Quantas contas rodar ao mesmo tempo (1 a 4)">🔢 Painéis: 4</button>
+        <button id="resumoBtn" title="Gold, level e gold/h de cada conta, lido da própria tela do jogo">📊 Resumo</button>
         <button id="alerts" title="Avisa quando uma conta cai">🔔 Alertas</button>
         <button id="muteAll">🔊 Som</button>
         <button id="eco">⚡ Eco</button>
@@ -460,6 +191,18 @@
     </div>
   </div>
   <div id="grid"></div>
+  <div id="resumo">
+    <div class="rs-top"></div>
+    <div class="rs-head"><span id="rsTitle">Resumo</span><button class="rs-x" id="rsClose">✕</button></div>
+    <div class="rs-body" id="rsBody"><div class="rs-empty" id="rsEmpty">Aguardando dados do jogo…</div></div>
+    <div class="rs-foot">
+      <div class="rs-ftot">
+        <span class="v" id="rsFGold">-</span>
+        <span class="k">gold total</span>
+      </div>
+      <div class="rs-fsub" id="rsFSub">-/h · 0 online</div>
+    </div>
+  </div>
   <div id="overlay">
     <div id="modal">
       <h2>Treinadores salvos</h2>
@@ -556,7 +299,8 @@ const HOME_URL  = 'https://huntera.com.br/';
       optionsBtn:'☰ Opções', errlog:'🐞 Erros', errlogTitle:'Abre o relatório de erros. Se o app travar ou fechar sozinho, envie esse arquivo pro suporte.',
       dockLabel:'🎛 Menu do jogo', dockTitle:'Mostra ou esconde o menu de ícones do jogo (verde = visível). F2 alterna no painel em foco.',
       hunt:'🎯 Hunt', huntTitle:'Abre o Hunt Analyzer em todos os painéis', accClear:'Limpar esta conta', ivsTitle:'Abre a calculadora de IV do app: uma só, no centro da tela, alimentada por qualquer painel', ivcTitle:"Calculadora de IV", ivcHint:'Passe o mouse sobre um pokémon em qualquer painel.<br>Os dados aparecem aqui, e você pode ajustar nível e atributos pra recalcular.', ivcLevel:'Nível', ivcQuality:'Qualidade', ivcIvTotal:'IV total', ivcPower:'Poder estimado', ivcStats:'Atributos e IV por stat', ivcCurrent:'atual', ivcBase:'base', ivcPowerGame:'Poder no jogo', ivcFooter:'edite qualquer campo pra recalcular', ivcOpenPanel:'Abrir a calculadora dentro do painel (comparar)', ivcMoves:'Golpes', ivcMovePower:'poder do golpe', ivcMoveLast:'último dano observado em batalha',
-      alerts:'🔔 Alertas', alertsTitle:'Avisa por notificação quando uma conta cai', msgDown:'caiu', msgBalls:'está sem pokébolas', count:'🔢 Painéis', stats:'📊 Painel', statsTitle:'Resumo da conta em foco (gold/h, XP/h, bag, drops)', statsResumo:'Resumo', statsWaiting:'Aguardando dados do jogo…', statsWaiting2:'Deixe o painel logado e farmando alguns segundos.', statsOff:'Painel desligado.',
+      alerts:'🔔 Alertas', alertsTitle:'Avisa por notificação quando uma conta cai', msgDown:'caiu', msgBalls:'está sem pokébolas', count:'🔢 Painéis',
+      resumo:'📊 Resumo', resumoTitle:'Gold, level e gold/h de cada conta, lido da própria tela do jogo', rsWaiting:'Aguardando dados do jogo…', rsGoldTotal:'gold total', rsOnline:'online', stats:'📊 Painel', statsTitle:'Resumo da conta em foco (gold/h, XP/h, bag, drops)', statsResumo:'Resumo', statsWaiting:'Aguardando dados do jogo…', statsWaiting2:'Deixe o painel logado e farmando alguns segundos.', statsOff:'Painel desligado.',
       stLevel:'Nível', stSession:'Sessão', stDefeated:'Derrotados', stXpGain:'XP ganha', stCaptures:'Capturas', stGold:'Ouro da sessão', stLoot:'Loot (venda)', stCapSell:'Capturas (venda)', stSupply:'Suprimentos gastos', stBalls:'bolas', stPots:'cura', stBalance:'Saldo da sessão', stDrops:'Drops da sessão', stAccount:'Conta', stProfession:'Profissão', stMail:'Presentes no correio', stCatchTotal:'Capturas totais', stTeam:'Time',
       cards:'🍃 Simples', cardsShort:'Simples', cardsTitle:'Modo simples e ultra leve: esconde o jogo e mostra só os números, gastando o mínimo do PC (o farm continua)', cdGold:'gold/h líquido', cdXp:'XP/h total', cdKills:'kills/h', cdCaps:'capturas (sessão)', cdShiny:'shiny enc/cap', cdActive:'contas ativas', cdByAcc:'Por conta · clique no cabeçalho pra ordenar, na linha pra abrir o jogo', cdTrend:'Tendência · última hora', cdCatches:'Últimas capturas · todas as contas', cdShinies:'Aparições de shiny ✨', cdConta:'Conta', cdHunt:'Hunt', cdStatus:'Status', cdBest:'Melhor catch', cdLast:'Último catch', cdWaiting:'aguardando…', cdOff:'desligado', cdHunting:'caçando', cdTotal:'Total', cdSeen:'apareceram', cdCaught:'capturados', cdLost:'perdidos', cdNone:'nada ainda',
       cdHunts:'Ranking de hunts', cdShared:'Compartilhados no chat', cdFirst:'1ª captura da espécie', cdSortPrice:'Valor ↓', cdSortXp:'XP ↓', cdSortEff:'Efetividade ↓', cdSortMeasured:'Medido: gold/h ↓', cdMeasured:'sua média', cdEffOf:'efetividade vs líder de', cdLoading:'carregando dados do jogo…', stLastCatch:'Último catch', stSince:'bolas desde então',
@@ -595,7 +339,8 @@ const HOME_URL  = 'https://huntera.com.br/';
       optionsBtn:'☰ Options', errlog:'🐞 Errors', errlogTitle:'Opens the error report. If the app freezes or closes on its own, send this file to support.',
       dockLabel:'🎛 Game menu', dockTitle:'Shows or hides the game icon menu (green = shown). F2 toggles it in the focused panel.',
       hunt:'🎯 Hunt', huntTitle:'Opens the Hunt Analyzer in all panels', accClear:'Clear this account', ivsTitle:'Opens the app IV calculator: a single one, centered, fed by any panel', ivcTitle:"IV calculator", ivcHint:'Hover a Pokémon in any panel.<br>The data shows up here, and you can adjust level and stats to recalculate.', ivcLevel:'Level', ivcQuality:'Quality', ivcIvTotal:'Total IV', ivcPower:'Estimated power', ivcStats:'Stats and IV per stat', ivcCurrent:'current', ivcBase:'base', ivcPowerGame:'Power in game', ivcFooter:'edit any field to recalculate', ivcOpenPanel:'Open the calculator inside the panel (compare)', ivcMoves:'Moves', ivcMovePower:'move power', ivcMoveLast:'last damage seen in battle',
-      alerts:'🔔 Alerts', alertsTitle:'Notifies you when an account drops', msgDown:'disconnected', msgBalls:'is out of Pokéballs', count:'🔢 Panels', stats:'📊 Panel', statsTitle:'Summary of the focused account (gold/h, XP/h, bag, drops)', statsResumo:'Summary', statsWaiting:'Waiting for game data…', statsWaiting2:'Keep the panel logged in and farming for a few seconds.', statsOff:'Panel is off.',
+      alerts:'🔔 Alerts', alertsTitle:'Notifies you when an account drops', msgDown:'disconnected', msgBalls:'is out of Pokéballs', count:'🔢 Panels',
+      resumo:'📊 Summary', resumoTitle:'Gold, level and gold/h per account, read straight from the game screen', rsWaiting:'Waiting for game data…', rsGoldTotal:'total gold', rsOnline:'online', stats:'📊 Panel', statsTitle:'Summary of the focused account (gold/h, XP/h, bag, drops)', statsResumo:'Summary', statsWaiting:'Waiting for game data…', statsWaiting2:'Keep the panel logged in and farming for a few seconds.', statsOff:'Panel is off.',
       stLevel:'Level', stSession:'Session', stDefeated:'Defeated', stXpGain:'XP gained', stCaptures:'Captures', stGold:'Session gold', stLoot:'Loot (sell)', stCapSell:'Captures (sell)', stSupply:'Supplies used', stBalls:'balls', stPots:'heals', stBalance:'Session balance', stDrops:'Session drops', stAccount:'Account', stProfession:'Profession', stMail:'Gifts in mail', stCatchTotal:'Total catches', stTeam:'Team',
       cards:'🍃 Simple', cardsShort:'Simple', cardsTitle:'Simple, ultra-light mode: hides the game and shows only the numbers, using the least PC possible (farming continues)', cdGold:'net gold/h', cdXp:'total XP/h', cdKills:'kills/h', cdCaps:'captures (session)', cdShiny:'shiny enc/cap', cdActive:'active accounts', cdByAcc:'Per account · click a header to sort, a row to open the game', cdTrend:'Trend · last hour', cdCatches:'Latest captures · all accounts', cdShinies:'Shiny appearances ✨', cdConta:'Account', cdHunt:'Hunt', cdStatus:'Status', cdBest:'Best catch', cdLast:'Last catch', cdWaiting:'waiting…', cdOff:'off', cdHunting:'hunting', cdTotal:'Total', cdSeen:'appeared', cdCaught:'caught', cdLost:'lost', cdNone:'nothing yet',
       cdHunts:'Hunt ranking', cdShared:'Shared in chat', cdFirst:'first capture of the species', cdSortPrice:'Value ↓', cdSortXp:'XP ↓', cdSortEff:'Effectiveness ↓', cdSortMeasured:'Measured: gold/h ↓', cdMeasured:'your average', cdEffOf:'effectiveness vs leader of', cdLoading:'loading game data…', stLastCatch:'Last catch', stSince:'balls since then',
@@ -634,7 +379,8 @@ const HOME_URL  = 'https://huntera.com.br/';
       optionsBtn:'☰ Opciones', errlog:'🐞 Errores', errlogTitle:'Abre el informe de errores. Si la app se congela o se cierra sola, envía este archivo al soporte.',
       dockLabel:'🎛 Menú del juego', dockTitle:'Muestra u oculta el menú de iconos del juego (verde = visible). F2 alterna en el panel enfocado.',
       hunt:'🎯 Hunt', huntTitle:'Abre el Hunt Analyzer en todos los paneles', accClear:'Limpiar esta cuenta', ivsTitle:'Abre la calculadora de IV del app: una sola, en el centro, alimentada por cualquier panel', ivcTitle:"Calculadora de IV", ivcHint:'Pasa el mouse sobre un pokémon en cualquier panel.<br>Los datos aparecen aquí, y puedes ajustar nivel y atributos para recalcular.', ivcLevel:'Nivel', ivcQuality:'Calidad', ivcIvTotal:'IV total', ivcPower:'Poder estimado', ivcStats:'Atributos e IV por stat', ivcCurrent:'actual', ivcBase:'base', ivcPowerGame:'Poder en el juego', ivcFooter:'edita cualquier campo para recalcular', ivcOpenPanel:'Abrir la calculadora dentro del panel (comparar)', ivcMoves:'Golpes', ivcMovePower:'poder del golpe', ivcMoveLast:'último daño observado en batalla',
-      alerts:'🔔 Alertas', alertsTitle:'Avisa con notificación cuando una cuenta se cae', msgDown:'se desconectó', msgBalls:'se quedó sin Pokéballs', count:'🔢 Paneles', stats:'📊 Panel', statsTitle:'Resumen de la cuenta enfocada (oro/h, XP/h, bolsa, drops)', statsResumo:'Resumen', statsWaiting:'Esperando datos del juego…', statsWaiting2:'Deja el panel conectado y farmeando unos segundos.', statsOff:'Panel apagado.',
+      alerts:'🔔 Alertas', alertsTitle:'Avisa con notificación cuando una cuenta se cae', msgDown:'se desconectó', msgBalls:'se quedó sin Pokéballs', count:'🔢 Paneles',
+      resumo:'📊 Resumen', resumoTitle:'Oro, nivel y oro/h de cada cuenta, leído de la propia pantalla del juego', rsWaiting:'Esperando datos del juego…', rsGoldTotal:'oro total', rsOnline:'online', stats:'📊 Panel', statsTitle:'Resumen de la cuenta enfocada (oro/h, XP/h, bolsa, drops)', statsResumo:'Resumen', statsWaiting:'Esperando datos del juego…', statsWaiting2:'Deja el panel conectado y farmeando unos segundos.', statsOff:'Panel apagado.',
       stLevel:'Nivel', stSession:'Sesión', stDefeated:'Derrotados', stXpGain:'XP ganada', stCaptures:'Capturas', stGold:'Oro de la sesión', stLoot:'Loot (venta)', stCapSell:'Capturas (venta)', stSupply:'Suministros gastados', stBalls:'balls', stPots:'curas', stBalance:'Balance de la sesión', stDrops:'Drops de la sesión', stAccount:'Cuenta', stProfession:'Profesión', stMail:'Regalos en el correo', stCatchTotal:'Capturas totales', stTeam:'Equipo',
       cards:'🍃 Simple', cardsShort:'Simple', cardsTitle:'Modo simple y ultraligero: oculta el juego y muestra solo los números, gastando lo mínimo del PC (el farmeo sigue)', cdGold:'oro/h neto', cdXp:'XP/h total', cdKills:'kills/h', cdCaps:'capturas (sesión)', cdShiny:'shiny enc/cap', cdActive:'cuentas activas', cdByAcc:'Por cuenta · clic en el encabezado para ordenar, en la fila para abrir el juego', cdTrend:'Tendencia · última hora', cdCatches:'Últimas capturas · todas las cuentas', cdShinies:'Apariciones de shiny ✨', cdConta:'Cuenta', cdHunt:'Hunt', cdStatus:'Estado', cdBest:'Mejor catch', cdLast:'Último catch', cdWaiting:'esperando…', cdOff:'apagado', cdHunting:'cazando', cdTotal:'Total', cdSeen:'aparecieron', cdCaught:'capturados', cdLost:'perdidos', cdNone:'nada todavía',
       cdHunts:'Ranking de hunts', cdShared:'Compartidos en el chat', cdFirst:'1ª captura de la especie', cdSortPrice:'Valor ↓', cdSortXp:'XP ↓', cdSortEff:'Efectividad ↓', cdSortMeasured:'Medido: oro/h ↓', cdMeasured:'tu promedio', cdEffOf:'efectividad vs líder de', cdLoading:'cargando datos del juego…', stLastCatch:'Último catch', stSince:'balls desde entonces',
@@ -748,6 +494,7 @@ const HOME_URL  = 'https://huntera.com.br/';
         if (!e.url.startsWith(LOGIN_URL)) return;
         if (Date.now() - lastLogin[i] < 15000) return; // ja tentou ha pouco: nao ressubmete em loop
         lastLogin[i] = Date.now();
+        resumoResetSessao(i); // relogou: o gold/h da sessao recomeca do gold que aparecer agora
         loginPanel(wv, c);
       });
 
@@ -802,7 +549,7 @@ const HOME_URL  = 'https://huntera.com.br/';
     panel.classList.toggle('off', off[i]);
     btn.classList.toggle('isoff', off[i]);
     if (off[i]) { webviews[i].src = 'about:blank'; dot.className = 'dot off'; status.textContent = t('stOff'); }
-    else { dot.className = 'dot'; status.textContent = t('stLoading'); webviews[i].src = START_URL; }
+    else { dot.className = 'dot'; status.textContent = t('stLoading'); webviews[i].src = START_URL; resumoResetSessao(i); }
   }
 
   function loginPanel(wv, cred) {
@@ -1038,6 +785,123 @@ const HOME_URL  = 'https://huntera.com.br/';
     const nome = (accounts[i] && accounts[i].name) || defName(i);
     try { window.pokeAPI.notify('IdleGrid', nome + ' ' + t(chave)); } catch {}
   }
+
+  // ----- Resumo: gold/level/HP/XP de cada conta, lido do próprio HUD do jogo -----
+  // Seletores conferidos nos logs de descoberta do Huntera Auto Hunt (huntera.com.br):
+  // #header-gold é o botão "Seu gold" na barra de cima, e .hud-bar-panel concentra
+  // HP/HPmax, mana, "Lv N" e a % de XP num único bloco de texto. Só leitura, nenhum clique.
+  const RESUMO_READ_SCRIPT = `(() => {
+    try {
+      const g = document.getElementById('header-gold');
+      const gold = g ? parseInt((g.textContent || '').replace(/[^0-9]/g, ''), 10) : NaN;
+      const bar = document.querySelector('.hud-bar-panel');
+      let hp = null, hpMax = null, level = null, xp = null;
+      if (bar) {
+        const txt = bar.textContent || '';
+        const mHp = txt.match(/(\\d+)\\/(\\d+)/);
+        if (mHp) { hp = +mHp[1]; hpMax = +mHp[2]; }
+        const mLv = txt.match(/Lv\\s*(\\d+)/i);
+        if (mLv) level = +mLv[1];
+        const mXp = txt.match(/([\\d.]+)\\s*%/);
+        if (mXp) xp = +mXp[1];
+      }
+      return { gold: Number.isFinite(gold) ? gold : null, hp, hpMax, level, xp };
+    } catch { return null; }
+  })()`;
+
+  let resumoOn = lsGet('resumoOn') === '1'; // desligado por padrão: só le/atualiza quando aberto
+  const resumoData = [null, null, null, null]; // por painel: { gold, hp, hpMax, level, xp, sessGold, sessTs }
+  let resumoTimer = null;
+
+  function resumoResetSessao(i) { resumoData[i] = null; } // chamado quando a conta faz login de novo
+
+  async function resumoPollUma(i) {
+    if (off[i] || !webviews[i]) return;
+    let r = null;
+    try { r = await webviews[i].executeJavaScript(RESUMO_READ_SCRIPT); } catch {}
+    if (!r) return; // painel ainda carregando, ou fora da tela do personagem: mantém o último valor
+    const prev = resumoData[i];
+    const agora = Date.now();
+    let sessGold = prev ? prev.sessGold : r.gold;
+    let sessTs = prev ? prev.sessTs : agora;
+    if (sessGold == null && r.gold != null) { sessGold = r.gold; sessTs = agora; } // primeira leitura valida vira o marco 0
+    resumoData[i] = { gold: r.gold, hp: r.hp, hpMax: r.hpMax, level: r.level, xp: r.xp, sessGold, sessTs };
+  }
+
+  function resumoPollTodos() { for (let i = 0; i < webviews.length; i++) resumoPollUma(i); }
+
+  // Só liga o polling enquanto o painel está de verdade na tela: ler o HUD de 4 abas
+  // o tempo todo, mesmo escondido, seria gasto de CPU à toa (mesmo raciocínio do modo Eco).
+  function resumoIniciarPolling() {
+    if (resumoTimer) return;
+    resumoPollTodos();
+    resumoTimer = setInterval(resumoPollTodos, 6000);
+  }
+  function resumoPararPolling() { if (resumoTimer) { clearInterval(resumoTimer); resumoTimer = null; } }
+
+  function resumoFmt(n) {
+    if (n == null) return '-';
+    const a = Math.abs(n);
+    if (a >= 1e6) return (n / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + 'M';
+    if (a >= 1e3) return (n / 1e3).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + 'k';
+    return String(n);
+  }
+
+  function resumoRender() {
+    const body = document.getElementById('rsBody');
+    const linhas = [];
+    let totalGold = 0, totalGph = 0, online = 0, algumDado = false;
+    for (let i = 0; i < count; i++) {
+      const d = resumoData[i];
+      const nome = (accounts[i] && accounts[i].name) || defName(i);
+      const cor = ACOR[i] || '#8b949e';
+      if (!d || d.gold == null) {
+        linhas.push('<div class="rs-card"><div class="rs-l1"><span class="rs-dot" style="background:' + cor + '"></span>'
+          + '<span class="rs-nm">' + (nome.replace(/[<>&]/g, '')) + '</span></div></div>');
+        continue;
+      }
+      algumDado = true;
+      if (!off[i]) online++;
+      const horas = Math.max((Date.now() - d.sessTs) / 3600000, 1 / 3600);
+      const ganho = d.gold - d.sessGold;
+      const gph = ganho / horas;
+      totalGold += d.gold; totalGph += gph;
+      const pct = d.hpMax ? Math.max(2, Math.min(100, Math.round((d.hp / d.hpMax) * 100))) : 100;
+      const nivelBarra = pct >= 55 ? '' : pct >= 22 ? 'md' : 'lo';
+      linhas.push('<div class="rs-card">'
+        + '<div class="rs-l1"><span class="rs-dot' + (off[i] ? '' : ' on') + '" style="background:' + cor + ';color:' + cor + '"></span>'
+        + '<span class="rs-nm">' + (nome.replace(/[<>&]/g, '')) + '</span>'
+        + '<span class="rs-lv">' + (d.level != null ? 'Lv ' + d.level : '') + '</span></div>'
+        + '<div class="rs-l2"><span class="rs-hpbar"><i class="' + nivelBarra + '" style="width:' + pct + '%"></i></span>'
+        + '<span class="rs-xp">' + (d.xp != null ? d.xp.toFixed(1) + '%' : '') + '</span></div>'
+        + '<div class="rs-l3"><span class="rs-gold">' + resumoFmt(d.gold) + '</span>'
+        + '<span class="rs-gph' + (gph > 0 ? '' : ' zero') + '">' + (gph !== 0 ? (gph > 0 ? '+' : '') + resumoFmt(Math.round(gph)) + '/h' : '-/h') + '</span></div>'
+        + '</div>');
+    }
+    const empty = document.getElementById('rsEmpty');
+    if (!algumDado) { body.innerHTML = '<div class="rs-empty" id="rsEmpty">' + t('rsWaiting') + '</div>'; }
+    else body.innerHTML = linhas.join('');
+    document.getElementById('rsFGold').textContent = algumDado ? resumoFmt(totalGold) : '-';
+    document.getElementById('rsFSub').textContent = (algumDado ? (totalGph >= 0 ? '+' : '') + resumoFmt(Math.round(totalGph)) + '/h' : '-/h') + ' · ' + online + ' ' + t('rsOnline');
+  }
+
+  const resumoBtn = document.getElementById('resumoBtn');
+  const resumoEl = document.getElementById('resumo');
+  function applyResumo() {
+    resumoBtn.textContent = t('resumo'); resumoBtn.title = t('resumoTitle');
+    resumoBtn.classList.toggle('on', resumoOn);
+    resumoEl.classList.toggle('show', resumoOn);
+    document.body.classList.toggle('stats-open', resumoOn);
+    document.getElementById('rsTitle').textContent = t('resumo').replace(/^\S+\s/, '');
+    document.getElementById('rsFGold').parentElement.querySelector('.k').textContent = t('rsGoldTotal');
+    if (resumoOn) { resumoIniciarPolling(); resumoRender(); } else resumoPararPolling();
+    lsSet('resumoOn', resumoOn ? '1' : '0');
+  }
+  resumoBtn.onclick = () => { resumoOn = !resumoOn; applyResumo(); menu.classList.remove('show'); };
+  document.getElementById('rsClose').onclick = () => { resumoOn = false; applyResumo(); };
+  // Redesenha a cada 3s (dado já em memória, não le a tela de novo): mantém o "Xh de sessão" fluindo
+  // sem custo, o polling de verdade (que abre o webview) continua no ritmo mais lento acima.
+  setInterval(() => { if (resumoOn) resumoRender(); }, 3000);
   // ----- Idioma: aplica na interface e (ao trocar) no jogo -----
   const langBtns = Array.from(document.querySelectorAll('#langRow button'));
   function applyLang() {
@@ -1066,7 +930,7 @@ const HOME_URL  = 'https://huntera.com.br/';
       p.querySelector('.expand').title = t('tExpand');
       p.querySelector('.power').title = t('tPower');
     });
-    applyMute(); applyEco(); applyAwake(); applyMinTray(); applyAlerts(); aplicaCountLayout();
+    applyMute(); applyEco(); applyAwake(); applyMinTray(); applyAlerts(); applyResumo(); aplicaCountLayout();
     lsSet('lang', lang);
   }
   langBtns.forEach(b => b.onclick = () => { if (lang === b.dataset.lang) return; lang = b.dataset.lang; applyLang(); });
