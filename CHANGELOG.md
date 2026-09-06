@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.2.0
+
+- **Corrigido: auto-aceitar party não entrava na party.** O convite de ENTRAR no grupo ("Convite de party", botão "Entrar") é um card diferente do convite de caçada em grupo ("Aceitar"), achado revisando a v2.1.0 antes de fechar a feature — o texto do botão só cobria o segundo caso.
+  *Fixed: auto-accept party never actually joined the party. The join-group invite ("Convite de party", "Entrar" button) is a different card from the group-hunt invite ("Aceitar"), found while reviewing v2.1.0 before calling the feature done — the button-text match only covered the second case.*
+- **Novo: Auto-aceitar rateio de custos**, toggle separado do auto-aceitar party de propósito — esse mexe com o seu gold, então não vem junto de graça quando você liga o outro.
+  *New: Auto-accept cost split, a toggle kept separate from auto-accept party on purpose — this one touches your gold, so it never comes bundled for free when you turn the other one on.*
+- **Novo: Fechar diálogo perdido.** Fecha sozinho o aviso "iniciar sem o time?" quando ele fica preso na tela (caso descrito nas notas do Huntera Auto Hunt), sempre escolhendo Cancelar. Escopo enxuto de propósito: só esse diálogo específico, nunca "qualquer confirmação", pra não descartar um texto que você estava digitando em outra janela do jogo.
+  *New: Close stray dialog. Closes the "start without the team?" warning on its own when it gets stuck on screen (a case described in the Huntera Auto Hunt notes), always choosing Cancel. Deliberately narrow scope: only this specific dialog, never "any confirmation", so it never discards text you were typing in another game window.*
+
 ## 2.1.0
 
 - **Painel de Resumo**: gold, level, HP e gold/h de cada conta, lido direto do HUD do jogo (`#header-gold`, `.hud-bar-panel`), sem clicar em nada. Botão 📊 Resumo no menu ☰.

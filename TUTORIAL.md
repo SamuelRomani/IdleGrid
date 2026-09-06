@@ -38,6 +38,17 @@ Pronto, isso não precisa fazer de novo.
 2. O **"Confirme que é humano"** é sempre você que resolve. O app nunca faz isso no seu lugar.
 3. Clique em **👤 Treinadores**, preencha e-mail e senha de cada conta e salve. Da próxima vez o app entra sozinho.
 
+## Passo 5: recursos extras (todos opcionais, desligados por padrão)
+
+Ficam no menu **☰ Opções**, no topo do app.
+
+- **📊 Resumo**: abre uma barra lateral com gold, level, HP e gold/h de cada conta — só leitura, não clica em nada. Bom pra acompanhar o progresso sem precisar entrar em cada quadradinho.
+- **🎉 Auto-aceitar party**: quando alguém te chama pra uma party (ou pra começar a caçada em grupo), o app aceita sozinho. Não mexe em gold.
+- **💰 Auto-aceitar rateio**: liga separado do de cima de propósito, porque esse aceita sozinho quando o líder propõe dividir os custos da caçada — e isso desconta do seu gold. Só ligue se confia em quem lidera a party.
+- **🧹 Fechar diálogo perdido**: se o aviso "iniciar sem o time?" ficar preso na tela sem ninguém ter clicado nele, o app fecha sozinho escolhendo sempre **Cancelar** — nunca confirma nada.
+
+Nenhum desses caça, usa skill ou vende item por você. O app continua só organizando as contas e resolvendo esses convites/avisos específicos, se você ligar.
+
 ## Para atualizar depois
 
 Baixe o ZIP de novo (Passo 2) e substitua a pasta antiga. Suas contas continuam salvas.

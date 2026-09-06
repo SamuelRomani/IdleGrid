@@ -57,7 +57,9 @@ That is it. Log in or create an account in each panel and, under "Treinadores" (
 - Run 1 to 4 accounts, you choose how many panels to open.
 - Auto login, even when the session expires in the middle of a farm.
 - Summary panel: gold, level and gold/h per account, read straight from the game screen.
-- Auto-accept party: accepts the group hunt invite on its own (off by default, toggle it in the ☰ menu).
+- Auto-accept party: accepts both the join-group and the group-hunt invites on its own (off by default, toggle it in the ☰ menu).
+- Auto-accept cost split: accepts it on its own when the leader turns on hunt cost-splitting — a separate toggle from the one above, since this one touches your gold (off by default).
+- Close stray dialog: if the "start without the team?" warning gets stuck on screen, closes it on its own, always choosing Cancel (off by default).
 - Eco mode that keeps CPU use down without hurting progress.
 - Notifies you when an account drops.
 - Turn each panel on or off, zoom, full screen and keyboard shortcuts.
