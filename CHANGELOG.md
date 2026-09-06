@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.3.0
+
+- **Versão visível na interface**: a barra de cima agora mostra "vX.Y.Z" ao lado do logo.
+  *Version shown in the interface: the top bar now shows "vX.Y.Z" next to the logo.*
+- **Aviso de atualização**: ao abrir, o app compara sua versão com o `package.json` do branch `main` no GitHub e mostra um botão "🔄 Atualização disponível" se houver uma mais nova. O botão só abre a página do repositório — o app não baixa nem aplica nada sozinho, porque não existe instalador nem auto-update de verdade (você atualiza baixando o ZIP de novo ou com `git pull`).
+  *Update notice: on launch, the app compares its version against `main`'s `package.json` on GitHub and shows a "🔄 Update available" button if there's a newer one. The button only opens the repository page — the app never downloads or applies anything on its own, since there is no installer or real auto-update (you update by re-downloading the ZIP or running `git pull`).*
+
 ## 2.2.0
 
 - **Corrigido: auto-aceitar party não entrava na party.** O convite de ENTRAR no grupo ("Convite de party", botão "Entrar") é um card diferente do convite de caçada em grupo ("Aceitar"), achado revisando a v2.1.0 antes de fechar a feature — o texto do botão só cobria o segundo caso.

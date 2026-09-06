@@ -60,6 +60,7 @@ That is it. Log in or create an account in each panel and, under "Treinadores" (
 - Auto-accept party: accepts both the join-group and the group-hunt invites on its own (off by default, toggle it in the ☰ menu).
 - Auto-accept cost split: accepts it on its own when the leader turns on hunt cost-splitting — a separate toggle from the one above, since this one touches your gold (off by default).
 - Close stray dialog: if the "start without the team?" warning gets stuck on screen, closes it on its own, always choosing Cancel (off by default).
+- Shows its own version in the top bar, and lets you know (without downloading anything on its own) when the repository's `main` is newer than your copy.
 - Eco mode that keeps CPU use down without hurting progress.
 - Notifies you when an account drops.
 - Turn each panel on or off, zoom, full screen and keyboard shortcuts.

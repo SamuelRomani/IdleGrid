@@ -210,6 +210,38 @@ ipcMain.handle('webhook:send', (_e, url, text) => {
 });
 
 
+// Versao do app (mostrada na interface) e checagem de atualizacao. Como nao existe
+// instalador nem auto-update de verdade (o README pede pra baixar o ZIP de novo), a
+// "versao mais nova" e simplesmente o que esta hoje no package.json do branch main --
+// e exatamente pra la que um "baixar de novo" leva o usuario.
+ipcMain.handle('app:getVersion', () => app.getVersion());
+
+const versaoMaior = (a, b) => { // true se a > b, comparando x.y.z numericamente
+  const pa = String(a).split('.').map(Number), pb = String(b).split('.').map(Number);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const na = pa[i] || 0, nb = pb[i] || 0;
+    if (na !== nb) return na > nb;
+  }
+  return false;
+};
+ipcMain.handle('app:checkUpdate', () => new Promise((resolve) => {
+  const atual = app.getVersion();
+  const req = https.get('https://raw.githubusercontent.com/SamuelRomani/IdleGrid/main/package.json', { headers: { 'User-Agent': 'IdleGrid' } }, (res) => {
+    if (res.statusCode !== 200) { res.resume(); return resolve(null); }
+    let corpo = '';
+    res.on('data', (d) => { corpo += d; if (corpo.length > 20000) req.destroy(); }); // trava payload inflado
+    res.on('end', () => {
+      try {
+        const ultima = JSON.parse(corpo).version;
+        if (typeof ultima !== 'string' || !/^\d+\.\d+\.\d+$/.test(ultima)) return resolve(null);
+        resolve({ atual, ultima, desatualizada: versaoMaior(ultima, atual) });
+      } catch { resolve(null); }
+    });
+  });
+  req.on('error', () => resolve(null));
+  req.setTimeout(8000, () => req.destroy());
+}));
+
 let tray; // referencia viva para o icone nao sumir (GC)
 
 app.whenReady().then(() => {

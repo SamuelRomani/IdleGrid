@@ -62,6 +62,7 @@ Pronto. Entre ou crie uma conta em cada painel e, em "Treinadores", salve o logi
 - Auto-aceitar party: aceita sozinho o convite de entrar no grupo e o de caçada em grupo (desligado por padrão, liga no menu ☰).
 - Auto-aceitar rateio: aceita sozinho quando o líder liga o rateio de custos da hunt — toggle separado do de cima, porque esse mexe com o seu gold (desligado por padrão).
 - Fechar diálogo perdido: se o aviso "iniciar sem o time?" ficar preso na tela, fecha sozinho escolhendo sempre Cancelar (desligado por padrão).
+- Mostra a própria versão na barra de cima, e avisa (sem baixar nada sozinho) quando o `main` do repositório está mais novo que a sua cópia.
 - Modo Eco que segura o uso de CPU sem atrapalhar o progresso.
 - Avisa por notificação quando uma conta cai.
 - Liga e desliga cada painel, zoom, tela cheia e atalhos de teclado.
