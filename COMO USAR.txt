@@ -62,6 +62,28 @@ PASSO 4 - USAR
      conta e salve. Da proxima vez o app entra sozinho.
 
 
+PASSO 5 - RECURSOS EXTRAS (opcionais, desligados por padrao)
+--------------------------------------------------------------
+Ficam no menu "Opcoes", no topo do app.
+
+  * RESUMO: abre uma barra lateral com gold, level, HP e gold/h
+    de cada conta -- so leitura, nao clica em nada.
+  * AUTO-ACEITAR PARTY: quando alguem te chama pra uma party (ou
+    pra comecar a cacada em grupo), o app aceita sozinho. Nao
+    mexe em gold.
+  * AUTO-ACEITAR RATEIO: fica separado do de cima de proposito,
+    porque esse aceita sozinho quando o lider propoe dividir os
+    custos da cacada -- e isso desconta do seu gold. So ligue se
+    confia em quem lidera a party.
+  * FECHAR DIALOGO PERDIDO: se o aviso "iniciar sem o time?"
+    ficar preso na tela sem ninguem ter clicado, o app fecha
+    sozinho escolhendo sempre Cancelar -- nunca confirma nada.
+
+Nenhum desses caca, usa skill ou vende item por voce. O app
+continua so organizando as contas e resolvendo esses convites/
+avisos especificos, se voce ligar.
+
+
 PARA ATUALIZAR DEPOIS
 ---------------------
 Baixe o ZIP de novo (Passo 2) e substitua a pasta antiga.
