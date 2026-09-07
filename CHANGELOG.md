@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.5.2
+
+- **Corrigido um bug sério no `atualizar.bat` da v2.5.0: ele podia travar com "`.` foi inesperado neste momento" durante uma atualização de verdade.** Causa raiz: o próprio script sobrescreve `atualizar.bat` no meio da execução (tanto o `git pull` quanto a cópia do ZIP trazem um `atualizar.bat` novo), e o `cmd.exe` lê o `.bat` do disco por posição de byte enquanto roda — quando o arquivo muda embaixo dele, ele passa a ler bytes de um arquivo diferente do que começou e trava com erros sem sentido. Agora o `main.js` copia o script pra uma pasta temporária antes de rodar (nunca executa o arquivo que está na própria pasta do app, que é o que pode ser sobrescrito), passando a pasta de destino real por parâmetro. Reproduzido e confirmado corrigido com testes de ponta a ponta nos dois caminhos (git pull e ZIP).
+  *Fixed a serious bug in v2.5.0's `atualizar.bat`: it could hang with "'.' was unexpected at this time" during a real update. Root cause: the script overwrites `atualizar.bat` itself mid-run (both git pull and the ZIP copy bring a new `atualizar.bat`), and cmd.exe reads the .bat file from disk by byte position while running -- once the file changes underneath it, it starts reading bytes from a different file than the one it started with and hangs with nonsensical errors. main.js now copies the script to a temp folder before running it (never executes the file sitting in the app's own folder, which is the one that can get overwritten), passing the real target folder as a parameter. Reproduced and confirmed fixed with end-to-end tests on both paths (git pull and ZIP).*
+- Adicionado `.gitattributes` travando `*.bat` em `CRLF`, pra essa classe de bug (terminação de linha errada corrompendo o parser do cmd.exe) não voltar por acidente.
+  *Added `.gitattributes` locking `*.bat` to CRLF, so this class of bug (wrong line endings corrupting cmd.exe's parser) cannot come back by accident.*
+- **"Treinadores" virou "Contas"** em toda a interface e documentação (botão, modal, nome padrão de cada conta) -- termo mais direto pro que a seção realmente faz, sem o resquício temático de Pokémon do PokeGrid.
+  *"Treinadores" (Trainers) became "Contas" (Accounts) throughout the interface and docs (button, modal, each account's default name) -- a more direct term for what the section actually does, dropping the leftover Pokémon theming from PokeGrid.*
+
 ## 2.5.1
 
 - **Ícone da barra de cima trocado pro `tray.png` do projeto** (o mesmo usado na janela e na bandeja), no lugar do SVG de pokébola antigo.

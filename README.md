@@ -52,7 +52,7 @@ No macOS ou Linux, abra o terminal na pasta e rode:
 bash iniciar.sh
 ```
 
-Pronto. Entre ou crie uma conta em cada painel e, em "Treinadores", salve o login. Da próxima vez ele entra sozinho.
+Pronto. Entre ou crie uma conta em cada painel e, em "Contas", salve o login. Da próxima vez ele entra sozinho.
 
 ## O que ele faz
 
