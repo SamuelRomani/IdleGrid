@@ -58,7 +58,7 @@ PASSO 4 - USAR
      (ou crie uma).
   2. O "Confirme que e humano" e SEMPRE voce que resolve. O app
      nunca faz isso no seu lugar.
-  3. Clique em "Treinadores", preencha e-mail e senha de cada
+  3. Clique em "Contas", preencha e-mail e senha de cada
      conta e salve. Da proxima vez o app entra sozinho.
 
 
@@ -97,6 +97,6 @@ DEU PROBLEMA?
 -------------
 - "iniciar.bat" abre e fecha na hora: o Node.js nao foi
   instalado. Refaca o Passo 1.
-- Uma conta nao entra sozinha: abra "Treinadores" e confira o
+- Uma conta nao entra sozinha: abra "Contas" e confira o
   e-mail e a senha daquela conta.
 - Travando ou lento: ligue o "Eco" no menu "Opcoes".

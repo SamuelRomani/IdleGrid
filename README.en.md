@@ -50,7 +50,7 @@ On macOS or Linux, open a terminal in the folder and run:
 bash iniciar.sh
 ```
 
-That is it. Log in or create an account in each panel and, under "Treinadores" (Accounts), save the login. Next time it signs in on its own.
+That is it. Log in or create an account in each panel and, under "Accounts", save the login. Next time it signs in on its own.
 
 ## What it does
 

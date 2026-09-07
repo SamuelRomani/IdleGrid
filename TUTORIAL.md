@@ -36,7 +36,7 @@ Pronto, isso não precisa fazer de novo.
 
 1. Em cada quadradinho, entre na sua conta do huntera.com.br (ou crie uma)
 2. O **"Confirme que é humano"** é sempre você que resolve. O app nunca faz isso no seu lugar.
-3. Clique em **👤 Treinadores**, preencha e-mail e senha de cada conta e salve. Da próxima vez o app entra sozinho.
+3. Clique em **👤 Contas**, preencha e-mail e senha de cada conta e salve. Da próxima vez o app entra sozinho.
 
 ## Passo 5: recursos extras (todos opcionais, desligados por padrão)
 
@@ -55,5 +55,5 @@ Quando sair uma versão nova, aparece um botão **🔄 Atualização disponível
 ## Deu algum problema?
 
 - **"iniciar.bat" abre e fecha na hora:** provavelmente o Node.js não foi instalado. Refaça o Passo 1.
-- **Uma conta não entra sozinha:** abra os **👤 Treinadores** e confira se o e-mail e a senha daquela conta estão certos.
+- **Uma conta não entra sozinha:** abra os **👤 Contas** e confira se o e-mail e a senha daquela conta estão certos.
 - **Trava ou fica lento:** ligue o **⚡ Eco** no menu **☰ Opções**, ele segura o uso de CPU.

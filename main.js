@@ -292,8 +292,16 @@ ipcMain.handle('app:runUpdate', async () => {
     });
     if (r.response !== 0) return { ok: false, motivo: 'cancelado' };
     try {
+      // Roda a partir de uma COPIA em pasta temporaria, nunca do arquivo original: o git pull
+      // (ou a copia do ZIP) escreve um atualizar.bat novo por cima da propria pasta do app
+      // enquanto o script ainda esta rodando, e o cmd.exe le o .bat do disco por posicao de
+      // byte -- se o arquivo original mudar no meio da execucao, ele passa a ler lixo do
+      // arquivo novo e trava com erros sem sentido. A pasta de destino de verdade vai por
+      // parametro (%1), porque a copia roda fora da pasta do app.
+      const batCopia = path.join(app.getPath('temp'), 'idlegrid-atualizar.bat');
+      fs.copyFileSync(bat, batCopia);
       // janela propria (start ""), destacado do processo do Electron: sobrevive ao app.quit()
-      spawn('cmd.exe', ['/c', 'start', '""', '/D', app.getAppPath(), 'atualizar.bat'], { detached: true, stdio: 'ignore' }).unref();
+      spawn('cmd.exe', ['/c', 'start', '""', batCopia, app.getAppPath()], { detached: true, stdio: 'ignore' }).unref();
     } catch (e) { logErro('atualizar', String((e && e.message) || e)); return { ok: false, motivo: 'erro' }; }
     setTimeout(() => app.quit(), 300); // da tempo do spawn soltar antes do processo morrer
     return { ok: true };
