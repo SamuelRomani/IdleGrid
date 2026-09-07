@@ -57,8 +57,7 @@ That is it. Log in or create an account in each panel and, under "Treinadores" (
 - Run 1 to 4 accounts, you choose how many panels to open.
 - Auto login, even when the session expires in the middle of a farm.
 - Summary panel: gold, level and gold/h per account, read straight from the game screen.
-- Auto-accept party: accepts both the join-group and the group-hunt invites on its own (off by default, toggle it in the ☰ menu).
-- Auto-accept cost split: accepts it on its own when the leader turns on hunt cost-splitting — a separate toggle from the one above, since this one touches your gold (off by default).
+- Auto-accept invites: a single toggle (off by default, in the ☰ menu) that accepts the join-group invite, the group-hunt invite, the leader's hunt swaps (that's how "following the leader" works) and the cost split — the last one touches your gold, so only turn it on if you trust whoever leads the party.
 - Close stray dialog: if the "start without the team?" warning gets stuck on screen, closes it on its own, always choosing Cancel (off by default).
 - Shows its own version in the top bar, and lets you know (without downloading anything on its own) when the repository's `main` is newer than your copy.
 - Eco mode that keeps CPU use down without hurting progress.

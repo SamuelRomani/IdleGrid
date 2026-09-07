@@ -182,8 +182,7 @@
         <button id="scriptsBtn" title="Rode userscripts nos painéis">🧩 Scripts</button>
         <button id="count" title="Quantas contas rodar ao mesmo tempo (1 a 4)">🔢 Painéis: 4</button>
         <button id="resumoBtn" title="Gold, level e gold/h de cada conta, lido da própria tela do jogo">📊 Resumo</button>
-        <button id="partyAccept" title="Aceita sozinho o convite de party (caçada em grupo) assim que ele aparece na tela">🎉 Auto-aceitar party</button>
-        <button id="partyCosts" title="Aceita sozinho o rateio de custos da hunt proposto pelo líder (mexe com o seu gold)">💰 Auto-aceitar rateio</button>
+        <button id="autoAceitar" title="Aceita sozinho convite de party, caçada em grupo, troca de caçada do líder e rateio de custos (mexe com o seu gold)">🎉 Auto-aceitar convites</button>
         <button id="strayDialog" title="Fecha sozinho o diálogo 'iniciar sem o time?' quando ele fica preso na tela, sempre escolhendo Cancelar">🧹 Fechar diálogo perdido</button>
         <button id="alerts" title="Avisa quando uma conta cai">🔔 Alertas</button>
         <button id="muteAll">🔊 Som</button>
@@ -302,13 +301,13 @@ const HOME_URL  = 'https://huntera.com.br/';
   // ----- Idioma (interface + jogo) -----
   const I18N = {
     pt: {
-      loginAll:'▶ Logar equipe', accounts:'👤 Treinadores', reloadAll:'⟳ Atualizar tudo', updateBtn:'🔄 Atualização disponível', updateTitle:'Tem uma versão nova ({v}) no repositório. Clique pra abrir a página e baixar de novo (ou dar git pull).', layout:'▦ Grade', layoutCol:'▤ Uma coluna', asOn:'🚀 Abre com o Windows', asOff:'🚀 Abrir com o Windows', asTitle:'Cria um atalho do IdleGrid na pasta Inicializar do Windows, o mesmo lugar onde você colocaria um atalho à mão. Não mexe no registro e você pode remover pelo Win+R > shell:startup.', layoutRow:'▥ Uma linha', layoutTitle:'Como os painéis se organizam. Clique pra alternar: grade, uma coluna (empilhado) ou uma linha (lado a lado).', sound:'🔊 Som', muted:'🔇 Mudo', eco:'⚡ Eco', ecoOff:'⚡ Eco off', sleep:'💤 Dormir', awake:'☕ Acordado', optionsBtn:'☰ Opções', errlog:'🐞 Erros', errlogTitle:'Abre o relatório de erros. Se o app travar ou fechar sozinho, envie esse arquivo pro suporte.', accClear:'Limpar esta conta', alerts:'🔔 Alertas', alertsTitle:'Avisa por notificação quando uma conta cai', msgDown:'caiu', count:'🔢 Painéis', resumo:'📊 Resumo', resumoTitle:'Gold, level e gold/h de cada conta, lido da própria tela do jogo', rsWaiting:'Aguardando dados do jogo…', rsGoldTotal:'gold total', rsOnline:'online', partyAccept:'🎉 Auto-aceitar party', partyAcceptTitle:'Aceita sozinho o convite de party (caçada em grupo) assim que ele aparece na tela', partyCosts:'💰 Auto-aceitar rateio', partyCostsTitle:'Aceita sozinho o rateio de custos da hunt proposto pelo líder (mexe com o seu gold)', strayDialog:'🧹 Fechar diálogo perdido', strayDialogTitle:'Fecha sozinho o diálogo "iniciar sem o time?" quando ele fica preso na tela, sempre escolhendo Cancelar', stLoading:'carregando…', stOnline:'online', stError:'erro', stOff:'desligada', trainer:'Treinador', tZoomOut:'Diminuir zoom', tZoomIn:'Aumentar zoom', tReload:'Recarregar', tExpand:'Expandir (Ctrl+número)', tPower:'Desligar / ligar', tRename:'Clique duplo para renomear', promptRename:'Nome do treinador:', mH2:'Treinadores salvos', mHint:'Preencha e-mail/usuário e senha de cada painel. As senhas ficam criptografadas neste PC. "Logar equipe" entra automaticamente onde houver dados, e se a sessão cair o painel loga sozinho.', mName:'Nome', mEmail:'E-mail ou usuário', mPass:'Senha', mCancel:'Cancelar', mSave:'Salvar', awakeTitle:'Impede o PC de dormir enquanto farma (a tela ainda pode desligar)', minTrayOn:'📥 Minimiza p/ bandeja', minTrayOff:'📥 Minimiza normal', minTrayTitle:'O que o botão minimizar faz: esconder na bandeja (ícone perto do relógio) ou minimizar normal na barra de tarefas', bkExp:'💾 Exportar config', bkImp:'📂 Importar config', bkExpTitle:'Salva um arquivo com todas as configurações e o histórico (senhas ficam fora)', bkImpTitle:'Restaura configurações e histórico de um arquivo exportado', bkConfirm:'Substituir as configurações atuais pelas do arquivo? O app vai recarregar. (Senhas não são afetadas.)', bkBad:'Arquivo inválido.'
+      loginAll:'▶ Logar equipe', accounts:'👤 Treinadores', reloadAll:'⟳ Atualizar tudo', updateBtn:'🔄 Atualização disponível', updateTitle:'Tem uma versão nova ({v}) no repositório. Clique pra abrir a página e baixar de novo (ou dar git pull).', layout:'▦ Grade', layoutCol:'▤ Uma coluna', asOn:'🚀 Abre com o Windows', asOff:'🚀 Abrir com o Windows', asTitle:'Cria um atalho do IdleGrid na pasta Inicializar do Windows, o mesmo lugar onde você colocaria um atalho à mão. Não mexe no registro e você pode remover pelo Win+R > shell:startup.', layoutRow:'▥ Uma linha', layoutTitle:'Como os painéis se organizam. Clique pra alternar: grade, uma coluna (empilhado) ou uma linha (lado a lado).', sound:'🔊 Som', muted:'🔇 Mudo', eco:'⚡ Eco', ecoOff:'⚡ Eco off', sleep:'💤 Dormir', awake:'☕ Acordado', optionsBtn:'☰ Opções', errlog:'🐞 Erros', errlogTitle:'Abre o relatório de erros. Se o app travar ou fechar sozinho, envie esse arquivo pro suporte.', accClear:'Limpar esta conta', alerts:'🔔 Alertas', alertsTitle:'Avisa por notificação quando uma conta cai', msgDown:'caiu', count:'🔢 Painéis', resumo:'📊 Resumo', resumoTitle:'Gold, level e gold/h de cada conta, lido da própria tela do jogo', rsWaiting:'Aguardando dados do jogo…', rsGoldTotal:'gold total', rsOnline:'online', autoAceitar:'🎉 Auto-aceitar convites', autoAceitarTitle:'Aceita sozinho o convite de party, a caçada em grupo, as trocas de caçada do líder (segue ele sozinho) e o rateio de custos (mexe com o seu gold) assim que aparecem na tela', strayDialog:'🧹 Fechar diálogo perdido', strayDialogTitle:'Fecha sozinho o diálogo "iniciar sem o time?" quando ele fica preso na tela, sempre escolhendo Cancelar', stLoading:'carregando…', stOnline:'online', stError:'erro', stOff:'desligada', trainer:'Treinador', tZoomOut:'Diminuir zoom', tZoomIn:'Aumentar zoom', tReload:'Recarregar', tExpand:'Expandir (Ctrl+número)', tPower:'Desligar / ligar', tRename:'Clique duplo para renomear', promptRename:'Nome do treinador:', mH2:'Treinadores salvos', mHint:'Preencha e-mail/usuário e senha de cada painel. As senhas ficam criptografadas neste PC. "Logar equipe" entra automaticamente onde houver dados, e se a sessão cair o painel loga sozinho.', mName:'Nome', mEmail:'E-mail ou usuário', mPass:'Senha', mCancel:'Cancelar', mSave:'Salvar', awakeTitle:'Impede o PC de dormir enquanto farma (a tela ainda pode desligar)', minTrayOn:'📥 Minimiza p/ bandeja', minTrayOff:'📥 Minimiza normal', minTrayTitle:'O que o botão minimizar faz: esconder na bandeja (ícone perto do relógio) ou minimizar normal na barra de tarefas', bkExp:'💾 Exportar config', bkImp:'📂 Importar config', bkExpTitle:'Salva um arquivo com todas as configurações e o histórico (senhas ficam fora)', bkImpTitle:'Restaura configurações e histórico de um arquivo exportado', bkConfirm:'Substituir as configurações atuais pelas do arquivo? O app vai recarregar. (Senhas não são afetadas.)', bkBad:'Arquivo inválido.'
     },
     en: {
-      loginAll:'▶ Log in all', accounts:'👤 Accounts', reloadAll:'⟳ Reload all', updateBtn:'🔄 Update available', updateTitle:'A newer version ({v}) is on the repository. Click to open the page and download it again (or run git pull).', layout:'▦ Grid', layoutCol:'▤ Single column', asOn:'🚀 Opens with Windows', asOff:'🚀 Open with Windows', asTitle:'Creates an IdleGrid shortcut in the Windows Startup folder, the same place you would put one by hand. It does not touch the registry and you can remove it via Win+R > shell:startup.', layoutRow:'▥ Single row', layoutTitle:'How the panels are arranged. Click to cycle: grid, single column (stacked) or single row (side by side).', sound:'🔊 Sound', muted:'🔇 Muted', eco:'⚡ Eco', ecoOff:'⚡ Eco off', sleep:'💤 Sleep', awake:'☕ Awake', optionsBtn:'☰ Options', errlog:'🐞 Errors', errlogTitle:'Opens the error report. If the app freezes or closes on its own, send this file to support.', accClear:'Clear this account', alerts:'🔔 Alerts', alertsTitle:'Notifies you when an account drops', msgDown:'disconnected', count:'🔢 Panels', resumo:'📊 Summary', resumoTitle:'Gold, level and gold/h per account, read straight from the game screen', rsWaiting:'Waiting for game data…', rsGoldTotal:'total gold', rsOnline:'online', partyAccept:'🎉 Auto-accept party', partyAcceptTitle:'Accepts the party invite (group hunt) on its own as soon as it shows up on screen', partyCosts:'💰 Auto-accept cost split', partyCostsTitle:"Accepts the leader's hunt cost-split proposal on its own (touches your gold)", strayDialog:'🧹 Close stray dialog', strayDialogTitle:'Closes the "start without the team?" dialog on its own when it gets stuck on screen, always choosing Cancel', stLoading:'loading…', stOnline:'online', stError:'error', stOff:'off', trainer:'Trainer', tZoomOut:'Zoom out', tZoomIn:'Zoom in', tReload:'Reload', tExpand:'Expand (Ctrl+number)', tPower:'Turn off / on', tRename:'Double-click to rename', promptRename:'Trainer name:', mH2:'Saved accounts', mHint:'Fill in the e-mail/username and password for each panel. Passwords are encrypted on this PC. "Log in all" signs in automatically where data exists, and if the session drops the panel logs in by itself.', mName:'Name', mEmail:'E-mail or username', mPass:'Password', mCancel:'Cancel', mSave:'Save', awakeTitle:'Keeps the PC awake while farming (the screen can still turn off)', minTrayOn:'📥 Minimize to tray', minTrayOff:'📥 Minimize normally', minTrayTitle:'What the minimize button does: hide to the tray (icon near the clock) or minimize normally to the taskbar', bkExp:'💾 Export config', bkImp:'📂 Import config', bkExpTitle:'Saves a file with all settings and history (passwords stay out)', bkImpTitle:'Restores settings and history from an exported file', bkConfirm:'Replace the current settings with the file? The app will reload. (Passwords are not affected.)', bkBad:'Invalid file.'
+      loginAll:'▶ Log in all', accounts:'👤 Accounts', reloadAll:'⟳ Reload all', updateBtn:'🔄 Update available', updateTitle:'A newer version ({v}) is on the repository. Click to open the page and download it again (or run git pull).', layout:'▦ Grid', layoutCol:'▤ Single column', asOn:'🚀 Opens with Windows', asOff:'🚀 Open with Windows', asTitle:'Creates an IdleGrid shortcut in the Windows Startup folder, the same place you would put one by hand. It does not touch the registry and you can remove it via Win+R > shell:startup.', layoutRow:'▥ Single row', layoutTitle:'How the panels are arranged. Click to cycle: grid, single column (stacked) or single row (side by side).', sound:'🔊 Sound', muted:'🔇 Muted', eco:'⚡ Eco', ecoOff:'⚡ Eco off', sleep:'💤 Sleep', awake:'☕ Awake', optionsBtn:'☰ Options', errlog:'🐞 Errors', errlogTitle:'Opens the error report. If the app freezes or closes on its own, send this file to support.', accClear:'Clear this account', alerts:'🔔 Alerts', alertsTitle:'Notifies you when an account drops', msgDown:'disconnected', count:'🔢 Panels', resumo:'📊 Summary', resumoTitle:'Gold, level and gold/h per account, read straight from the game screen', rsWaiting:'Waiting for game data…', rsGoldTotal:'total gold', rsOnline:'online', autoAceitar:'🎉 Auto-accept invites', autoAceitarTitle:"Accepts the party invite, the group hunt, the leader's hunt swaps (follows them automatically) and the cost split (touches your gold) as soon as they show up on screen", strayDialog:'🧹 Close stray dialog', strayDialogTitle:'Closes the "start without the team?" dialog on its own when it gets stuck on screen, always choosing Cancel', stLoading:'loading…', stOnline:'online', stError:'error', stOff:'off', trainer:'Trainer', tZoomOut:'Zoom out', tZoomIn:'Zoom in', tReload:'Reload', tExpand:'Expand (Ctrl+number)', tPower:'Turn off / on', tRename:'Double-click to rename', promptRename:'Trainer name:', mH2:'Saved accounts', mHint:'Fill in the e-mail/username and password for each panel. Passwords are encrypted on this PC. "Log in all" signs in automatically where data exists, and if the session drops the panel logs in by itself.', mName:'Name', mEmail:'E-mail or username', mPass:'Password', mCancel:'Cancel', mSave:'Save', awakeTitle:'Keeps the PC awake while farming (the screen can still turn off)', minTrayOn:'📥 Minimize to tray', minTrayOff:'📥 Minimize normally', minTrayTitle:'What the minimize button does: hide to the tray (icon near the clock) or minimize normally to the taskbar', bkExp:'💾 Export config', bkImp:'📂 Import config', bkExpTitle:'Saves a file with all settings and history (passwords stay out)', bkImpTitle:'Restores settings and history from an exported file', bkConfirm:'Replace the current settings with the file? The app will reload. (Passwords are not affected.)', bkBad:'Invalid file.'
     },
     es: {
-      loginAll:'▶ Iniciar equipo', accounts:'👤 Entrenadores', reloadAll:'⟳ Recargar todo', updateBtn:'🔄 Actualización disponible', updateTitle:'Hay una versión nueva ({v}) en el repositorio. Clic para abrir la página y descargarla de nuevo (o hacer git pull).', layout:'▦ Cuadrícula', layoutCol:'▤ Una columna', asOn:'🚀 Abre con Windows', asOff:'🚀 Abrir con Windows', asTitle:'Crea un acceso directo de IdleGrid en la carpeta Inicio de Windows, el mismo lugar donde lo pondrías a mano. No toca el registro y puedes quitarlo con Win+R > shell:startup.', layoutRow:'▥ Una fila', layoutTitle:'Cómo se organizan los paneles. Clic para alternar: cuadrícula, una columna (apilado) o una fila (lado a lado).', sound:'🔊 Sonido', muted:'🔇 Silencio', eco:'⚡ Eco', ecoOff:'⚡ Eco off', sleep:'💤 Dormir', awake:'☕ Despierto', optionsBtn:'☰ Opciones', errlog:'🐞 Errores', errlogTitle:'Abre el informe de errores. Si la app se congela o se cierra sola, envía este archivo al soporte.', accClear:'Limpiar esta cuenta', alerts:'🔔 Alertas', alertsTitle:'Avisa con notificación cuando una cuenta se cae', msgDown:'se desconectó', count:'🔢 Paneles', resumo:'📊 Resumen', resumoTitle:'Oro, nivel y oro/h de cada cuenta, leído de la propia pantalla del juego', rsWaiting:'Esperando datos del juego…', rsGoldTotal:'oro total', rsOnline:'online', partyAccept:'🎉 Auto-aceptar party', partyAcceptTitle:'Acepta solo la invitación de party (cacería en grupo) en cuanto aparece en pantalla', partyCosts:'💰 Auto-aceptar reparto', partyCostsTitle:'Acepta solo el reparto de costos de la hunt propuesto por el líder (afecta tu oro)', strayDialog:'🧹 Cerrar diálogo perdido', strayDialogTitle:'Cierra solo el diálogo "¿iniciar sin el equipo?" cuando queda atascado en pantalla, eligiendo siempre Cancelar', stLoading:'cargando…', stOnline:'online', stError:'error', stOff:'apagada', trainer:'Entrenador', tZoomOut:'Alejar zoom', tZoomIn:'Acercar zoom', tReload:'Recargar', tExpand:'Expandir (Ctrl+número)', tPower:'Apagar / encender', tRename:'Doble clic para renombrar', promptRename:'Nombre del entrenador:', mH2:'Entrenadores guardados', mHint:'Completa el e-mail/usuario y la contraseña de cada panel. Las contraseñas quedan cifradas en este PC. "Iniciar equipo" entra automáticamente donde haya datos, y si la sesión se cae el panel entra solo.', mName:'Nombre', mEmail:'E-mail o usuario', mPass:'Contraseña', mCancel:'Cancelar', mSave:'Guardar', awakeTitle:'Evita que el PC se duerma mientras farmea (la pantalla aún puede apagarse)', minTrayOn:'📥 Minimizar a la bandeja', minTrayOff:'📥 Minimizar normal', minTrayTitle:'Qué hace el botón minimizar: esconder en la bandeja (icono junto al reloj) o minimizar normal a la barra de tareas', bkExp:'💾 Exportar config', bkImp:'📂 Importar config', bkExpTitle:'Guarda un archivo con todas las configuraciones y el historial (las contraseñas quedan fuera)', bkImpTitle:'Restaura configuraciones e historial desde un archivo exportado', bkConfirm:'¿Reemplazar las configuraciones actuales por las del archivo? La app se recargará. (Las contraseñas no se ven afectadas.)', bkBad:'Archivo inválido.'
+      loginAll:'▶ Iniciar equipo', accounts:'👤 Entrenadores', reloadAll:'⟳ Recargar todo', updateBtn:'🔄 Actualización disponible', updateTitle:'Hay una versión nueva ({v}) en el repositorio. Clic para abrir la página y descargarla de nuevo (o hacer git pull).', layout:'▦ Cuadrícula', layoutCol:'▤ Una columna', asOn:'🚀 Abre con Windows', asOff:'🚀 Abrir con Windows', asTitle:'Crea un acceso directo de IdleGrid en la carpeta Inicio de Windows, el mismo lugar donde lo pondrías a mano. No toca el registro y puedes quitarlo con Win+R > shell:startup.', layoutRow:'▥ Una fila', layoutTitle:'Cómo se organizan los paneles. Clic para alternar: cuadrícula, una columna (apilado) o una fila (lado a lado).', sound:'🔊 Sonido', muted:'🔇 Silencio', eco:'⚡ Eco', ecoOff:'⚡ Eco off', sleep:'💤 Dormir', awake:'☕ Despierto', optionsBtn:'☰ Opciones', errlog:'🐞 Errores', errlogTitle:'Abre el informe de errores. Si la app se congela o se cierra sola, envía este archivo al soporte.', accClear:'Limpiar esta cuenta', alerts:'🔔 Alertas', alertsTitle:'Avisa con notificación cuando una cuenta se cae', msgDown:'se desconectó', count:'🔢 Paneles', resumo:'📊 Resumen', resumoTitle:'Oro, nivel y oro/h de cada cuenta, leído de la propia pantalla del juego', rsWaiting:'Esperando datos del juego…', rsGoldTotal:'oro total', rsOnline:'online', autoAceitar:'🎉 Auto-aceptar invitaciones', autoAceitarTitle:'Acepta solo la invitación de party, la cacería en grupo, los cambios de cacería del líder (lo sigue solo) y el reparto de costos (afecta tu oro) en cuanto aparecen en pantalla', strayDialog:'🧹 Cerrar diálogo perdido', strayDialogTitle:'Cierra solo el diálogo "¿iniciar sin el equipo?" cuando queda atascado en pantalla, eligiendo siempre Cancelar', stLoading:'cargando…', stOnline:'online', stError:'error', stOff:'apagada', trainer:'Entrenador', tZoomOut:'Alejar zoom', tZoomIn:'Acercar zoom', tReload:'Recargar', tExpand:'Expandir (Ctrl+número)', tPower:'Apagar / encender', tRename:'Doble clic para renombrar', promptRename:'Nombre del entrenador:', mH2:'Entrenadores guardados', mHint:'Completa el e-mail/usuario y la contraseña de cada panel. Las contraseñas quedan cifradas en este PC. "Iniciar equipo" entra automáticamente donde haya datos, y si la sesión se cae el panel entra solo.', mName:'Nombre', mEmail:'E-mail o usuario', mPass:'Contraseña', mCancel:'Cancelar', mSave:'Guardar', awakeTitle:'Evita que el PC se duerma mientras farmea (la pantalla aún puede apagarse)', minTrayOn:'📥 Minimizar a la bandeja', minTrayOff:'📥 Minimizar normal', minTrayTitle:'Qué hace el botón minimizar: esconder en la bandeja (icono junto al reloj) o minimizar normal a la barra de tareas', bkExp:'💾 Exportar config', bkImp:'📂 Importar config', bkExpTitle:'Guarda un archivo con todas las configuraciones y el historial (las contraseñas quedan fuera)', bkImpTitle:'Restaura configuraciones e historial desde un archivo exportado', bkConfirm:'¿Reemplazar las configuraciones actuales por las del archivo? La app se recargará. (Las contraseñas no se ven afectadas.)', bkBad:'Archivo inválido.'
     }
   };
   let lang = ['en', 'es'].includes(lsGet('lang')) ? lsGet('lang') : 'pt';
@@ -373,7 +372,7 @@ const HOME_URL  = 'https://huntera.com.br/';
           // jogo congelado com pagina viva: WebGL perdeu o contexto e nao restaurou em 4s -> recarrega
           wv.executeJavaScript("(()=>{if(window.__pgGlWd)return;window.__pgGlWd=1;let tm;document.addEventListener('webglcontextlost',()=>{clearTimeout(tm);tm=setTimeout(()=>location.reload(),4000);},true);document.addEventListener('webglcontextrestored',()=>clearTimeout(tm),true);})()").catch(() => {});
           wv.executeJavaScript(POPUP_SCRIPT).catch(() => {});
-          wv.executeJavaScript(partyAutomationScript(partyAcceptOn, partyCostsOn)).catch(() => {});
+          wv.executeJavaScript(partyAutomationScript(autoAceitarOn, autoAceitarOn)).catch(() => {});
           wv.executeJavaScript(strayDialogScript(strayDialogOn)).catch(() => {});
           // so na tela de login, pra nao rodar a toa dentro do jogo
           if ((wv.getURL() || '').startsWith(LOGIN_URL)) wv.executeJavaScript(scrollLoginScript).catch(() => {});
@@ -611,13 +610,19 @@ const HOME_URL  = 'https://huntera.com.br/';
   })()`;
 
   // ----- Automações de party: aceitar convite, aceitar rateio, fechar diálogo perdido -----
-  // Os TRÊS primeiros usam o mesmo card (<div class="party-invite invite-card">, role=alertdialog),
+  // Os QUATRO primeiros usam o mesmo card (<div class="party-invite invite-card">, role=alertdialog),
   // sem id nem classe própria nos botões — só o aria-label do card e o texto do botão distinguem:
-  //   aria-label="Convite de party"            -> botão "Entrar"   (entrar no grupo)
-  //   aria-label="Convite de caçada em grupo"  -> botão "Aceitar"  (topar a caçada escolhida)
-  //   aria-label="Rateio da hunt"              -> botão "Aceitar"  (mexe com gold: fica com o
-  //                                                próprio toggle, não entra no "Auto-aceitar party")
-  // Seletores conferidos nos logs de descoberta do Huntera Auto Hunt (huntera.com.br).
+  //   "Convite de party"            -> botão "Entrar"   (entrar no grupo)
+  //   "Convite de caçada em grupo"  -> botão "Aceitar"  (topar a primeira caçada escolhida)
+  //   "Trocar de caçada"            -> botão "Aceitar"  (líder mudou de hunt no meio da sessão —
+  //                                     é assim que "seguir o líder" funciona: o convite se repete
+  //                                     a cada troca, não existe um "modo seguir" separado)
+  //   "Rateio da hunt"              -> botão "Aceitar"  (mexe com gold: fica com o próprio toggle,
+  //                                     não entra no "Auto-aceitar party")
+  // As três primeiras usam aria-label E título (<h4 class="invite-title">) idênticos, conferido nos
+  // logs de descoberta do Huntera Auto Hunt. Pra "Trocar de caçada" só temos a captura de tela do
+  // usuário (o card nunca apareceu nos logs), então casamos por aria-label OU pelo texto do título,
+  // o que vier — mais resistente a um aria-label que não bata exatamente com o título visível.
   const partyAutomationScript = (partyOn, costsOn) => `(() => {
     window.__partyAcceptOn = ${partyOn ? 'true' : 'false'};
     window.__partyCostsOn = ${costsOn ? 'true' : 'false'};
@@ -626,13 +631,20 @@ const HOME_URL  = 'https://huntera.com.br/';
         const b = [...raiz.querySelectorAll('button')].find(x => regex.test((x.textContent || '').trim()));
         if (b) b.click();
       };
+      const rotuloDe = (card) => {
+        const aria = (card.getAttribute('aria-label') || '').trim().toLowerCase();
+        if (aria) return aria;
+        const h4 = card.querySelector('.invite-title');
+        return (h4 && h4.textContent || '').trim().toLowerCase();
+      };
       const tentar = () => {
         if (!window.__partyAcceptOn && !window.__partyCostsOn) return;
         document.querySelectorAll('div[role="alertdialog"].party-invite, .party-invite.invite-card').forEach(card => {
-          const aria = (card.getAttribute('aria-label') || '').toLowerCase();
-          if (window.__partyAcceptOn && (aria === 'convite de party' || aria === 'convite de caçada em grupo')) {
+          const rotulo = rotuloDe(card);
+          const ehConvite = rotulo === 'convite de party' || rotulo === 'convite de caçada em grupo' || rotulo === 'trocar de caçada';
+          if (window.__partyAcceptOn && ehConvite) {
             clicar(card, /^(aceitar|entrar|accept|join)$/i);
-          } else if (window.__partyCostsOn && aria === 'rateio da hunt') {
+          } else if (window.__partyCostsOn && rotulo === 'rateio da hunt') {
             clicar(card, /^(aceitar|accept)$/i);
           }
         });
@@ -766,9 +778,12 @@ const HOME_URL  = 'https://huntera.com.br/';
     } catch { return null; }
   })()`;
 
-  let partyAcceptOn = lsGet('partyAcceptOn') === '1'; // desligado por padrão: automação de verdade, opt-in
-  let partyCostsOn = lsGet('partyCostsOn') === '1'; // separado do partyAccept de propósito: mexe com gold
-  let strayDialogOn = lsGet('strayDialogOn') === '1'; // fecha só o diálogo "iniciar sem o time?" perdido
+  // Um botão só pra tudo que ACEITA algo sozinho (convite de party, caçada em grupo, troca de
+  // caçada do líder e rateio de custos): desligado por padrão, automação de verdade, opt-in.
+  // O rateio mexe com gold e entra no mesmo toggle de propósito -- é o usuário quem decide se
+  // confia o suficiente no líder da party pra ligar isso, não tem meio-termo escondido.
+  let autoAceitarOn = lsGet('autoAceitarOn') === '1';
+  let strayDialogOn = lsGet('strayDialogOn') === '1'; // fecha só o diálogo "iniciar sem o time?" perdido (nunca aceita nada, só cancela)
   let resumoOn = lsGet('resumoOn') === '1'; // desligado por padrão: só le/atualiza quando aberto
   const resumoData = [null, null, null, null]; // por painel: { gold, hp, hpMax, level, xp, sessGold, sessTs }
   let resumoTimer = null;
@@ -863,26 +878,17 @@ const HOME_URL  = 'https://huntera.com.br/';
   // sem custo, o polling de verdade (que abre o webview) continua no ritmo mais lento acima.
   setInterval(() => { if (resumoOn) resumoRender(); }, 3000);
 
-  // ----- Auto-aceitar party / rateio / diálogo perdido: cada um liga/desliga e empurra o
-  // estado pra quem já está aberto. partyAccept e partyCosts moram no mesmo script injetado
-  // (partyAutomationScript), então uma mudança em qualquer um dos dois reinjeta os dois juntos.
-  const partyAcceptBtn = document.getElementById('partyAccept');
-  const partyCostsBtn = document.getElementById('partyCosts');
+  // ----- Auto-aceitar convites / diálogo perdido: cada botão liga/desliga e empurra o estado
+  // pra quem já está aberto. O toggle único de aceitar passa o MESMO valor duas vezes pro script
+  // injetado (partyAutomationScript espera partyOn e costsOn separados por causa do rótulo do
+  // card, mas na interface virou um botão só).
+  const autoAceitarBtn = document.getElementById('autoAceitar');
   const strayDialogBtn = document.getElementById('strayDialog');
-  function pushPartyAutomation() {
-    webviews.forEach((w, i) => { if (!off[i]) { try { w.executeJavaScript(partyAutomationScript(partyAcceptOn, partyCostsOn)).catch(() => {}); } catch {} } });
-  }
-  function applyPartyAccept() {
-    partyAcceptBtn.textContent = t('partyAccept'); partyAcceptBtn.title = t('partyAcceptTitle');
-    partyAcceptBtn.classList.toggle('on', partyAcceptOn);
-    pushPartyAutomation();
-    lsSet('partyAcceptOn', partyAcceptOn ? '1' : '0');
-  }
-  function applyPartyCosts() {
-    partyCostsBtn.textContent = t('partyCosts'); partyCostsBtn.title = t('partyCostsTitle');
-    partyCostsBtn.classList.toggle('on', partyCostsOn);
-    pushPartyAutomation();
-    lsSet('partyCostsOn', partyCostsOn ? '1' : '0');
+  function applyAutoAceitar() {
+    autoAceitarBtn.textContent = t('autoAceitar'); autoAceitarBtn.title = t('autoAceitarTitle');
+    autoAceitarBtn.classList.toggle('on', autoAceitarOn);
+    webviews.forEach((w, i) => { if (!off[i]) { try { w.executeJavaScript(partyAutomationScript(autoAceitarOn, autoAceitarOn)).catch(() => {}); } catch {} } });
+    lsSet('autoAceitarOn', autoAceitarOn ? '1' : '0');
   }
   function applyStrayDialog() {
     strayDialogBtn.textContent = t('strayDialog'); strayDialogBtn.title = t('strayDialogTitle');
@@ -890,8 +896,7 @@ const HOME_URL  = 'https://huntera.com.br/';
     webviews.forEach((w, i) => { if (!off[i]) { try { w.executeJavaScript(strayDialogScript(strayDialogOn)).catch(() => {}); } catch {} } });
     lsSet('strayDialogOn', strayDialogOn ? '1' : '0');
   }
-  partyAcceptBtn.onclick = () => { partyAcceptOn = !partyAcceptOn; applyPartyAccept(); menu.classList.remove('show'); };
-  partyCostsBtn.onclick = () => { partyCostsOn = !partyCostsOn; applyPartyCosts(); menu.classList.remove('show'); };
+  autoAceitarBtn.onclick = () => { autoAceitarOn = !autoAceitarOn; applyAutoAceitar(); menu.classList.remove('show'); };
   strayDialogBtn.onclick = () => { strayDialogOn = !strayDialogOn; applyStrayDialog(); menu.classList.remove('show'); };
 
   // ----- Idioma: aplica na interface e (ao trocar) no jogo -----
@@ -923,7 +928,7 @@ const HOME_URL  = 'https://huntera.com.br/';
       p.querySelector('.expand').title = t('tExpand');
       p.querySelector('.power').title = t('tPower');
     });
-    applyMute(); applyEco(); applyAwake(); applyMinTray(); applyAlerts(); applyResumo(); applyPartyAccept(); applyPartyCosts(); applyStrayDialog(); aplicaCountLayout();
+    applyMute(); applyEco(); applyAwake(); applyMinTray(); applyAlerts(); applyResumo(); applyAutoAceitar(); applyStrayDialog(); aplicaCountLayout();
     lsSet('lang', lang);
   }
   langBtns.forEach(b => b.onclick = () => { if (lang === b.dataset.lang) return; lang = b.dataset.lang; applyLang(); });

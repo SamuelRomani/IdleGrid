@@ -43,8 +43,7 @@ Pronto, isso não precisa fazer de novo.
 Ficam no menu **☰ Opções**, no topo do app.
 
 - **📊 Resumo**: abre uma barra lateral com gold, level, HP e gold/h de cada conta — só leitura, não clica em nada. Bom pra acompanhar o progresso sem precisar entrar em cada quadradinho.
-- **🎉 Auto-aceitar party**: quando alguém te chama pra uma party (ou pra começar a caçada em grupo), o app aceita sozinho. Não mexe em gold.
-- **💰 Auto-aceitar rateio**: liga separado do de cima de propósito, porque esse aceita sozinho quando o líder propõe dividir os custos da caçada — e isso desconta do seu gold. Só ligue se confia em quem lidera a party.
+- **🎉 Auto-aceitar convites**: um botão só que aceita sozinho o convite de entrar na party, o de começar a caçada em grupo, as trocas de caçada que o líder fizer no meio da sessão (é assim que o app "segue o líder": o convite se repete a cada troca) e o rateio de custos da hunt — esse último **desconta do seu gold**, então só ligue se confia em quem lidera a party.
 - **🧹 Fechar diálogo perdido**: se o aviso "iniciar sem o time?" ficar preso na tela sem ninguém ter clicado nele, o app fecha sozinho escolhendo sempre **Cancelar** — nunca confirma nada.
 
 Nenhum desses caça, usa skill ou vende item por você. O app continua só organizando as contas e resolvendo esses convites/avisos específicos, se você ligar.

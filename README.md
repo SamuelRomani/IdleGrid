@@ -59,8 +59,7 @@ Pronto. Entre ou crie uma conta em cada painel e, em "Treinadores", salve o logi
 - Rode 1 a 4 contas, você escolhe quantos painéis abrir.
 - Login automático, mesmo quando a sessão expira no meio do farm.
 - Painel de Resumo: gold, level e gold/h de cada conta, lido da própria tela do jogo.
-- Auto-aceitar party: aceita sozinho o convite de entrar no grupo e o de caçada em grupo (desligado por padrão, liga no menu ☰).
-- Auto-aceitar rateio: aceita sozinho quando o líder liga o rateio de custos da hunt — toggle separado do de cima, porque esse mexe com o seu gold (desligado por padrão).
+- Auto-aceitar convites: um botão só (desligado por padrão, liga no menu ☰) pra aceitar sozinho o convite de entrar no grupo, o de caçada em grupo, as trocas de caçada do líder (é assim que "seguir o líder" funciona) e o rateio de custos — esse último mexe no seu gold, então só ligue se confia em quem lidera a party.
 - Fechar diálogo perdido: se o aviso "iniciar sem o time?" ficar preso na tela, fecha sozinho escolhendo sempre Cancelar (desligado por padrão).
 - Mostra a própria versão na barra de cima, e avisa (sem baixar nada sozinho) quando o `main` do repositório está mais novo que a sua cópia.
 - Modo Eco que segura o uso de CPU sem atrapalhar o progresso.

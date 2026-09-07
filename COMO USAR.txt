@@ -68,12 +68,11 @@ Ficam no menu "Opcoes", no topo do app.
 
   * RESUMO: abre uma barra lateral com gold, level, HP e gold/h
     de cada conta -- so leitura, nao clica em nada.
-  * AUTO-ACEITAR PARTY: quando alguem te chama pra uma party (ou
-    pra comecar a cacada em grupo), o app aceita sozinho. Nao
-    mexe em gold.
-  * AUTO-ACEITAR RATEIO: fica separado do de cima de proposito,
-    porque esse aceita sozinho quando o lider propoe dividir os
-    custos da cacada -- e isso desconta do seu gold. So ligue se
+  * AUTO-ACEITAR CONVITES: um botao so que aceita sozinho o
+    convite de entrar na party, o de comecar a cacada em grupo,
+    as trocas de cacada que o lider fizer no meio da sessao (e
+    assim que o app "segue o lider") e o rateio de custos da
+    hunt -- esse ultimo DESCONTA DO SEU GOLD, entao so ligue se
     confia em quem lidera a party.
   * FECHAR DIALOGO PERDIDO: se o aviso "iniciar sem o time?"
     ficar preso na tela sem ninguem ter clicado, o app fecha
