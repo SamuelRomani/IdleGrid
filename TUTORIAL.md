@@ -50,7 +50,7 @@ Nenhum desses caça, usa skill ou vende item por você. O app continua só organ
 
 ## Para atualizar depois
 
-Baixe o ZIP de novo (Passo 2) e substitua a pasta antiga. Suas contas continuam salvas.
+Quando sair uma versão nova, aparece um botão **🔄 Atualização disponível** na barra de cima. No Windows, clicar nele já faz tudo sozinho (pede confirmação antes de fechar o app). Se não der por algum motivo, o jeito manual continua funcionando: baixe o ZIP de novo (Passo 2) e substitua a pasta antiga. Suas contas continuam salvas nos dois casos.
 
 ## Deu algum problema?
 

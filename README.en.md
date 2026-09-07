@@ -14,7 +14,7 @@
 
 </div>
 
-> This is the run-from-source version. There is no ready-made executable to download: you grab the code, look at what it does and run it yourself. That way the trust is on you, not on me.
+> The recommended way is running from source: you grab the code, look at what it does and run it yourself, no blind trust required. There is also a **[portable .exe](https://github.com/SamuelRomani/IdleGrid/releases/tag/latest)**, built automatically by GitHub on every change to this repository's code (not a build of mine, it's public) — handy if you do not want to deal with Node.js, but then the trust shifts to whoever builds it: GitHub Actions itself, with every build log public.
 
 > ### 🔒 Your login data stays only on your computer
 > Login and password are encrypted on your own PC and never leave it. No server, no repository. The whole code is here for you to check.
@@ -59,7 +59,7 @@ That is it. Log in or create an account in each panel and, under "Treinadores" (
 - Summary panel: gold, level and gold/h per account, read straight from the game screen.
 - Auto-accept invites: a single toggle (off by default, in the ☰ menu) that accepts the join-group invite, the group-hunt invite, the leader's hunt swaps (that's how "following the leader" works) and the cost split — the last one touches your gold, so only turn it on if you trust whoever leads the party.
 - Close stray dialog: if the "start without the team?" warning gets stuck on screen, closes it on its own, always choosing Cancel (off by default).
-- Shows its own version in the top bar, and lets you know (without downloading anything on its own) when the repository's `main` is newer than your copy.
+- Shows its own version in the top bar and lets you know when the repository's `main` is newer. On Windows, the update button (asks for confirmation first) does it on its own: source code uses `git pull` (or re-downloads the ZIP if it is not a clone); the portable `.exe` downloads the new version (published as a release on every push to `main`) and swaps the old file for the new one.
 - Eco mode that keeps CPU use down without hurting progress.
 - Notifies you when an account drops.
 - Turn each panel on or off, zoom, full screen and keyboard shortcuts.

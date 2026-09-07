@@ -85,8 +85,12 @@ avisos especificos, se voce ligar.
 
 PARA ATUALIZAR DEPOIS
 ---------------------
-Baixe o ZIP de novo (Passo 2) e substitua a pasta antiga.
-Suas contas continuam salvas.
+Quando sair uma versao nova, aparece um botao "Atualizacao
+disponivel" na barra de cima. No Windows, clicar nele ja faz tudo
+sozinho (pede confirmacao antes de fechar o app). Se nao der por
+algum motivo, o jeito manual continua funcionando: baixe o ZIP de
+novo (Passo 2) e substitua a pasta antiga. Suas contas continuam
+salvas nos dois casos.
 
 
 DEU PROBLEMA?

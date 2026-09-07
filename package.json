@@ -1,6 +1,6 @@
 {
   "name": "idlegrid",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "Rode varias contas de um jogo idle ao mesmo tempo, em uma janela so / Run multiple idle-game accounts at once, in a single window",
   "main": "main.js",
   "author": "soufoka",
@@ -37,6 +37,9 @@
       "target": [
         "portable"
       ]
+    },
+    "portable": {
+      "artifactName": "IdleGrid-Portable.exe"
     }
   }
 }

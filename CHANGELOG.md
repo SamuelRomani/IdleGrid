@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.5.0
+
+- **Atualização de verdade, com um clique.** O botão "🔄 Atualização disponível" agora atualiza sozinho no Windows, em vez de só abrir a página do repositório: pede confirmação, fecha o app, atualiza e reabre. Dois caminhos, dependendo de como o IdleGrid está rodando:
+  - **Código-fonte**: roda o novo `atualizar.bat` (`git pull` se a pasta veio de `git clone`, ou baixa o ZIP de novo e substitui os arquivos se não). Se você editou algo na mão e o `git pull` não conseguir mesclar, o processo para sem mudar nada em vez de sobrescrever.
+  - **`.exe` portátil**: baixa a versão nova de uma release "latest" (publicada automaticamente pelo CI a cada push no `main`) e troca o arquivo antigo pelo novo — o `.github/workflows/ci.yml` ganhou esse passo, com um nome de arquivo fixo (`IdleGrid-Portable.exe`) pra sempre existir uma URL estável.
+  - Nos dois casos as contas salvas não são afetadas (ficam em `userData`, fora da pasta do app).
+  *Real one-click update. The "🔄 Update available" button now updates on its own on Windows instead of only opening the repository page: it asks for confirmation, closes the app, updates, and reopens. Two paths depending on how IdleGrid is running: source code runs the new `atualizar.bat` (git pull, or a fresh ZIP download and file swap if not a git clone -- and stops without changing anything if a git pull can't merge your local edits); the portable .exe downloads the new build from a "latest" release (published automatically by CI on every push to main, ci.yml now has that step, with a fixed filename so there is always a stable URL) and swaps the old file for the new one. Saved accounts are unaffected in both cases (they live in userData, outside the app folder).*
+- O README volta a ser honesto sobre a existência do `.exe`: antes dizia "não tem executável pronto pra baixar", que deixou de ser verdade a partir desta versão.
+  *The README goes back to being honest about the .exe existing: it used to say "no ready-made executable to download", which stopped being true as of this version.*
+
 ## 2.4.0
 
 - **Novo: segue o líder de verdade.** Achado com uma captura de tela do usuário — quando o líder troca de caçada no meio da sessão (não só na primeira vez), aparece um card "Trocar de caçada" que ainda não estava coberto. Entrou no mesmo mecanismo dos outros convites de party; não existe um "modo seguir" separado no jogo, é sempre esse convite se repetindo a cada troca.
