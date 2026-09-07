@@ -1,7 +1,8 @@
-const { app, BrowserWindow, ipcMain, safeStorage, Tray, Menu, powerSaveBlocker, shell, session, Notification } = require('electron');
+const { app, BrowserWindow, ipcMain, safeStorage, Tray, Menu, powerSaveBlocker, shell, session, Notification, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const https = require('https'); // so pro webhook opcional do Discord
+const { spawn } = require('child_process'); // so pro atualizar.bat
 
 // Silencia o spam do Chromium no terminal (ex.: STUN/WebRTC do jogo que a rede nao resolve).
 // E so log, nao afeta o app. Mantem so erros fatais.
@@ -241,6 +242,114 @@ ipcMain.handle('app:checkUpdate', () => new Promise((resolve) => {
   req.on('error', () => resolve(null));
   req.setTimeout(8000, () => req.destroy());
 }));
+
+// Baixa um arquivo por HTTPS seguindo redirecionamentos (o GitHub Releases redireciona pro
+// objects.githubusercontent.com de verdade; sem isso o download vem vazio). Nada de rede aqui
+// alem do https nativo, mesmo raciocinio do checkUpdate e do webhook.
+function baixarArquivo(url, destino, saltos = 5) {
+  return new Promise((resolve, reject) => {
+    if (saltos <= 0) return reject(new Error('redirecionamentos demais'));
+    const req = https.get(url, { headers: { 'User-Agent': 'IdleGrid' } }, (res) => {
+      if ([301, 302, 303, 307, 308].includes(res.statusCode) && res.headers.location) {
+        res.resume();
+        return resolve(baixarArquivo(res.headers.location, destino, saltos - 1));
+      }
+      if (res.statusCode !== 200) { res.resume(); return reject(new Error('HTTP ' + res.statusCode)); }
+      const arq = fs.createWriteStream(destino);
+      res.pipe(arq);
+      arq.on('finish', () => arq.close(() => resolve()));
+      arq.on('error', reject);
+    });
+    req.on('error', reject);
+    req.setTimeout(60000, () => req.destroy(new Error('demorou demais')));
+  });
+}
+
+const EXE_RELEASE_URL = 'https://github.com/SamuelRomani/IdleGrid/releases/download/latest/IdleGrid-Portable.exe';
+
+// Dois jeitos de atualizar, dependendo de como o IdleGrid está rodando:
+//  - código-fonte (npm start / Abrir IdleGrid.vbs): roda o atualizar.bat, que dá git pull ou
+//    baixa o ZIP de novo, dependendo de como a pasta chegou.
+//  - .exe portátil empacotado: baixa o .exe novo (release "latest" publicada pelo CI a cada push
+//    no main) numa pasta temporária, e usa um .bat gerado na hora só pra esperar o processo atual
+//    soltar o arquivo (o Windows não deixa sobrescrever um .exe rodando) e trocar um pelo outro.
+// Os dois pedem confirmação antes, e os dois fecham o app pra terminar sem ninguém segurando
+// arquivo aberto.
+ipcMain.handle('app:runUpdate', async () => {
+  if (process.platform !== 'win32') return { ok: false, motivo: 'nao-suportado' };
+
+  if (!app.isPackaged) {
+    const bat = path.join(app.getAppPath(), 'atualizar.bat');
+    if (!fs.existsSync(bat)) return { ok: false, motivo: 'nao-suportado' };
+    const r = await dialog.showMessageBox({
+      type: 'question',
+      buttons: ['Atualizar agora', 'Cancelar'],
+      defaultId: 0,
+      cancelId: 1,
+      title: 'Atualizar o IdleGrid',
+      message: 'Isso vai fechar o IdleGrid, baixar a versão mais nova e reabrir sozinho.',
+      detail: 'Suas contas salvas não são afetadas (ficam fora da pasta do app). Se você editou algum arquivo na mão, o processo para sem mudar nada em vez de sobrescrever.'
+    });
+    if (r.response !== 0) return { ok: false, motivo: 'cancelado' };
+    try {
+      // janela propria (start ""), destacado do processo do Electron: sobrevive ao app.quit()
+      spawn('cmd.exe', ['/c', 'start', '""', '/D', app.getAppPath(), 'atualizar.bat'], { detached: true, stdio: 'ignore' }).unref();
+    } catch (e) { logErro('atualizar', String((e && e.message) || e)); return { ok: false, motivo: 'erro' }; }
+    setTimeout(() => app.quit(), 300); // da tempo do spawn soltar antes do processo morrer
+    return { ok: true };
+  }
+
+  // ----- Empacotado: troca o proprio .exe -----
+  const r = await dialog.showMessageBox({
+    type: 'question',
+    buttons: ['Atualizar agora', 'Cancelar'],
+    defaultId: 0,
+    cancelId: 1,
+    title: 'Atualizar o IdleGrid',
+    message: 'Isso vai baixar o executável novo, fechar o IdleGrid, trocar o arquivo antigo pelo novo e reabrir sozinho.',
+    detail: 'Suas contas salvas não são afetadas (ficam fora da pasta do .exe).'
+  });
+  if (r.response !== 0) return { ok: false, motivo: 'cancelado' };
+
+  const exeAtual = process.execPath;
+  const pasta = app.getPath('temp');
+  const exeNovo = path.join(pasta, 'IdleGrid-Portable-novo.exe');
+  const trocaBat = path.join(pasta, 'idlegrid-troca-exe.bat');
+  try {
+    await baixarArquivo(EXE_RELEASE_URL, exeNovo);
+  } catch (e) {
+    logErro('atualizar', 'download do exe falhou: ' + String((e && e.message) || e));
+    dialog.showErrorBox('Não consegui baixar a atualização', 'Confira sua internet e tente de novo. Nada foi mudado, o IdleGrid continua igual.');
+    return { ok: false, motivo: 'erro' };
+  }
+  // Espera em loop o processo antigo soltar o arquivo (Windows nao deixa apagar/mover um .exe
+  // rodando), com um teto de tentativas pra nao ficar preso pra sempre se algo der errado.
+  const scriptBat = [
+    '@echo off',
+    'setlocal',
+    'set TENTATIVAS=0',
+    ':espera',
+    'set /a TENTATIVAS+=1',
+    `move /y "${exeNovo}" "${exeAtual}" >nul 2>&1`,
+    'if not errorlevel 1 goto trocado',
+    'if %TENTATIVAS% GEQ 30 goto falhou',
+    'timeout /t 1 /nobreak >nul',
+    'goto espera',
+    ':trocado',
+    `start "" "${exeAtual}"`,
+    'goto fim',
+    ':falhou',
+    'echo Nao consegui trocar o executavel (ele pode ainda estar em uso). Abra o IdleGrid.exe antigo na mao.',
+    'pause',
+    ':fim'
+  ].join('\r\n');
+  try {
+    fs.writeFileSync(trocaBat, scriptBat, 'utf8');
+    spawn('cmd.exe', ['/c', 'start', '""', '/MIN', trocaBat], { detached: true, stdio: 'ignore' }).unref();
+  } catch (e) { logErro('atualizar', String((e && e.message) || e)); return { ok: false, motivo: 'erro' }; }
+  setTimeout(() => app.quit(), 300);
+  return { ok: true };
+});
 
 let tray; // referencia viva para o icone nao sumir (GC)
 

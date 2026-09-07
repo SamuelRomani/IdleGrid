@@ -14,7 +14,7 @@
 
 </div>
 
-> Esta é a versão que roda a partir do código. Não tem executável pronto pra baixar: você pega o código, olha o que ele faz e roda você mesmo. Assim a confiança fica com você, não comigo.
+> O jeito recomendado é rodar a partir do código: você pega, olha o que ele faz e roda você mesmo, sem precisar confiar cegamente em ninguém. Também existe um **[.exe portátil](https://github.com/SamuelRomani/IdleGrid/releases/tag/latest)**, gerado automaticamente pelo GitHub a cada mudança no código deste repositório (não é build minha, é pública) — útil se você não quer mexer com Node.js, mas aí a confiança fica em quem builda: o próprio GitHub Actions, com o log de cada build público.
 
 > 🔰 **Nunca mexeu com isso?** Tem um passo a passo pra leigo aqui: **[TUTORIAL.md](TUTORIAL.md)** (ou o arquivo `COMO USAR.txt` dentro da pasta).
 
@@ -61,7 +61,7 @@ Pronto. Entre ou crie uma conta em cada painel e, em "Treinadores", salve o logi
 - Painel de Resumo: gold, level e gold/h de cada conta, lido da própria tela do jogo.
 - Auto-aceitar convites: um botão só (desligado por padrão, liga no menu ☰) pra aceitar sozinho o convite de entrar no grupo, o de caçada em grupo, as trocas de caçada do líder (é assim que "seguir o líder" funciona) e o rateio de custos — esse último mexe no seu gold, então só ligue se confia em quem lidera a party.
 - Fechar diálogo perdido: se o aviso "iniciar sem o time?" ficar preso na tela, fecha sozinho escolhendo sempre Cancelar (desligado por padrão).
-- Mostra a própria versão na barra de cima, e avisa (sem baixar nada sozinho) quando o `main` do repositório está mais novo que a sua cópia.
+- Mostra a própria versão na barra de cima e avisa quando o `main` do repositório está mais novo. No Windows, o botão de atualizar (com confirmação antes) faz sozinho: código-fonte usa `git pull` (ou baixa o ZIP de novo, se não for um clone); `.exe` portátil baixa a versão nova (publicada como release a cada push no `main`) e troca o arquivo antigo pelo novo.
 - Modo Eco que segura o uso de CPU sem atrapalhar o progresso.
 - Avisa por notificação quando uma conta cai.
 - Liga e desliga cada painel, zoom, tela cheia e atalhos de teclado.

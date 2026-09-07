@@ -15,5 +15,6 @@ contextBridge.exposeInMainWorld('pokeAPI', {
   logError: (origem, msg) => ipcRenderer.invoke('errlog:write', origem, msg),
   openErrorLog: () => ipcRenderer.invoke('errlog:open'),
   getVersion: () => ipcRenderer.invoke('app:getVersion'),
-  checkUpdate: () => ipcRenderer.invoke('app:checkUpdate')
+  checkUpdate: () => ipcRenderer.invoke('app:checkUpdate'),
+  runUpdate: () => ipcRenderer.invoke('app:runUpdate')
 });
