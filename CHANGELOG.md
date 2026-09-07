@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.5.1
+
+- **Ícone da barra de cima trocado pro `tray.png` do projeto** (o mesmo usado na janela e na bandeja), no lugar do SVG de pokébola antigo.
+  *Top bar icon swapped for the project's `tray.png` (the same one used for the window and tray), replacing the old pokéball SVG.*
+
 ## 2.5.0
 
 - **Atualização de verdade, com um clique.** O botão "🔄 Atualização disponível" agora atualiza sozinho no Windows, em vez de só abrir a página do repositório: pede confirmação, fecha o app, atualiza e reabre. Dois caminhos, dependendo de como o IdleGrid está rodando:
