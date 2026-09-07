@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.4.0
+
+- **Novo: segue o líder de verdade.** Achado com uma captura de tela do usuário — quando o líder troca de caçada no meio da sessão (não só na primeira vez), aparece um card "Trocar de caçada" que ainda não estava coberto. Entrou no mesmo mecanismo dos outros convites de party; não existe um "modo seguir" separado no jogo, é sempre esse convite se repetindo a cada troca.
+  *New: actually follows the leader. Found from a user screenshot — when the leader swaps hunts mid-session (not just the first time), a "Trocar de caçada" ("switch hunt") card shows up that wasn't covered yet. It now goes through the same mechanism as the other party invites; the game has no separate "follow mode", it's always this same invite repeating on every swap.*
+- **Os toggles de aceitar viraram um botão só.** "Auto-aceitar party" e "Auto-aceitar rateio" eram dois botões separados de propósito (rateio mexe com gold); a pedido do usuário viraram "🎉 Auto-aceitar convites", único. "Fechar diálogo perdido" continua separado, porque não é um aceite — só cancela.
+  *The accept toggles became a single button. "Auto-accept party" and "Auto-accept cost split" were two separate toggles on purpose (cost split touches gold); at the user's request they became one "🎉 Auto-accept invites" button. "Close stray dialog" stays separate, since it is not an accept — it only cancels.*
+
 ## 2.3.0
 
 - **Versão visível na interface**: a barra de cima agora mostra "vX.Y.Z" ao lado do logo.
